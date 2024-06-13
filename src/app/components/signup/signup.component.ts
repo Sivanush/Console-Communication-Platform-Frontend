@@ -1,29 +1,39 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../service/user/user.service';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { GoogleLoginProvider, SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { ToastModule } from 'primeng/toast';
+
+
+import { ToastService } from '../../service/toster/toster-service.service';
 
 @Component({
   selector: 'app-signup',
-  standalone: true,
-  imports: [FormsModule,CommonModule],
   templateUrl: './signup.component.html',
-  styleUrl: './signup.component.scss'
+  standalone: true,
+  styleUrls: ['./signup.component.scss'],
+  imports: [CommonModule, FormsModule, RouterLink, ReactiveFormsModule, ToastModule],
 })
-export class SignupComponent {
+export class SignupComponent implements OnInit {
+  
+  userForm: FormGroup;
+  // socialUser: SocialUser | null = null;
+  // isLogin: boolean = false;
 
-  user = {
-    username:'',
-    email:'',
-    password:'',
-    isVerified:false
+  constructor(
+    private userService: UserService,
+    // private authService: SocialAuthService,
+    private router: Router,
+    private fb: FormBuilder,
+    private toster:ToastService
+  ) {
+    this.userForm = fb.group({
+      username: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-Z]+$/)]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^[a-zA-Z0-9@!#$%^&*_-]{8,}$/)]]
+    });
   }
-  socialUser:SocialUser | null = null
-  isLogin: boolean = false;
-
-  constructor(private userService:UserService, private authService: SocialAuthService, private router: Router) {}
 
   ngOnInit() {
     const toggleButton: HTMLElement | null = document.getElementById('dark-mode-toggle');
@@ -38,37 +48,46 @@ export class SignupComponent {
     });
 
 
+    // this.authService.authState.subscribe((user) => {
+    //   this.socialUser = user;
+    //   this.isLogin = (user != null);
+    //   if (this.isLogin) {
+    //     this.signup();
+    //   }
+    // });
+  }
 
-    this.authService.authState.subscribe((user)=>{
-      this.socialUser = user
-      this.isLogin = (user != null);
-      if (this.isLogin) {
-        this.user = {
-          username:user.name,
-          email: user.email,
-          password: user.idToken ,
-          isVerified:true
+
+  click(){
+    this.toster.showSuccess('Success', 'Signup successful');
+  }
+
+  // signInWithGoogle(): void {
+  //   this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
+  // }
+
+  // signOut(): void {
+  //   this.authService.signOut();
+  // }
+
+  async signup() {
+    if (this.userForm.valid) {
+      const user = this.userForm.value;
+      this.userService.signup(user).subscribe({
+        next: async(response) => {
+          console.log('Signup response:', response); 
+          this.toster.showSuccess('Success', 'Signup successful');
+          setTimeout(() => {
+            this.router.navigate(['']);
+          }, 2000); 
+        },
+        error: (err) => {
+          console.error('Signup error:', err); 
+          this.toster.showError('Error', 'Signup failed');
         }
-        this.signup()
-      }
-    })
+      });
+    } else {
+      console.log('Form is invalid:', this.userForm); 
+    }
   }
-
-  
-  signInWithGoogle(): void {
-    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
-  }
-
-  signOut(): void {
-    this.authService.signOut();
-  }
-
-  signup(){
-    this.userService.signup(this.user).subscribe((response)=>{
-      console.log(response);
-      this.router.navigate([''])
-    })
-  }
-
-
 }
