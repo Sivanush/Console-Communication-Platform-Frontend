@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -33,16 +34,25 @@ export class UserService {
     return token ? !this.jwtHelper.isTokenExpired(token) : false;
   }
 
+ 
 
 
 
 
-  signup(user:object){
-    return this.http.post(`${this.apiLink}/api/signup`,user)
+
+  signup(user:object):Observable<{message:string ,otpToken:string}>{
+    return this.http.post<{ message: string, otpToken:string }>(`${this.apiLink}/api/signup`,user)
   }
 
 
   login(user:object){
-    return this.http.post<{token:string}>(`${this.apiLink}/api/login`,user)
+    return this.http.post<{token:string,message:string}>(`${this.apiLink}/api/login`,user)
   }
+
+
+  otpVerification(otp:number,otpToken:string|null){
+    const data = { otp,otpToken }; 
+    return this.http.post<{token:string,message:string}>(`${this.apiLink}/api/otp`,data)
+  }
+
 }

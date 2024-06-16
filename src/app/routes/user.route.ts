@@ -5,6 +5,7 @@ import { LoginComponent } from '../components/login/login.component';
 import { userAuthGuard } from '../guards/user/user-auth.guard';
 import { userNotAuthGuard } from '../guards/user/user-not-auth.guard';
 import { OtpComponent } from '../components/otp/otp.component';
+import { otpGuardGuard } from '../guards/user/otp-guard.guard';
 
 
 export const userRoute: Routes = [
@@ -25,7 +26,8 @@ export const userRoute: Routes = [
     },
     {
         path:'otp',
-        component:OtpComponent
+        component:OtpComponent,
+        canActivate:[otpGuardGuard]
     },
     {
         path: '**',

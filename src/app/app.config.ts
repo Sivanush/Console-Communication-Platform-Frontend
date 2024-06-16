@@ -16,7 +16,9 @@ export const appConfig: ApplicationConfig = {
     provideRouter(userRoute),
     provideHttpClient(),
     provideAnimations(),
-    MessageService
+    MessageService,
+    BrowserModule,
+    BrowserAnimationsModule
     
     // {
     //   provide: 'SocialAuthServiceConfig',

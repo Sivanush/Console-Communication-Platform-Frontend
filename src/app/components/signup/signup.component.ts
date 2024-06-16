@@ -5,7 +5,6 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { ToastModule } from 'primeng/toast';
 
-
 import { ToastService } from '../../service/toster/toster-service.service';
 
 @Component({
@@ -58,9 +57,9 @@ export class SignupComponent implements OnInit {
   }
 
 
-  click(){
-    this.toster.showSuccess('Success', 'Signup successful');
-  }
+  // click(){
+  //   this.toster.showSuccess('Success', 'Signup successful');
+  // }
 
   // signInWithGoogle(): void {
   //   this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
@@ -76,14 +75,15 @@ export class SignupComponent implements OnInit {
       this.userService.signup(user).subscribe({
         next: async(response) => {
           console.log('Signup response:', response); 
-          this.toster.showSuccess('Success', 'Signup successful');
+          localStorage.setItem('otpToken',response.otpToken)
+          this.toster.showSuccess('Success', response?.message)
           setTimeout(() => {
-            this.router.navigate(['']);
+            this.router.navigate(['otp']);
           }, 2000); 
         },
         error: (err) => {
           console.error('Signup error:', err); 
-          this.toster.showError('Error', 'Signup failed');
+          this.toster.showError('Error', err.error.error);
         }
       });
     } else {
