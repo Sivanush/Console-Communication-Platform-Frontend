@@ -1,0 +1,28 @@
+[debug] [2024-06-16T18:27:05.047Z] ----------------------------------------------------------------------
+[debug] [2024-06-16T18:27:05.050Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\More\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js login
+[debug] [2024-06-16T18:27:05.050Z] CLI Version:   13.11.2
+[debug] [2024-06-16T18:27:05.051Z] Platform:      win32
+[debug] [2024-06-16T18:27:05.051Z] Node Version:  v20.13.1
+[debug] [2024-06-16T18:27:05.051Z] Time:          Sun Jun 16 2024 23:57:05 GMT+0530 (India Standard Time)
+[debug] [2024-06-16T18:27:05.051Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-06-16T18:27:05.054Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[info] i  Firebase optionally collects CLI and Emulator Suite usage and error reporting information to help improve our products. Data is collected in accordance with Google's privacy policy (https://policies.google.com/privacy) and is not used to identify you.
+ 
+[debug] [2024-06-16T18:27:05.779Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2024-06-16T18:27:05.779Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[info] 
+[info] Visit this URL on this device to log in:
+[info] https://accounts.google.com/o/oauth2/auth?client_id=563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com&scope=email%20openid%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloudplatformprojects.readonly%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Ffirebase%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloud-platform&response_type=code&state=483476470&redirect_uri=http%3A%2F%2Flocalhost%3A9005
+[info] 
+[info] Waiting for authentication...
+[debug] [2024-06-16T18:28:27.029Z] ----------------------------------------------------------------------
+[debug] [2024-06-16T18:28:27.031Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\More\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js login
+[debug] [2024-06-16T18:28:27.032Z] CLI Version:   13.11.2
+[debug] [2024-06-16T18:28:27.032Z] Platform:      win32
+[debug] [2024-06-16T18:28:27.032Z] Node Version:  v20.13.1
+[debug] [2024-06-16T18:28:27.032Z] Time:          Sun Jun 16 2024 23:58:27 GMT+0530 (India Standard Time)
+[debug] [2024-06-16T18:28:27.032Z] ----------------------------------------------------------------------
+[debug] 
+[info] i  Firebase optionally collects CLI and Emulator Suite usage and error reporting information to help improve our products. Data is collected in accordance with Google's privacy policy (https://policies.google.com/privacy) and is not used to identify you.
+ 

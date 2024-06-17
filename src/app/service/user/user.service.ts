@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ import { Observable } from 'rxjs';
 export class UserService {
   
   private jwtHelper = new JwtHelperService();
-  private apiLink = 'http://localhost:3000'
+  private apiLink = environment.apiUrl
   private token: string | null = null;
   
 
@@ -41,18 +42,22 @@ export class UserService {
 
 
   signup(user:object):Observable<{message:string ,otpToken:string}>{
-    return this.http.post<{ message: string, otpToken:string }>(`${this.apiLink}/api/signup`,user)
+    return this.http.post<{ message: string, otpToken:string }>(`${this.apiLink}/signup`,user)
   }
 
 
   login(user:object){
-    return this.http.post<{token:string,message:string}>(`${this.apiLink}/api/login`,user)
+    return this.http.post<{token:string,message:string}>(`${this.apiLink}/login`,user)
   }
 
 
   otpVerification(otp:number,otpToken:string|null){
     const data = { otp,otpToken }; 
-    return this.http.post<{token:string,message:string}>(`${this.apiLink}/api/otp`,data)
+    return this.http.post<{token:string,message:string}>(`${this.apiLink}/otp`,data)
+  }
+
+  googleAuthentication(user:object){
+    return this.http.post<{token:string,message:string}>(`${this.apiLink}/api/googleAuth`,user)
   }
 
 }

@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { UserService } from '../../service/user/user.service';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { ToastModule } from 'primeng/toast';
-
 import { ToastService } from '../../service/toster/toster-service.service';
+import { GoogleAuthService } from '../../service/googleAuth/google.auth.service';
+
+
 
 @Component({
   selector: 'app-signup',
@@ -17,15 +19,13 @@ import { ToastService } from '../../service/toster/toster-service.service';
 export class SignupComponent implements OnInit {
   
   userForm: FormGroup;
-  // socialUser: SocialUser | null = null;
-  // isLogin: boolean = false;
 
   constructor(
     private userService: UserService,
-    // private authService: SocialAuthService,
     private router: Router,
     private fb: FormBuilder,
-    private toster:ToastService
+    private toster:ToastService,
+    private googleAuthService:GoogleAuthService,
   ) {
     this.userForm = fb.group({
       username: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-Z]+$/)]],
@@ -45,29 +45,13 @@ export class SignupComponent implements OnInit {
         rootElement?.classList.add('dark');
       }
     });
-
-
-    // this.authService.authState.subscribe((user) => {
-    //   this.socialUser = user;
-    //   this.isLogin = (user != null);
-    //   if (this.isLogin) {
-    //     this.signup();
-    //   }
-    // });
   }
 
 
-  // click(){
-  //   this.toster.showSuccess('Success', 'Signup successful');
-  // }
+  loginWithGoogle(){
+    this.googleAuthService.loginWithGoogle()
+  }
 
-  // signInWithGoogle(): void {
-  //   this.authService.signIn(GoogleLoginProvider.PROVIDER_ID);
-  // }
-
-  // signOut(): void {
-  //   this.authService.signOut();
-  // }
 
   async signup() {
     if (this.userForm.valid) {
