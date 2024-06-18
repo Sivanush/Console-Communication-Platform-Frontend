@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
-import { getAuth , GoogleAuthProvider} from 'firebase/auth';
+import { getAuth, Auth, GoogleAuthProvider } from 'firebase/auth';
 import { signInWithPopup } from '@angular/fire/auth';
+import { ToastService } from '../toster/toster-service.service';
+import { Router } from '@angular/router';
+import { FirebaseApp } from '@angular/fire/app';
+import { UserService } from '../user/user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,21 +14,40 @@ import { signInWithPopup } from '@angular/fire/auth';
 
 export class GoogleAuthService {
 
-  constructor() {}
+  private auth: Auth;
+
+  constructor(private toster: ToastService, private router: Router, private firebaseApp: FirebaseApp, private userService: UserService) {
+    this.auth = getAuth(firebaseApp)
+  }
 
 
-  loginWithGoogle() {
-    const auth = getAuth();
-    signInWithPopup(auth, new GoogleAuthProvider())
-    .then(googleResponse => {
-      // Successfully logged in
-      console.log(googleResponse);
-      // Add your logic here
-      
-    }).catch(err => {
-      // Login error
-      console.log(err);
-    });
-}
+  async loginWithGoogle() {
+    signInWithPopup(this.auth, new GoogleAuthProvider())
+      .then(async googleResponse => {
+        // Successfully logged in
+        this.userService.googleAuthentication(googleResponse.user).subscribe({
+          next: (response) => {
+            localStorage.setItem('token', response?.token)
+            console.log('Login successful:', response);
+            this.toster.showSuccess('Success', 'Logged in successfully with Google!')
+
+            // Add your logic here
+            this.router.navigate([''])
+          },
+          error:(err)=>{
+            console.log('Error', err?.message);
+            this.toster.showError('Error', err?.message)
+
+          }
+        })
+
+
+
+      }).catch(err => {
+        // Login error
+        console.log('Login Error:', err);
+        this.toster.showError('Error', 'Failed to log in with Google. Please try again!')
+      });
+  }
 }
 

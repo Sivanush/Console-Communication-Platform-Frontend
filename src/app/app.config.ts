@@ -6,14 +6,14 @@ import { provideHttpClient } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
 import { MessageService } from 'primeng/api';
-// import { GoogleLoginProvider, SocialAuthServiceConfig } from '@abacritt/angularx-social-login';
-// import { firebaseConfig } from '../environments/environment.prod';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 // import { firebaseConfig } from '../environments/environment.prod';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
+import { getDatabase } from '@angular/fire/database';
+import { provideDatabase } from '@angular/fire/database';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDVmVRn5JBIuKonN9j7r6fTCxhKnCdS3cA",
@@ -40,6 +40,7 @@ export const appConfig: ApplicationConfig = {
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
-    provideStorage(() => getStorage())
+    provideStorage(() => getStorage()),
+    provideDatabase(() => getDatabase()),
   ]
 };

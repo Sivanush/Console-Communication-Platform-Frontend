@@ -30,7 +30,8 @@ export class SignupComponent implements OnInit {
     this.userForm = fb.group({
       username: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-Z]+$/)]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^[a-zA-Z0-9@!#$%^&*_-]{8,}$/)]]
+      password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^[a-zA-Z0-9@!#$%^&*_-]{8,}$/)]],
+      agreeTerms:['',[Validators.required]]
     });
   }
 
@@ -50,6 +51,7 @@ export class SignupComponent implements OnInit {
 
   loginWithGoogle(){
     this.googleAuthService.loginWithGoogle()
+
   }
 
 

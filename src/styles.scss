@@ -12,3 +12,20 @@ body {
 font-family: 'Rubik', sans-serif;
 }
 
+/* styles.scss */
+
+/* styles.scss */
+
+/* Override the styles for the PrimeNG Toast component */
+.p-toast {
+    .p-toast-message {
+        backdrop-filter: blur(5px); 
+        -webkit-backdrop-filter: blur(px); 
+        border: 1px solid; 
+        border-radius: 8px; 
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+    }
+  }
+  
+

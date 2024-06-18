@@ -57,7 +57,8 @@ export class UserService {
   }
 
   googleAuthentication(user:object){
-    return this.http.post<{token:string,message:string}>(`${this.apiLink}/api/googleAuth`,user)
+    console.log(user);
+    return this.http.post<{message:string,token:string}>(`${this.apiLink}/googleAuth`,user)
   }
 
 }

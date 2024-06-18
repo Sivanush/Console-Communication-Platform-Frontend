@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { CommonModule } from '@angular/common';
 import { ToastModule } from 'primeng/toast';
 import { ToastService } from '../../service/toster/toster-service.service';
+import { GoogleAuthService } from '../../service/googleAuth/google.auth.service';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,15 @@ import { ToastService } from '../../service/toster/toster-service.service';
 export class LoginComponent {
 
   userForm: FormGroup
-  constructor(private userService: UserService, private router: Router, private fb: FormBuilder,private toster:ToastService) {
+  constructor(
+    private userService: UserService,
+    private router: Router, 
+    private fb: FormBuilder,
+    private toster:ToastService,
+    private googleAuthService:GoogleAuthService,
+  ) {
+
+
     this.userForm = fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^[a-zA-Z0-9@!#$%^&*_-]{8,}$/)]]
@@ -26,7 +35,7 @@ export class LoginComponent {
   
 
   signInWithGoogle() {
-    throw new Error('Method not implemented.');
+    this.googleAuthService.loginWithGoogle()
   }
 
   token: string = ''
