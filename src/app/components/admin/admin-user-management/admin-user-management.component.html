@@ -1,0 +1,216 @@
+<div class="flex min-h-screen bg-background text-foreground">
+
+  <app-sidebar />
+
+  <div class="flex-1">
+
+    <app-header />
+
+    <main class="p-6">
+      <!-- <section class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
+          <div class="p-6 flex items-center justify-between">
+            <div class="grid gap-1">
+              <div class="text-2xl font-bold">1,234</div>
+              <div class="text-sm text-muted-foreground">Users</div>
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="h-10 w-10 text-muted">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+          </div>
+        </div>
+        <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
+          <div class="p-6 flex items-center justify-between">
+            <div class="grid gap-1">
+              <div class="text-2xl font-bold">56</div>
+              <div class="text-sm text-muted-foreground">Servers</div>
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="h-10 w-10 text-muted">
+              <rect width="20" height="8" x="2" y="2" rx="2" ry="2"></rect>
+              <rect width="20" height="8" x="2" y="14" rx="2" ry="2"></rect>
+              <line x1="6" x2="6.01" y1="6" y2="6"></line>
+              <line x1="6" x2="6.01" y1="18" y2="18"></line>
+            </svg>
+          </div>
+        </div>
+        <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
+          <div class="p-6 flex items-center justify-between">
+            <div class="grid gap-1">
+              <div class="text-2xl font-bold">12,345</div>
+              <div class="text-sm text-muted-foreground">Messages</div>
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="h-10 w-10 text-muted">
+              <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path>
+            </svg>
+          </div>
+        </div>
+        <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
+          <div class="p-6 flex items-center justify-between">
+            <div class="grid gap-1">
+              <div class="text-2xl font-bold">$1,234</div>
+              <div class="text-sm text-muted-foreground">Revenue</div>
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="h-10 w-10 text-muted">
+              <line x1="12" x2="12" y1="2" y2="22"></line>
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+          </div>
+        </div>
+      </section> -->
+      <section class="mt-8">
+        <div class="flex items-center justify-between">
+          <h2 class="text-lg font-semibold">User List</h2>
+          <button
+            class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3">
+            View All
+          </button>
+        </div>
+        <div class="rounded-lg border bg-card text-card-foreground shadow-sm mt-4" data-v0-t="card">
+          <div class="relative w-full overflow-auto">
+            <table class="w-full caption-bottom text-sm">
+              <thead class="[&amp;_tr]:border-b">
+                <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+                  <th
+                    class="h-12 px-4 text-left align-middle font-medium text-muted-foreground ">
+                    User
+                  </th>
+                  <th
+                    class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                    Activity
+                  </th>
+                  <th
+                    class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                    Time
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="[&amp;_tr:last-child]:border-0">
+                <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+                  <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+                    <div class="flex items-center gap-3">
+                      <span class="relative flex shrink-0 overflow-hidden rounded-full h-8 w-8">
+                        <img class="aspect-square h-full w-full" alt="userProfile" src="/placeholder-user.jpg" />
+                      </span>
+                      <div class="font-medium">John Doe</div>
+                    </div>
+                  </td>
+                  <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">Sent a message</td>
+                  <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">2 minutes ago</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+      <!-- <section class="mt-8">
+        <div class="flex items-center justify-between">
+          <h2 class="text-lg font-semibold">Servers</h2>
+          <button
+            class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3">
+            View All
+          </button>
+        </div>
+        <div class="rounded-lg border bg-card text-card-foreground shadow-sm mt-4" data-v0-t="card">
+          <div class="relative w-full overflow-auto">
+            <table class="w-full caption-bottom text-sm">
+              <thead class="[&amp;_tr]:border-b">
+                <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+                  <th
+                    class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                    Server
+                  </th>
+                  <th
+                    class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                    Members
+                  </th>
+                  <th
+                    class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                    Owner
+                  </th>
+                  <th
+                    class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="[&amp;_tr:last-child]:border-0">
+                <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+                  <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+                    <div class="flex items-center gap-3">
+                      <span class="relative flex shrink-0 overflow-hidden rounded-full h-8 w-8">
+                        <img class="aspect-square h-full w-full" alt="@username" src="/placeholder-user.jpg" />
+                      </span>
+                      <div class="font-medium">General</div>
+                    </div>
+                  </td>
+                  <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">1,234</td>
+                  <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+                    <div class="flex items-center gap-3">
+                      <span class="relative flex shrink-0 overflow-hidden rounded-full h-6 w-6">
+                        <img class="aspect-square h-full w-full" alt="@username" src="/placeholder-user.jpg" />
+                      </span>
+                      <div class="text-sm">John Doe</div>
+                    </div>
+                  </td>
+                  <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"></td>
+                </tr>
+                <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+                  <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+                    <div class="flex items-center gap-3">
+                      <span class="relative flex shrink-0 overflow-hidden rounded-full h-8 w-8">
+                        <img class="aspect-square h-full w-full" alt="@username" src="/placeholder-user.jpg" />
+                      </span>
+                      <div class="font-medium">Gaming</div>
+                    </div>
+                  </td>
+                  <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">456</td>
+                  <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+                    <div class="flex items-center gap-3">
+                      <span class="relative flex shrink-0 overflow-hidden rounded-full h-6 w-6">
+                        <img class="aspect-square h-full w-full" alt="@username" src="/placeholder-user.jpg" />
+                      </span>
+                      <div class="text-sm">Jane Doe</div>
+                    </div>
+                  </td>
+                  <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"></td>
+                </tr>
+                <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+                  <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+                    <div class="flex items-center gap-3">
+                      <span class="relative flex shrink-0 overflow-hidden rounded-full h-8 w-8">
+                        <img class="aspect-square h-full w-full" alt="@username" src="/placeholder-user.jpg" />
+                      </span>
+                      <div class="font-medium">Music</div>
+                    </div>
+                  </td>
+                  <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">789</td>
+                  <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+                    <div class="flex items-center gap-3">
+                      <span class="relative flex shrink-0 overflow-hidden rounded-full h-6 w-6">
+                        <img class="aspect-square h-full w-full" alt="@username" src="/placeholder-user.jpg" />
+                      </span>
+                      <div class="text-sm">Bob Smith</div>
+                    </div>
+                  </td>
+                  <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section> -->
+    </main>
+  </div>
+
+</div>

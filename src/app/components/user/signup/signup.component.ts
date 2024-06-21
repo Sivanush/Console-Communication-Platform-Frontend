@@ -1,11 +1,11 @@
 import { Component, OnInit} from '@angular/core';
-import { UserService } from '../../service/user/user.service';
+import { UserService } from '../../../service/user/user.service';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { ToastModule } from 'primeng/toast';
-import { ToastService } from '../../service/toster/toster-service.service';
-import { GoogleAuthService } from '../../service/googleAuth/google.auth.service';
+import { ToastService } from '../../../service/toster/toster-service.service';
+import { GoogleAuthService } from '../../../service/googleAuth/google.auth.service';
 
 
 

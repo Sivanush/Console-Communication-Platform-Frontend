@@ -24,14 +24,13 @@ export class GoogleAuthService {
   async loginWithGoogle() {
     signInWithPopup(this.auth, new GoogleAuthProvider())
       .then(async googleResponse => {
-        // Successfully logged in
+
         this.userService.googleAuthentication(googleResponse.user).subscribe({
           next: (response) => {
             localStorage.setItem('token', response?.token)
             console.log('Login successful:', response);
             this.toster.showSuccess('Success', 'Logged in successfully with Google!')
 
-            // Add your logic here
             this.router.navigate([''])
           },
           error:(err)=>{
@@ -44,7 +43,6 @@ export class GoogleAuthService {
 
 
       }).catch(err => {
-        // Login error
         console.log('Login Error:', err);
         this.toster.showError('Error', 'Failed to log in with Google. Please try again!')
       });

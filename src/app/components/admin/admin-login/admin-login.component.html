@@ -1,0 +1,58 @@
+<!--
+// v0 by Vercel.
+// https://v0.dev/t/xpBa8UiuPvF
+-->
+
+<div class="flex h-screen w-full items-center justify-center bg-gray-900 px-4 py-12">
+  <div class="w-full max-w-md space-y-6 rounded-lg bg-gray-800 p-6 shadow-lg">
+    <div class="space-y-2 text-center">
+      <h1 class="text-3xl font-bold text-gray-200">Admin Login</h1>
+      <p class="text-gray-400">Welcome back! Please enter your credentials to access the admin dashboard.</p>
+    </div>
+    <form (ngSubmit)="login()" class="space-y-4" [formGroup]="adminForm">
+      <div>
+        <label
+          class="mb-1 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-gray-400 ps-1"
+          for="username">
+          Email
+        </label>
+        <input formControlName="email"
+          class="flex h-10 w-full rounded-md border border-input px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-0  focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 bg-gray-700 text-gray-200 placeholder:text-gray-400"
+          type="email" id="username" placeholder="Enter your email" />
+        <div>
+          <div class="text-red-700 ps-2 pb-0 py-2 h-auto"
+            *ngIf="adminForm.get('email')?.errors?.['required'] && adminForm.get('email')?.['touched']">
+            Please fill in this field.
+          </div>
+          <div class="text-red-700 ps-2 pb-0 py-2 h-auto"
+            *ngIf="adminForm.get('email')?.errors?.['email'] && adminForm.get('email')?.['touched']">
+            Please enter a valid email address.
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="flex items-center justify-start ps-1 mb-1">
+          <label
+            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-gray-400"
+            for="password">
+            Password
+          </label>
+        </div>
+        <input formControlName="password"
+          class="flex h-10 w-full rounded-md border border-input px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-0  focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 bg-gray-700 text-gray-200 placeholder:text-gray-400"
+          type="password" id="password" placeholder="Enter your password" />
+        <div>
+          <div class="text-red-700 ps-2 pb-0 py-2 h-auto"
+            *ngIf="adminForm.get('password')?.errors?.['required'] && adminForm.get('password')?.['touched']">
+            Please fill in this field.
+          </div>
+        </div>
+      </div>
+      <button [disabled]="adminForm.invalid" 
+        class="inline-flex items-center justify-center whitespace-nowrap text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none  h-10 px-4 w-full rounded-md bg-blue-500 py-2 font-medium text-gray-200 transition-colors hover:bg-blue-600"
+        type="submit">
+        Sign In
+      </button>
+    </form>
+  </div>
+</div>

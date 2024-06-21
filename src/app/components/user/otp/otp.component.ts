@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { InputOtpModule } from 'primeng/inputotp';
-import { UserService } from '../../service/user/user.service';
-import { ToastService } from '../../service/toster/toster-service.service';
+import { UserService } from '../../../service/user/user.service';
+import { ToastService } from '../../../service/toster/toster-service.service';
 import { Subscription, interval } from 'rxjs';
 import { ToastModule } from 'primeng/toast';
 import { Router } from '@angular/router';

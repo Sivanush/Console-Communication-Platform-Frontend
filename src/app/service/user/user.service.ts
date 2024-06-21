@@ -47,7 +47,9 @@ export class UserService {
 
 
   login(user:object){
-    return this.http.post<{token:string,message:string}>(`${this.apiLink}/login`,user)
+    return this.http.post<{
+      result(arg0: string, result: any): unknown;token:string,message:string
+}>(`${this.apiLink}/login`,user)
   }
 
 
