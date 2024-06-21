@@ -16,6 +16,10 @@ import { getDatabase } from '@angular/fire/database';
 import { provideDatabase } from '@angular/fire/database';
 import { adminRoute } from './routes/admin.route';
 import { UserAuthInterceptor } from './service/interceptor/userAuthInterceptor';
+import { StoreModule, provideStore } from '@ngrx/store';
+import { EffectsModule, provideEffects } from '@ngrx/effects';
+import { userReducer } from './store/user/user.reducer';
+import { userEffects } from './store/user/user.effects';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDVmVRn5JBIuKonN9j7r6fTCxhKnCdS3cA",
@@ -37,9 +41,9 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideAnimations(),
     {
-      provide: HTTP_INTERCEPTORS,
-      useClass: UserAuthInterceptor,
-      multi: true
+        provide: HTTP_INTERCEPTORS,
+        useClass: UserAuthInterceptor,
+        multi: true
     },
     // provideHttpClient(withInterceptors(AuthInterceptor)),
     MessageService,
@@ -50,5 +54,7 @@ export const appConfig: ApplicationConfig = {
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage()),
     provideDatabase(() => getDatabase()),
-  ]
+    provideStore({user:userReducer}),
+    provideEffects([userEffects]),
+]
 };
