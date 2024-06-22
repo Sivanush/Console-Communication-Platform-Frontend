@@ -11,13 +11,13 @@ import { User } from '../../interface/user/user.model';
 })
 export class UserService {
 
-  
+
   private jwtHelper = new JwtHelperService();
   private apiLink = environment.apiUrl
   private token: string | null = null;
-  
 
-  constructor(private http:HttpClient,private router:Router) { }
+
+  constructor(private http: HttpClient, private router: Router) { }
 
   logout() {
     this.token = null;
@@ -37,32 +37,32 @@ export class UserService {
     return token ? !this.jwtHelper.isTokenExpired(token) : false;
   }
 
- 
 
 
 
 
 
-  signup(user:object):Observable<{message:string ,otpToken:string}>{
-    return this.http.post<{ message: string, otpToken:string }>(`${this.apiLink}/signup`,user)
+
+  signup(user: object): Observable<{ message: string, otpToken: string }> {
+    return this.http.post<{ message: string, otpToken: string }>(`${this.apiLink}/signup`, user)
   }
 
 
-  login(user:object){
+  login(user: object) {
     return this.http.post<{
-      result(arg0: string, result: any): unknown;token:string,message:string
-}>(`${this.apiLink}/login`,user)
+      result(arg0: string, result: any): unknown; token: string, message: string
+    }>(`${this.apiLink}/login`, user)
   }
 
 
-  otpVerification(otp:number,otpToken:string|null){
-    const data = { otp,otpToken }; 
-    return this.http.post<{token:string,message:string}>(`${this.apiLink}/otp`,data)
+  otpVerification(otp: number, otpToken: string | null) {
+    const data = { otp, otpToken };
+    return this.http.post<{ token: string, message: string }>(`${this.apiLink}/otp`, data)
   }
 
-  googleAuthentication(user:object){
+  googleAuthentication(user: object) {
     console.log(user);
-    return this.http.post<{message:string,token:string}>(`${this.apiLink}/googleAuth`,user)
+    return this.http.post<{ message: string, token: string }>(`${this.apiLink}/googleAuth`, user)
   }
 
 

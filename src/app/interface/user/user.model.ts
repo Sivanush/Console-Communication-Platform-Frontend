@@ -4,4 +4,5 @@ export interface User{
     email:string
     image:string
     isBlocked:boolean 
+    result:[]
 }

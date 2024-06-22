@@ -1,13 +1,28 @@
-<div class="flex min-h-screen bg-background text-foreground">
+   <!-- <div class="card flex justify-content-center items-center">
+     <p-progressSpinner ariaLabel="loading" styleClass="w-4rem h-4rem custom-spinner" strokeWidth="2"
+       fill="var(--surface-ground)" animationDuration="1s"></p-progressSpinner>
+   </div> -->
 
-  <app-sidebar />
+   @if(loading$| async ){
+   <div class="fullscreen-spinner custom-spinner">
+     <p-progressSpinner ariaLabel="loading" styleClass="w-4rem h-4rem" strokeWidth="2" fill="transparent"
+       animationDuration="1s"></p-progressSpinner>
+   </div>
+   }
 
-  <div class="flex-1">
 
-    <app-header />
 
-    <main class="p-6">
-      <!-- <section class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+
+   <div class="flex min-h-screen bg-background text-foreground">
+
+     <app-sidebar />
+
+     <div class="flex-1">
+
+       <app-header />
+
+       <main class="p-6">
+         <!-- <section class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
           <div class="p-6 flex items-center justify-between">
             <div class="grid gap-1">
@@ -68,52 +83,69 @@
           </div>
         </div>
       </section> -->
-      <section class="mt-8">
-        <div class="flex items-center justify-between">
-          <h2 class="text-lg font-semibold">User List</h2>
-          <button
-            class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3">
-            View All
-          </button>
-        </div>
-        <div class="rounded-lg border bg-card text-card-foreground shadow-sm mt-4" data-v0-t="card">
-          <div class="relative w-full overflow-auto">
-            <table class="w-full caption-bottom text-sm">
-              <thead class="[&amp;_tr]:border-b">
-                <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                  <th
-                    class="h-12 px-4 text-left align-middle font-medium text-muted-foreground ">
-                    User
-                  </th>
-                  <th
-                    class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                    Activity
-                  </th>
-                  <th
-                    class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                    Time
-                  </th>
-                </tr>
-              </thead>
-              <tbody class="[&amp;_tr:last-child]:border-0">
-                <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                  <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
-                    <div class="flex items-center gap-3">
-                      <span class="relative flex shrink-0 overflow-hidden rounded-full h-8 w-8">
-                        <img class="aspect-square h-full w-full" alt="userProfile" src="/placeholder-user.jpg" />
-                      </span>
-                      <div class="font-medium">John Doe</div>
-                    </div>
-                  </td>
-                  <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">Sent a message</td>
-                  <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">2 minutes ago</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-      <!-- <section class="mt-8">
+         <section class="mt-8">
+           <div class="flex items-center justify-between">
+             <h2 class="text-lg font-semibold">User List</h2>
+             <button
+               class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3">
+               View All
+             </button>
+           </div>
+           <div class="rounded-lg border bg-card text-card-foreground shadow-sm mt-4" data-v0-t="card">
+             <div class="relative w-full overflow-auto">
+               <table class="w-full caption-bottom text-sm">
+                 <thead class="[&amp;_tr]:border-b">
+                   <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+                     <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground ">
+                       User
+                     </th>
+                     <th
+                       class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                       Activity
+                     </th>
+                     <th
+                       class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                       Time
+                     </th>
+                   </tr>
+                 </thead>
+
+                 @for(user of (user$|async);track user._id){
+                 <tbody class="[&amp;_tr:last-child]:border-0">
+                   <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+                     <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+                       <div class="flex items-center gap-3">
+                         <span class="relative flex shrink-0 overflow-hidden rounded-full h-8 w-8">
+                           <img class="aspect-square h-full w-full" alt="userProfile" src="{{user.image}}" />
+                         </span>
+                         <div class="font-medium">{{user.username}}</div>
+                       </div>
+                     </td>
+                     <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">Sent a message</td>
+                     <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">2 minutes ago</td>
+                   </tr>
+                 </tbody>
+                 }@empty {
+
+                 <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+                   <td colspan="3" class="p-4 align-middle text-center">
+                     <div class="flex justify-center items-center">
+                       <div class="p-4 align-middle">
+                         <img height="500px" width="500p"
+                           src="https://res-console.cloudinary.com/dgpcd5c0d/media_explorer_thumbnails/a791b7a85f3ebb0d4f4dcac1a1411118/detailed"
+                           alt="" srcset="">
+                       </div>
+                     </div>
+                   </td>
+                 </tr>
+
+                 }
+
+               </table>
+             </div>
+           </div>
+         </section>
+         <!-- <section class="mt-8">
         <div class="flex items-center justify-between">
           <h2 class="text-lg font-semibold">Servers</h2>
           <button
@@ -210,7 +242,7 @@
           </div>
         </div>
       </section> -->
-    </main>
-  </div>
+       </main>
+     </div>
 
-</div>
+   </div>

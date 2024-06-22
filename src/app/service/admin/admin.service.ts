@@ -22,7 +22,7 @@ export class AdminService {
   }
 
 
-  getUser(): Observable<User[]>{
-    return this.http.get<User[]>(`${this.apiUrl}/admin/getUsers`)
+  getUser(){
+    return this.http.get<{result: User[];}>(`${this.apiUrl}/admin/getUsers`)
   }
 }

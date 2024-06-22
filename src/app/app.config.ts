@@ -18,8 +18,8 @@ import { adminRoute } from './routes/admin.route';
 import { UserAuthInterceptor } from './service/interceptor/userAuthInterceptor';
 import { StoreModule, provideStore } from '@ngrx/store';
 import { EffectsModule, provideEffects } from '@ngrx/effects';
-import { userReducer } from './store/user/user.reducer';
-import { userEffects } from './store/user/user.effects';
+import { userReducer } from './store/user-listing/user.reducer';
+import { userEffects } from './store/user-listing/user.effects';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDVmVRn5JBIuKonN9j7r6fTCxhKnCdS3cA",
