@@ -6,6 +6,7 @@ import { userAuthGuard } from '../guards/user/user-auth.guard';
 import { userNotAuthGuard } from '../guards/user/user-not-auth.guard';
 import { OtpComponent } from '../components/user/otp/otp.component';
 import { otpGuardGuard } from '../guards/user/otp-guard.guard';
+import { EmailSectionComponent } from '../components/forget-password/email-section/email-section.component';
 
 
 export const userRoute: Routes = [
@@ -29,4 +30,8 @@ export const userRoute: Routes = [
         component:OtpComponent,
         canActivate:[otpGuardGuard]
     },
+    {
+        path:'forget-password',
+        component:EmailSectionComponent
+    }
 ];

@@ -66,7 +66,9 @@ export class UserService {
   }
 
 
-
+  forgetPassword(email:string){
+    return this.http.post<{ message: string }>(`${this.apiLink}/forget-password`, email)
+  }
 
 
 }

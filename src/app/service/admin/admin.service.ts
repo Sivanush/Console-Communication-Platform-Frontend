@@ -25,4 +25,9 @@ export class AdminService {
   getUser(){
     return this.http.get<{result: User[];}>(`${this.apiUrl}/admin/getUsers`)
   }
+
+
+  toggleUserBlock(userId:string){
+    return this.http.post(`${this.apiUrl}/admin/block/${userId}`,{})
+  }
 }

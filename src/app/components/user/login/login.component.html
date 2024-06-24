@@ -53,6 +53,11 @@
                     Password must meet the required format.
                   </div>
                 </div>
+                <div class=" text-end pr-1">
+                    <a class="font-normal text-blue-500 dark:text-blue-300 hover:underline" [routerLink]="['/forget-password']" routerLinkActive="router-link-active"  rel="ugc">
+                      Forgot your password?
+                    </a>
+                </div>
               </div>
               <button [disabled]="userForm.invalid" class="bg-black dark:text-black dark:bg-white text-white inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition duration-300 dark:duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed bg-primary text-primary-foreground hover:opacity-70 dark:hover:opacity-80  h-10 px-4 py-2 w-full" type="submit">
                 Sign Up
