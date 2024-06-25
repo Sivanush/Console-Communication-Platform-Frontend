@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Location } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { UserService } from '../../../service/user/user.service';
-import { ToastService } from '../../../service/toster/toster-service.service';
+
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { UserService } from '../../../../service/user/user.service';
+import { ToastService } from '../../../../service/toster/toster-service.service';
 
 
 @Component({

@@ -6,7 +6,7 @@ import { Router, RouterLink } from '@angular/router';
 import { ToastModule } from 'primeng/toast';
 import { ToastService } from '../../../service/toster/toster-service.service';
 import { GoogleAuthService } from '../../../service/googleAuth/google.auth.service';
-
+import { FloatLabelModule } from 'primeng/floatlabel';
 
 
 @Component({
@@ -14,7 +14,7 @@ import { GoogleAuthService } from '../../../service/googleAuth/google.auth.servi
   templateUrl: './signup.component.html',
   standalone: true,
   styleUrls: ['./signup.component.scss'],
-  imports: [CommonModule, FormsModule, RouterLink, ReactiveFormsModule, ToastModule],
+  imports: [CommonModule, FormsModule, RouterLink, ReactiveFormsModule, ToastModule,FloatLabelModule],
 })
 export class SignupComponent implements OnInit {
   
@@ -30,8 +30,7 @@ export class SignupComponent implements OnInit {
     this.userForm = fb.group({
       username: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-zA-Z]+$/)]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^[a-zA-Z0-9@!#$%^&*_-]{8,}$/)]],
-      agreeTerms:['',[Validators.required]]
+      password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=\D*\d)(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z])\S{8,30}$/)]],
     });
   }
 

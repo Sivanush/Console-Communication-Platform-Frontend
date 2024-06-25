@@ -60,13 +60,14 @@
                 </div>
               </div>
               <button [disabled]="userForm.invalid" class="bg-black dark:text-black dark:bg-white text-white inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition duration-300 dark:duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed bg-primary text-primary-foreground hover:opacity-70 dark:hover:opacity-80  h-10 px-4 py-2 w-full" type="submit">
-                Sign Up
+                Log in
               </button>
               <span class="flex justify-center ">OR</span>
-                <button (click)="signInWithGoogle()" class="flex justify-center items-center w-full px-4 py-2 space-x-2 bg-white dark:bg-black rounded-md hover:bg-gray-100  transition duration-300">
-                    <img src="assets/images/google.png" alt="Google logo" class="w-5 h-5">
-                    <span class="text-sm text-gray-700">Continue with Google</span>
-                </button>
+              <button id="google-signin-button" (click)="signInWithGoogle()"
+              class="flex justify-center items-center w-full px-4 h-10 border bottom-1 py-2 space-x-2 bg-white dark:bg-black rounded-md hover:bg-gray-100  transition duration-300">
+              <img src="assets/images/google.png" alt="Google logo" class="w-5 h-5">
+              <span class="text-sm text-gray-700">Continue with Google</span>
+            </button>
             </form>
           </div>
         </div>

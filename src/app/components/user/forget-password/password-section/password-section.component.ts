@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { UserService } from '../../../service/user/user.service';
 import { ActivatedRoute } from '@angular/router';
-import { ToastService } from '../../../service/toster/toster-service.service';
+import { UserService } from '../../../../service/user/user.service';
+import { ToastService } from '../../../../service/toster/toster-service.service';
+
 
 @Component({
   selector: 'app-password-section',
