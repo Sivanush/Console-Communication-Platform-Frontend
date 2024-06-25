@@ -81,7 +81,7 @@
                 </div>
                 <div class="text-red-700 ps-2 pb-0 py-2 h-auto"
                   *ngIf="userForm.get('password')?.errors?.['minlength'] && userForm.get('password')?.['touched']">
-                  Username must contain at least 8 characters.
+                  Password must contain at least 8 characters.
                 </div>
                 <div class="text-red-700 ps-2 pb-0 py-2 h-auto"
                   *ngIf="userForm.get('password')?.errors?.['pattern'] && userForm.get('password')?.['touched']">

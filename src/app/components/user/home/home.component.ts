@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { UserService } from '../../../service/user/user.service';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +12,7 @@ import { MessageService } from 'primeng/api';
   providers:[MessageService]
 })
 export class HomeComponent {
-  constructor(private router: Router, private messageService: MessageService) { }
+  constructor(private userService:UserService, private router: Router, private messageService: MessageService) { }
 
   ngOnInit(): void {
     const navigation = this.router.getCurrentNavigation();
@@ -24,5 +25,9 @@ export class HomeComponent {
 
   showToast(summary: string, severity: string) {
     this.messageService.add({ severity, summary, detail: '' });
+  }
+
+  logout(){
+    this.userService.logout()
   }
 }

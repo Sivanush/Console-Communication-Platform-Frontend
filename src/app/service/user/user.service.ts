@@ -70,5 +70,9 @@ export class UserService {
     return this.http.post<{ message: string }>(`${this.apiLink}/forget-password`, email)
   }
 
+  resetPassword(token:string|null,newPassword:string){
+    return this.http.post(`${this.apiLink}/reset-password`,{token,newPassword})
+  }
+
 
 }
