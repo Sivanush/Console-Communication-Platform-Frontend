@@ -33,7 +33,7 @@
                   'bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 focus:border-red-500': userForm.get('username')?.touched && userForm.get('username')?.invalid, }"
                 formControlName="username" name="username" style="margin-bottom: 10px; margin-top: 6px;"
                 class="dark:bg-zinc-900 dark:border-0  flex h-10 w-full rounded-md border border-input bg-background  px-3 py-2  text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground dark:placeholder:text-neutral-700 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-                id="email" placeholder="Enter your username" required="" type="email" />
+                id="username" placeholder="Enter your username" required="" type="email" />
                 
 
               
@@ -79,7 +79,7 @@
                   'bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 focus:border-red-500': userForm.get('password')?.touched && userForm.get('password')?.invalid, }"
                 formControlName="password" name="password" style="margin-bottom: 10px; margin-top: 6px;"
                 class="dark:bg-zinc-900 dark:border-0  flex h-10 w-full rounded-md border border-input bg-background  px-3 py-2  text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground dark:placeholder:text-neutral-700 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
-                id="email" placeholder="Enter your password" required="" type="password" />
+                id="password" placeholder="Enter your password" required="" type="password" />
 
                 @if (userForm.get('password')?.errors?.['required'] && userForm.get('password')?.['touched']) {
                   <p class="ps-1  mt-2 text-sm text-red-600 dark:text-red-500">Please fill in this field.</p>
@@ -90,20 +90,29 @@
                 }
             
             </div>
-            <button pRipple [disabled]="userForm.invalid" style=" margin-top: 10px;"
+            <button pRipple  style=" margin-top: 10px;"
               class="bg-black dark:text-black dark:bg-white text-white inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition duration-300 dark:duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed bg-primary text-primary-foreground hover:opacity-70 dark:hover:opacity-80  h-10 px-4 py-2 w-full"
               type="submit">
               Sign Up
             </button>
             <span class="flex justify-center ">OR</span>
+          </form>
             <button id="google-signin-button" (click)="loginWithGoogle()"
-              class="flex justify-center items-center w-full px-4 h-10 border bottom-1 py-2 space-x-2 bg-white dark:bg-black rounded-md hover:bg-gray-100  transition duration-300">
+              class="flex justify-center items-center w-full px-4 h-10 border bottom-1 py-2 space-x-2 bg-white dark:bg-black rounded-md hover:bg-gray-100  transition duration-300 mt-4">
               <img src="assets/images/google.png" alt="Google logo" class="w-5 h-5">
               <span class="text-sm text-gray-700">Continue with Google</span>
             </button>
-          </form>
         </div>
       </div>
     </main>
   </div>
 </div>
+
+
+
+@if(loading ){
+  <div class="fullscreen-spinner custom-spinner">
+    <p-progressSpinner ariaLabel="loading" styleClass="w-4rem h-4rem" strokeWidth="2" fill="transparent"
+      animationDuration="1s"></p-progressSpinner>
+  </div>
+  }

@@ -57,9 +57,12 @@ export class LoginComponent {
         },
         error:(err)=>{
           console.error('Signup error:', err.error.message); 
+          
           this.toster.showError('Error', err.error.message);
         }
       })
+    }else{
+      this.toster.showWarn('Warning', 'Please fill all the fields');
     }
   }
 

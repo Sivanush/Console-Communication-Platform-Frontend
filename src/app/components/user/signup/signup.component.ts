@@ -7,6 +7,7 @@ import { ToastModule } from 'primeng/toast';
 import { ToastService } from '../../../service/toster/toster-service.service';
 import { GoogleAuthService } from '../../../service/googleAuth/google.auth.service';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 
 @Component({
@@ -14,10 +15,10 @@ import { FloatLabelModule } from 'primeng/floatlabel';
   templateUrl: './signup.component.html',
   standalone: true,
   styleUrls: ['./signup.component.scss'],
-  imports: [CommonModule, FormsModule, RouterLink, ReactiveFormsModule, ToastModule,FloatLabelModule],
+  imports: [CommonModule, FormsModule, RouterLink, ReactiveFormsModule, ToastModule,ProgressSpinnerModule],
 })
 export class SignupComponent implements OnInit {
-  
+  loading:boolean = false
   userForm: FormGroup;
 
   constructor(
@@ -50,15 +51,16 @@ export class SignupComponent implements OnInit {
 
   loginWithGoogle(){
     this.googleAuthService.loginWithGoogle()
-
   }
 
 
   async signup() {
     if (this.userForm.valid) {
+      this.loading = true
       const user = this.userForm.value;
       this.userService.signup(user).subscribe({
         next: async(response) => {
+          this.loading = false
           console.log('Signup response:', response); 
           localStorage.setItem('otpToken',response.otpToken)
           this.toster.showSuccess('Success', response?.message)
@@ -67,12 +69,14 @@ export class SignupComponent implements OnInit {
           }, 2000); 
         },
         error: (err) => {
+          this.loading = false
           console.error('Signup error:', err); 
           this.toster.showError('Error', err.error.error);
         }
       });
     } else {
       console.log('Form is invalid:', this.userForm); 
+      this.toster.showWarn('Warning', 'Please fill all the fields')
     }
   }
 }

@@ -34,7 +34,7 @@ export class GoogleAuthService {
             this.router.navigate([''])
           },
           error:(err)=>{
-            console.log('Error', err?.message);
+            console.log('Error', err?.message);            
             this.toster.showError('Error', err?.message)
 
           }

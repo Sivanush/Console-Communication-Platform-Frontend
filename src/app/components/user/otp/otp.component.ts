@@ -87,4 +87,11 @@ export class OtpComponent {
     })
   }
 
+  onSomeAction(event:any){
+    if(event.keyCode===13){
+      //submit form
+      this.verificationOtp()
+    }
+   }
+
 }

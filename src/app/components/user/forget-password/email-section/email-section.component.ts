@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { Location } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
@@ -11,7 +11,7 @@ import { ToastService } from '../../../../service/toster/toster-service.service'
 @Component({
   selector: 'app-email-section',
   standalone: true,
-  imports: [RouterLink, ReactiveFormsModule,ProgressSpinnerModule],
+  imports: [RouterLink, ReactiveFormsModule,ProgressSpinnerModule,CommonModule],
   templateUrl: './email-section.component.html',
   styleUrl: './email-section.component.scss'
 })
