@@ -10,9 +10,10 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { AsyncPipe } from '@angular/common';
 import { TagModule } from 'primeng/tag';
 import { MenuModule } from 'primeng/menu';
-import { MenuItem } from 'primeng/api';
+import { ConfirmationService, MenuItem } from 'primeng/api';
 import { AdminService } from '../../../service/admin/admin.service';
 import { ToastService } from '../../../service/toster/toster-service.service';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 
 @Component({
@@ -20,7 +21,7 @@ import { ToastService } from '../../../service/toster/toster-service.service';
     standalone: true,
     templateUrl: './admin-user-management.component.html',
     styleUrl: './admin-user-management.component.scss',
-    imports: [SidebarComponent, HeaderComponent,ProgressSpinnerModule,AsyncPipe,TagModule,MenuModule]
+    imports: [SidebarComponent, HeaderComponent,ProgressSpinnerModule,AsyncPipe,TagModule,MenuModule,ConfirmDialogModule ]
 })
 export class AdminUserManagementComponent {
     name:string = 'Users'
@@ -31,7 +32,7 @@ export class AdminUserManagementComponent {
     items: MenuItem[] | undefined;
 
 
-    constructor(private store:Store,private adminService:AdminService,private toaster:ToastService) {
+    constructor(private store:Store,private adminService:AdminService,private toaster:ToastService,private confirmationService: ConfirmationService) {
 
         this.user$ = this.store.pipe(select(selectAllUsers));
         this.loading$ = this.store.pipe(select(selectUsersLoading)),
@@ -56,7 +57,8 @@ export class AdminUserManagementComponent {
                     {
                         label: 'Block/Unblock',
                         command: () => {
-                            this.toggleUserStatus(userId);
+                            this.confirm(userId)
+                            // this.toggleUserStatus(userId);
                         }
                     }
                 ]
@@ -84,6 +86,21 @@ export class AdminUserManagementComponent {
                 
             }
         })
+    }
+
+
+    confirm(userId:string) {
+        this.confirmationService.confirm({
+            header: 'Are you sure?',
+            message: 'Please confirm to proceed.',
+            accept: () => {
+                this.toggleUserStatus(userId);
+                // this.toaster.showSuccess('Confirmed','You have accepted');
+            },
+            reject: () => {
+                this.toaster.showError('Rejected','You have rejected');
+            }
+        });
     }
 
 }

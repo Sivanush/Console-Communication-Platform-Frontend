@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment.prod';
-import { User } from '../../interface/user/user.model';
+// import { User } from '../../interface/user/user.model';
 
 @Injectable({
   providedIn: 'root'

@@ -1,0 +1,57 @@
+.confirm-dialog-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    background-color: var(--surface-overlay);
+    border-radius: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+//   .icon-container {
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     height: 6rem;
+//     width: 6rem;
+//     border-radius: 50%;
+//     background-color: var(--primary-color);
+//     color: #fff;
+//   }
+  
+//   .icon {
+//     font-size: 10rem;
+//   }
+  
+  .header {
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .message {
+    margin: 0.5rem 0 1rem 0;
+    text-align: center;
+  }
+  
+  .button-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  
+  .save-button {
+    width: 8rem;
+    background-color: var(--primary-color);
+    border: none;
+    color: #fff;
+  }
+  
+  .cancel-button {
+    width: 8rem;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+  }
+  
