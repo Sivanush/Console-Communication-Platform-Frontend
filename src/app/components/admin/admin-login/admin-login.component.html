@@ -1,8 +1,8 @@
-<!--
+<!-- 
 // v0 by Vercel.
 // https://v0.dev/t/xpBa8UiuPvF
 -->
-
+<!-- 
 <div class="flex h-screen w-full items-center justify-center bg-white px-4 py-12">
   <div class="w-full max-w-md space-y-6 rounded-lg bg-white p-6 ">
     <div class="space-y-2 text-center">
@@ -19,16 +19,7 @@
         <input formControlName="email"
           class="flex h-10 w-full rounded-md border border-input px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-0  focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 bg-white text-gray-200 placeholder:text-gray-400"
           type="email" id="username" placeholder="Enter your email" />
-        <div>
-          <div class="text-red-700 ps-2 pb-0 py-2 h-auto"
-            *ngIf="adminForm.get('email')?.errors?.['required'] && adminForm.get('email')?.['touched']">
-            Please fill in this field.
-          </div>
-          <div class="text-red-700 ps-2 pb-0 py-2 h-auto"
-            *ngIf="adminForm.get('email')?.errors?.['email'] && adminForm.get('email')?.['touched']">
-            Please enter a valid email address.
-          </div>
-        </div>
+    
       </div>
       <div>
         <div class="flex items-center justify-start ps-1 mb-1">
@@ -41,12 +32,7 @@
         <input formControlName="password"
           class="flex h-10 w-full rounded-md border border-input px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-0  focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 bg-white text-gray-200 placeholder:text-gray-400"
           type="password" id="password" placeholder="Enter your password" />
-        <div>
-          <div class="text-red-700 ps-2 pb-0 py-2 h-auto"
-            *ngIf="adminForm.get('password')?.errors?.['required'] && adminForm.get('password')?.['touched']">
-            Please fill in this field.
-          </div>
-        </div>
+        
       </div>
       <button [disabled]="adminForm.invalid" 
         class="inline-flex items-center justify-center whitespace-nowrap text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none  h-10 px-4 w-full rounded-md bg-blue-500 py-2 font-medium text-gray-200 transition-colors hover:bg-blue-600"
@@ -54,5 +40,96 @@
         Sign In
       </button>
     </form>
+  </div>
+</div>
+ -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
+// v0 by Vercel.
+// https://v0.dev/t/MS5VIws9y8a
+-->
+
+<div class="flex items-center justify-center h-screen bg-background dark:bg-[#1a1b1e]">
+  <div class="border text-card-foreground w-full max-w-md bg-card dark:bg-[#22252a] p-6 rounded-2xl shadow-lg"
+    data-v0-t="card">
+    <div class="flex flex-col p-6 space-y-2 text-center">
+      <h3 class="whitespace-nowrap tracking-tight text-3xl font-bold text-card-foreground dark:text-primary-foreground">
+        Admin Login
+      </h3>
+      <p class="text-sm text-muted-foreground">Enter your credentials to access the dashboard</p>
+    </div>
+    <form (ngSubmit)="login()" [formGroup]="adminForm">
+      <div class="p-6 ">
+        <div class="space-y-2 mb-2">
+          <label
+            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-card-foreground dark:text-primary-foreground"
+            for="username">
+            Email
+          </label>
+          <input formControlName="email" 
+          [ngClass]="{
+                  'bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 focus:border-red-500': adminForm.get('email')?.touched && adminForm.get('email')?.invalid, }"
+            class="flex h-10 w-full border border-input px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 bg-card-muted dark:bg-[#2a2d33] text-card-foreground dark:text-primary-foreground rounded-md"
+            id="username" placeholder="Enter your email" type="text" />
+        </div>
+
+
+
+        @if (adminForm.get('email')?.errors?.['required'] && adminForm.get('email')?.['touched']) {
+        <p class="ps-1 mt-2 text-sm text-red-600 dark:text-red-500">Please fill in this field.</p>
+        } @else if (adminForm.get('email')?.errors?.['email'] && adminForm.get('email')?.['touched']) {
+        <p class="ps-1 mt-2 text-sm text-red-600 dark:text-red-500">Please enter a valid email address.</p>
+        }
+
+
+        <div class="space-y-2" >
+          <label
+            class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-card-foreground dark:text-primary-foreground"
+            for="password">
+            Password
+          </label>
+          <input formControlName="password"
+          [ngClass]="{
+                  'bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 focus:border-red-500': adminForm.get('password')?.touched && adminForm.get('password')?.invalid, }"
+            class="flex h-10 w-full border border-input px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50 bg-card-muted dark:bg-[#2a2d33] text-card-foreground dark:text-primary-foreground rounded-md"
+            id="password" placeholder="Enter your password" type="password" />
+        </div>
+
+
+        @if (adminForm.get('password')?.errors?.['required'] && adminForm.get('password')?.['touched']) {
+        <p class="ps-1 mt-2 text-sm text-red-600 dark:text-red-500">Please fill in this field.</p>
+        }
+
+
+      </div>
+    <div class="items-center p-6 flex justify-end">
+      <button
+        class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-0 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 bg-black text-white hover:bg-primary/90 dark:bg-primary dark:text-primary-foreground dark:hover:bg-primary/90 rounded-md w-full" type="submit">Login</button>
+    </div>
+  </form>
   </div>
 </div>

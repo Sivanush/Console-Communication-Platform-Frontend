@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ToastService } from '../../../service/toster/toster-service.service';
 import { AdminService } from '../../../service/admin/admin.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-login',
@@ -15,7 +16,7 @@ export class AdminLoginComponent {
 
   adminForm: FormGroup
 
-  constructor(private fb: FormBuilder, private adminService:AdminService,private toster:ToastService) {
+  constructor(private fb: FormBuilder, private adminService:AdminService,private toster:ToastService, private router:Router) {
     this.adminForm = fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]]
@@ -25,6 +26,7 @@ export class AdminLoginComponent {
 
 
   login() {
+    
     if (this.adminForm.valid) {
       let data = this.adminForm.value
       this.adminService.login(data).subscribe({
@@ -32,6 +34,7 @@ export class AdminLoginComponent {
           console.log('Success',response);
           localStorage.setItem('adminToken',response.result)
           this.toster.showSuccess('Success',response.message)
+          this.router.navigate(['/admin/dashboard'])
         },
         error:(err)=>{
           console.log('Error ',err.error.error);
@@ -41,7 +44,9 @@ export class AdminLoginComponent {
 
       })
     } else {
-      this.toster.showError("Login Failed","Please check your credentials and try again.")
+
+      
+      this.toster.showWarn("Login Failed","Please check your credentials and try again.")
     }
   }
 

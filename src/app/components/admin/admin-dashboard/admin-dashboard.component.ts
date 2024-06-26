@@ -11,4 +11,5 @@ import { HeaderComponent } from "../reuse/header/header.component";
 })
 export class AdminDashboardComponent {
 
+    name:string = 'Dashboard'
 }

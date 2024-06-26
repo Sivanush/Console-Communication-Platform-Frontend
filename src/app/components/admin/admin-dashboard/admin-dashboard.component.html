@@ -3,173 +3,182 @@
 // https://v0.dev/t/Txq9SpK4AhX
 -->
 
-<div class="grid min-h-screen w-full overflow-hidden lg:grid-cols-[280px_1fr]">
-    <app-sidebar />
-    <div class="flex flex-col">
-        <app-header />
-      <main class="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
-        <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
-            <div class="space-y-1.5 p-6 flex flex-row items-center justify-between pb-2">
-              <h3 class="whitespace-nowrap tracking-tight text-sm font-medium">Total Trips</h3>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="w-4 h-4 text-muted-foreground"
-              >
-                <circle cx="6" cy="19" r="3"></circle>
-                <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"></path>
-                <circle cx="18" cy="5" r="3"></circle>
-              </svg>
+<div class="flex min-h-screen bg-background text-foreground">
+
+  <app-sidebar />
+
+  <div class="flex-1">
+    <app-header [name]="name"/>
+    <main class="p-6">
+      <!-- <section class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
+          <div class="p-6 flex items-center justify-between">
+            <div class="grid gap-1">
+              <div class="text-2xl font-bold">1,234</div>
+              <div class="text-sm text-muted-foreground">Users</div>
             </div>
-            <div class="p-6">
-              <div class="text-2xl font-bold">2,345</div>
-              <p class="text-xs text-muted-foreground">+15% from last year</p>
-            </div>
-          </div>
-          <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
-            <div class="space-y-1.5 p-6 flex flex-row items-center justify-between pb-2">
-              <h3 class="whitespace-nowrap tracking-tight text-sm font-medium">Total Distance</h3>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="w-4 h-4 text-muted-foreground"
-              >
-                <path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"></path>
-                <path d="m14.5 12.5 2-2"></path>
-                <path d="m11.5 9.5 2-2"></path>
-                <path d="m8.5 6.5 2-2"></path>
-                <path d="m17.5 15.5 2-2"></path>
-              </svg>
-            </div>
-            <div class="p-6">
-              <div class="text-2xl font-bold">12,345 km</div>
-              <p class="text-xs text-muted-foreground">+20% from last year</p>
-            </div>
-          </div>
-          <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
-            <div class="space-y-1.5 p-6 flex flex-row items-center justify-between pb-2">
-              <h3 class="whitespace-nowrap tracking-tight text-sm font-medium">Active Cars</h3>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="w-4 h-4 text-muted-foreground"
-              >
-                <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"></path>
-                <circle cx="7" cy="17" r="2"></circle>
-                <path d="M9 17h6"></path>
-                <circle cx="17" cy="17" r="2"></circle>
-              </svg>
-            </div>
-            <div class="p-6">
-              <div class="text-2xl font-bold">45</div>
-              <p class="text-xs text-muted-foreground">+5 from last month</p>
-            </div>
-          </div>
-          <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
-            <div class="space-y-1.5 p-6 flex flex-row items-center justify-between pb-2">
-              <h3 class="whitespace-nowrap tracking-tight text-sm font-medium">Upcoming Reservations</h3>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="w-4 h-4 text-muted-foreground"
-              >
-                <path d="M8 2v4"></path>
-                <path d="M16 2v4"></path>
-                <rect width="18" height="18" x="3" y="4" rx="2"></rect>
-                <path d="M3 10h18"></path>
-              </svg>
-            </div>
-            <div class="p-6">
-              <div class="text-2xl font-bold">123</div>
-              <p class="text-xs text-muted-foreground">+25 since last week</p>
-            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="h-10 w-10 text-muted">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
           </div>
         </div>
-        <div>
-          <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
+        <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
+          <div class="p-6 flex items-center justify-between">
+            <div class="grid gap-1">
+              <div class="text-2xl font-bold">56</div>
+              <div class="text-sm text-muted-foreground">Servers</div>
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="h-10 w-10 text-muted">
+              <rect width="20" height="8" x="2" y="2" rx="2" ry="2"></rect>
+              <rect width="20" height="8" x="2" y="14" rx="2" ry="2"></rect>
+              <line x1="6" x2="6.01" y1="6" y2="6"></line>
+              <line x1="6" x2="6.01" y1="18" y2="18"></line>
+            </svg>
+          </div>
+        </div>
+        <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
+          <div class="p-6 flex items-center justify-between">
+            <div class="grid gap-1">
+              <div class="text-2xl font-bold">12,345</div>
+              <div class="text-sm text-muted-foreground">Messages</div>
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="h-10 w-10 text-muted">
+              <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path>
+            </svg>
+          </div>
+        </div>
+        <div class="rounded-lg border bg-card text-card-foreground shadow-sm" data-v0-t="card">
+          <div class="p-6 flex items-center justify-between">
+            <div class="grid gap-1">
+              <div class="text-2xl font-bold">$1,234</div>
+              <div class="text-sm text-muted-foreground">Revenue</div>
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="h-10 w-10 text-muted">
+              <line x1="12" x2="12" y1="2" y2="22"></line>
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+          </div>
+        </div>
+      </section> -->
+
+
+
+
+
+
+
+
+
+
+
+        <!-- <section class="mt-8">
+          <div class="flex items-center justify-between">
+            <h2 class="text-lg font-semibold">Servers</h2>
+            <button
+              class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3">
+              View All
+            </button>
+          </div>
+          <div class="rounded-lg border bg-card text-card-foreground shadow-sm mt-4" data-v0-t="card">
             <div class="relative w-full overflow-auto">
               <table class="w-full caption-bottom text-sm">
                 <thead class="[&amp;_tr]:border-b">
                   <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                    <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                      Car
+                    <th
+                      class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                      Server
                     </th>
-                    <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                      Total Trips
+                    <th
+                      class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                      Members
                     </th>
-                    <th class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
-                      Total Distance
+                    <th
+                      class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
+                      Owner
                     </th>
-                    <th class="h-12 px-4 align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0 text-right">
+                    <th
+                      class="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&amp;:has([role=checkbox])]:pr-0">
                       Actions
                     </th>
                   </tr>
                 </thead>
                 <tbody class="[&amp;_tr:last-child]:border-0">
                   <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 font-medium">Toyota Camry</td>
-                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">345</td>
-                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">3,456 km</td>
-                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 text-right"></td>
+                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+                      <div class="flex items-center gap-3">
+                        <span class="relative flex shrink-0 overflow-hidden rounded-full h-8 w-8">
+                          <img class="aspect-square h-full w-full" alt="@username" src="/placeholder-user.jpg" />
+                        </span>
+                        <div class="font-medium">General</div>
+                      </div>
+                    </td>
+                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">1,234</td>
+                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+                      <div class="flex items-center gap-3">
+                        <span class="relative flex shrink-0 overflow-hidden rounded-full h-6 w-6">
+                          <img class="aspect-square h-full w-full" alt="@username" src="/placeholder-user.jpg" />
+                        </span>
+                        <div class="text-sm">John Doe</div>
+                      </div>
+                    </td>
+                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"></td>
                   </tr>
                   <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 font-medium">Honda Civic</td>
-                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">234</td>
-                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">2,789 km</td>
-                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 text-right"></td>
+                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+                      <div class="flex items-center gap-3">
+                        <span class="relative flex shrink-0 overflow-hidden rounded-full h-8 w-8">
+                          <img class="aspect-square h-full w-full" alt="@username" src="/placeholder-user.jpg" />
+                        </span>
+                        <div class="font-medium">Gaming</div>
+                      </div>
+                    </td>
+                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">456</td>
+                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+                      <div class="flex items-center gap-3">
+                        <span class="relative flex shrink-0 overflow-hidden rounded-full h-6 w-6">
+                          <img class="aspect-square h-full w-full" alt="@username" src="/placeholder-user.jpg" />
+                        </span>
+                        <div class="text-sm">Jane Doe</div>
+                      </div>
+                    </td>
+                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"></td>
                   </tr>
                   <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 font-medium">Ford Mustang</td>
-                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">189</td>
-                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">4,123 km</td>
-                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 text-right"></td>
-                  </tr>
-                  <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 font-medium">Nissan Altima</td>
-                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">156</td>
-                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">2,456 km</td>
-                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 text-right"></td>
-                  </tr>
-                  <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 font-medium">Chevrolet Malibu</td>
-                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">123</td>
-                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">1,789 km</td>
-                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0 text-right"></td>
+                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+                      <div class="flex items-center gap-3">
+                        <span class="relative flex shrink-0 overflow-hidden rounded-full h-8 w-8">
+                          <img class="aspect-square h-full w-full" alt="@username" src="/placeholder-user.jpg" />
+                        </span>
+                        <div class="font-medium">Music</div>
+                      </div>
+                    </td>
+                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">789</td>
+                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0">
+                      <div class="flex items-center gap-3">
+                        <span class="relative flex shrink-0 overflow-hidden rounded-full h-6 w-6">
+                          <img class="aspect-square h-full w-full" alt="@username" src="/placeholder-user.jpg" />
+                        </span>
+                        <div class="text-sm">Bob Smith</div>
+                      </div>
+                    </td>
+                    <td class="p-4 align-middle [&amp;:has([role=checkbox])]:pr-0"></td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
-        </div>
-      </main>
-    </div>
+        </section> -->
+    </main>
   </div>
+</div>

@@ -23,7 +23,7 @@ import { ToastService } from '../../../service/toster/toster-service.service';
     imports: [SidebarComponent, HeaderComponent,ProgressSpinnerModule,AsyncPipe,TagModule,MenuModule]
 })
 export class AdminUserManagementComponent {
-
+    name:string = 'Users'
     isDropDownVisible :boolean = false
     user$:Observable<User[]>
     loading$:Observable<boolean>
