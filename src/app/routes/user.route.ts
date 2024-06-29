@@ -8,6 +8,8 @@ import { OtpComponent } from '../components/user/otp/otp.component';
 import { otpGuardGuard } from '../guards/user/otp-guard.guard';
 import { EmailSectionComponent } from '../components/user/forget-password/email-section/email-section.component';
 import { PasswordSectionComponent } from '../components/user/forget-password/password-section/password-section.component';
+import { AddFriendComponent } from '../components/user/add-friend/add-friend.component';
+import { PendingRequestsComponent } from '../components/user/pending-requests/pending-requests.component';
 
 
 export const userRoute: Routes = [
@@ -24,7 +26,7 @@ export const userRoute: Routes = [
     {
         path:'',
         component:HomeComponent,
-        canActivate:[userAuthGuard]
+        // canActivate:[userAuthGuard]
     },
     {
         path:'otp',
@@ -38,5 +40,13 @@ export const userRoute: Routes = [
     {
         path:'reset-password/:token',
         component:PasswordSectionComponent
+    },
+    {
+        path:'add-friend',
+        component:AddFriendComponent
+    },
+    {
+        path:'pending-request',
+        component:PendingRequestsComponent
     }
 ];

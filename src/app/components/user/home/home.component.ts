@@ -21,6 +21,28 @@ export class HomeComponent {
     if (state) {
       this.showToast(state.message, state.type);
     }
+
+
+   
+
+
+  }
+
+
+  setupSidebarToggles(): void {
+    const toggleSidebar = document.getElementById('toggle-sidebar');
+    
+    if (toggleSidebar) {
+      toggleSidebar.addEventListener('click', () => {
+        const mainSidebar = document.getElementById('main-sidebar');
+        mainSidebar?.classList.toggle('translate-x-1');
+      });
+    }
+
+ 
+     
+        
+
   }
 
   showToast(summary: string, severity: string) {
@@ -30,4 +52,46 @@ export class HomeComponent {
   logout(){
     this.userService.logout()
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// // Optional: Add JavaScript to handle sidebar toggles
+// // For example:
+// document.getElementById('toggle-sidebar').addEventListener('click', function () {
+//   const mainSidebar = document.getElementById('main-sidebar');
+//   mainSidebar.classList.toggle('-translate-x-full');
+// });
+// document.getElementById('toggle-secondary-sidebar').addEventListener('click', function () {
+//   const secondarySidebar = document.getElementById('secondary-sidebar');
+//   secondarySidebar.classList.toggle('-translate-x-full');
+// });
+
 }

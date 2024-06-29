@@ -20,6 +20,7 @@ import { StoreModule, provideStore } from '@ngrx/store';
 import { EffectsModule, provideEffects } from '@ngrx/effects';
 import { userReducer } from './store/user-listing/user.reducer';
 import { userEffects } from './store/user-listing/user.effects';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDVmVRn5JBIuKonN9j7r6fTCxhKnCdS3cA",
@@ -40,12 +41,12 @@ export const appConfig: ApplicationConfig = {
     provideRouter(adminRoute),
     provideHttpClient(),
     provideAnimations(),
-    {
-        provide: HTTP_INTERCEPTORS,
-        useClass: UserAuthInterceptor,
-        multi: true
-    },
-    // provideHttpClient(withInterceptors(AuthInterceptor)),
+    // {
+    //     provide: HTTP_INTERCEPTORS,
+    //     useClass: UserAuthInterceptor,
+    //     multi: true
+    // },
+    provideHttpClient(withInterceptors([UserAuthInterceptor])),
     MessageService,
     BrowserModule,
     BrowserAnimationsModule,
@@ -56,6 +57,6 @@ export const appConfig: ApplicationConfig = {
     provideStorage(() => getStorage()),
     provideDatabase(() => getDatabase()),
     provideStore({user:userReducer}),
-    provideEffects([userEffects]),
+    provideEffects([userEffects]), provideAnimationsAsync(),
 ]
 };

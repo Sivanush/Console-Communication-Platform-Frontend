@@ -1,0 +1,11 @@
+@media (min-width: 640px) {
+    #main-content-wrapper {
+      margin-left: calc(70px + 16rem);
+    }
+  }
+  
+  @media (max-width: 639px) {
+    #main-content-wrapper {
+      margin-left: 0;
+    }
+  }

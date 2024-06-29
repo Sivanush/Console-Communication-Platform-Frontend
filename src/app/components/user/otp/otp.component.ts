@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
   styleUrl: './otp.component.scss'
 })
 export class OtpComponent {
-  otpValue: any;
+  otpValue!: number;
 
   counter: number = 60;
   private timerSubscription: Subscription | null = null;
@@ -87,11 +87,12 @@ export class OtpComponent {
     })
   }
 
-  onSomeAction(event:any){
-    if(event.keyCode===13){
-      //submit form
-      this.verificationOtp()
+  onSomeAction(event: KeyboardEvent) {
+    if (event.code === 'Enter') {
+        // Submit form
+        this.verificationOtp();
     }
-   }
+}
+
 
 }

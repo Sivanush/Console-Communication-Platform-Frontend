@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment.prod';
+import { User, UserRequestI } from '../../interface/user/user.model';
 // import { User } from '../../interface/user/user.model';
 
 @Injectable({
@@ -49,9 +50,7 @@ export class UserService {
 
 
   login(user: object) {
-    return this.http.post<{
-      result(arg0: string, result: any): unknown; token: string, message: string
-    }>(`${this.apiLink}/login`, user)
+    return this.http.post<{result(arg0: string): unknown; token: string, message: string}>(`${this.apiLink}/login`, user)
   }
 
 
@@ -66,13 +65,33 @@ export class UserService {
   }
 
 
-  forgetPassword(email:string){
+  forgetPassword(email: string) {
     return this.http.post<{ message: string }>(`${this.apiLink}/forget-password`, email)
   }
 
-  resetPassword(token:string|null,newPassword:string){
-    return this.http.post(`${this.apiLink}/reset-password`,{token,newPassword})
+  resetPassword(token: string | null, newPassword: string) {
+    return this.http.post(`${this.apiLink}/reset-password`, { token, newPassword })
   }
 
 
+  addFriends(query: string) {
+    return this.http.get<{ users: User[] }>(`${this.apiLink}/search-users?query=${query}`)
+  }
+
+
+  sendFriendRequest(receiverId: string) {
+
+    return this.http.post<{ message: string }>(`${this.apiLink}/send-request`, { receiverId })
+  }
+
+
+ listPendingFriendRequest(){
+  return this.http.get<{ message: string, requests: UserRequestI[] }>(`${this.apiLink}/pending-request`)
+ }
+
+
+ acceptFriendRequest(requestId:string){
+  return this.http.post<{ message: string }>(`${this.apiLink}/accept-request`, {requestId})
+ }
 }
+
