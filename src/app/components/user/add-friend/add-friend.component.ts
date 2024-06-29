@@ -1,15 +1,17 @@
 import { Component } from '@angular/core';
-import { MainHeaderComponent } from '../reuse/main-header/main-header.component';
-import { MainSidebarComponent } from '../reuse/main-sidebar/main-sidebar.component';
+
+// import { MainSidebarComponent } from '../reuse/main-sidebar/main-sidebar.component';
 import { UserService } from '../../../service/user/user.service';
 import { FormsModule } from '@angular/forms';
 import { AsyncPipe, JsonPipe } from '@angular/common';
 import { User } from '../../../interface/user/user.model';
+import { FriendsHeaderComponent } from '../reuse/friends-header/friends-header.component';
+import { FriendsSidebarComponent } from '../reuse/friends-sidebar/friends-sidebar.component';
 
 @Component({
   selector: 'app-add-friend',
   standalone: true,
-  imports: [MainHeaderComponent,MainSidebarComponent,FormsModule,JsonPipe,AsyncPipe],
+  imports: [FriendsHeaderComponent,FriendsSidebarComponent,FormsModule,JsonPipe,AsyncPipe],
   templateUrl: './add-friend.component.html',
   styleUrl: './add-friend.component.scss'
 })

@@ -1,14 +1,16 @@
 import { Component } from '@angular/core';
-import { MainHeaderComponent } from '../reuse/main-header/main-header.component';
+
 import { MainSidebarComponent } from '../reuse/main-sidebar/main-sidebar.component';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../../service/user/user.service';
 import { User, UserRequestI } from '../../../interface/user/user.model';
+import { FriendsHeaderComponent } from '../reuse/friends-header/friends-header.component';
+import { FriendsSidebarComponent } from '../reuse/friends-sidebar/friends-sidebar.component';
 
 @Component({
   selector: 'app-pending-requests',
   standalone: true,
-  imports: [MainHeaderComponent,MainSidebarComponent,FormsModule],
+  imports: [FriendsHeaderComponent,FriendsSidebarComponent,MainSidebarComponent,FormsModule],
   templateUrl: './pending-requests.component.html',
   styleUrl: './pending-requests.component.scss'
 })

@@ -1,14 +1,13 @@
 import { Component, Input } from '@angular/core';
-import { DialogModule } from 'primeng/dialog';
 
 @Component({
-  selector: 'app-main-header',
+  selector: 'app-friends-header',
   standalone: true,
-  imports: [DialogModule],
-  templateUrl: './main-header.component.html',
-  styleUrl: './main-header.component.scss'
+  imports: [],
+  templateUrl: './friends-header.component.html',
+  styleUrl: './friends-header.component.scss'
 })
-export class MainHeaderComponent {
+export class FriendsHeaderComponent {
 
 
 
@@ -29,7 +28,4 @@ export class MainHeaderComponent {
 
 
 }
-
-
-
 
