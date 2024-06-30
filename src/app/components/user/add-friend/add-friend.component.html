@@ -31,7 +31,7 @@
               } @else if (user.friendshipStatus === "Sended") {
                 <button class="bg-[#4f545c] text-white px-4 py-1.5 rounded-md text-sm font-medium hover:bg-[#40444b] transition-all">Pending</button>
               } @else if (user.friendshipStatus === "Received") {
-                <button class="bg-[#5865f2] text-white px-4 py-1.5 rounded-md text-sm font-medium hover:bg-[#4752c4] transition-all">Accept</button>
+                <button class="bg-[#5865f2] text-white px-4 py-1.5 rounded-md text-sm font-medium hover:bg-[#4752c4] transition-all">Received</button>
               } @else {
                 <button class="bg-[#5865f2] text-white px-4 py-1.5 rounded-md text-sm font-medium hover:bg-[#4752c4] transition-all" 
                         (click)="sendFriendRequest(user._doc._id)">Add Friend</button>

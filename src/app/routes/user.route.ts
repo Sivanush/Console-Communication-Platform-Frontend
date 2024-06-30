@@ -12,51 +12,56 @@ import { AddFriendComponent } from '../components/user/add-friend/add-friend.com
 import { PendingRequestsComponent } from '../components/user/pending-requests/pending-requests.component';
 import { AllFriendsComponent } from '../components/user/all-friends/all-friends.component';
 
-
 export const userRoute: Routes = [
     {
-        path:'signup',
-        component:SignupComponent,
-        canActivate:[userNotAuthGuard]
+        path: 'signup',
+        component: SignupComponent,
+        canActivate: [userNotAuthGuard]
     },
     {
-        path:'',
-        component:HomeComponent,
-        canActivate:[userAuthGuard]
+        path: '',
+        component: HomeComponent,
+        canActivate: [userAuthGuard]
     },
     {
-        path:'otp',
-        component:OtpComponent,
-        canActivate:[otpGuardGuard]
+        path: 'otp',
+        component: OtpComponent,
+        canActivate: [otpGuardGuard]
     },
     {
-        path:'forget-password',
-        component:EmailSectionComponent
+        path: 'forget-password',
+        component: EmailSectionComponent
     },
     {
-        path:'reset-password/:token',
-        component:PasswordSectionComponent
+        path: 'reset-password/:token',
+        component: PasswordSectionComponent
     },
     {
-        path:'login',
-        component:LoginComponent,
-        canActivate:[userNotAuthGuard]
+        path: 'login',
+        component: LoginComponent,
+        canActivate: [userNotAuthGuard]
     },
     {
-        path:'friend/add-friend',
-        component:AddFriendComponent,
-        canActivate:[userAuthGuard]
-
-
-    },
-    {
-        path:'friend/pending-request',
-        component:PendingRequestsComponent,
-        canActivate:[userAuthGuard]
-    },
-    {
-        path:'friend/all-friends',
-        component:AllFriendsComponent,
-        canActivate:[userAuthGuard]
+        path: 'friend',
+        canActivate: [userAuthGuard],
+        children: [
+            {
+                path: 'add-friend',
+                component: AddFriendComponent
+            },
+            {
+                path: 'pending-request',
+                component: PendingRequestsComponent
+            },
+            {
+                path: 'all-friends',
+                component: AllFriendsComponent
+            },
+            {
+                path: '',
+                redirectTo: 'all-friends',
+                pathMatch: 'full'
+            }
+        ]
     }
 ];
