@@ -6,6 +6,7 @@ import { UserService } from '../../../service/user/user.service';
 import { User, UserRequestI } from '../../../interface/user/user.model';
 import { FriendsHeaderComponent } from '../reuse/friends-header/friends-header.component';
 import { FriendsSidebarComponent } from '../reuse/friends-sidebar/friends-sidebar.component';
+import { ToastService } from '../../../service/toster/toster-service.service';
 
 @Component({
   selector: 'app-pending-requests',
@@ -19,7 +20,7 @@ export class PendingRequestsComponent {
   query!:string
   users!:UserRequestI[]
   
-  constructor(private userService:UserService) {
+  constructor(private userService:UserService,private toaster:ToastService) {
     
   }
 
@@ -49,6 +50,25 @@ export class PendingRequestsComponent {
     this.userService.acceptFriendRequest(requestId).subscribe({
       next:(response)=>{
         console.log(response);
+        this.ngOnInit()
+        this.toaster.showSuccess('Success',response.message)
+        
+      },
+      error:(err)=>{
+        console.log(err.message);
+        
+      }
+    })
+  }
+
+
+  rejectFriendRequest(requestId:string){
+    this.userService.rejectFriendRequest(requestId).subscribe({
+      next:(response)=>{
+        this.ngOnInit()
+        console.log(response);
+        this.toaster.showSuccess('Success',response.message)
+
         // this.users = response.requests
         // console.log(this.users);
         

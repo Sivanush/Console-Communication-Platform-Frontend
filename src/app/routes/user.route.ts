@@ -10,6 +10,7 @@ import { EmailSectionComponent } from '../components/user/forget-password/email-
 import { PasswordSectionComponent } from '../components/user/forget-password/password-section/password-section.component';
 import { AddFriendComponent } from '../components/user/add-friend/add-friend.component';
 import { PendingRequestsComponent } from '../components/user/pending-requests/pending-requests.component';
+import { AllFriendsComponent } from '../components/user/all-friends/all-friends.component';
 
 
 export const userRoute: Routes = [
@@ -19,14 +20,9 @@ export const userRoute: Routes = [
         canActivate:[userNotAuthGuard]
     },
     {
-        path:'login',
-        component:LoginComponent,
-        canActivate:[userNotAuthGuard]
-    },
-    {
         path:'',
         component:HomeComponent,
-        // canActivate:[userAuthGuard]
+        canActivate:[userAuthGuard]
     },
     {
         path:'otp',
@@ -42,11 +38,25 @@ export const userRoute: Routes = [
         component:PasswordSectionComponent
     },
     {
-        path:'add-friend',
-        component:AddFriendComponent
+        path:'login',
+        component:LoginComponent,
+        canActivate:[userNotAuthGuard]
     },
     {
-        path:'pending-request',
-        component:PendingRequestsComponent
+        path:'friend/add-friend',
+        component:AddFriendComponent,
+        canActivate:[userAuthGuard]
+
+
+    },
+    {
+        path:'friend/pending-request',
+        component:PendingRequestsComponent,
+        canActivate:[userAuthGuard]
+    },
+    {
+        path:'friend/all-friends',
+        component:AllFriendsComponent,
+        canActivate:[userAuthGuard]
     }
 ];

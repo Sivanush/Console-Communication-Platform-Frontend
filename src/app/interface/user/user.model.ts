@@ -1,11 +1,24 @@
 export interface User{
+    friendshipStatus: string
     _id:string 
     username:string
     email:string
     image:string
     isBlocked:boolean 
-    result:[]
+    result:[],
+    _doc: UserDoc,
 }
+
+
+interface UserDoc {
+    _id: string;
+    username: string;
+    email: string;
+    image: string;
+}
+
+
+
 
 export interface UserRequestI{
     _id:string

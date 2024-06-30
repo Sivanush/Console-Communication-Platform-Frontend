@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-friends-header',
   standalone: true,
-  imports: [],
+  imports: [RouterLink,RouterLinkActive],
   templateUrl: './friends-header.component.html',
   styleUrl: './friends-header.component.scss'
 })

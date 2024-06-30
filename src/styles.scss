@@ -8,25 +8,129 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
 @import "primeicons/primeicons.css";
 body {
-//   font-family:'Roboto', sans-serif;
-font-family: 'Rubik', sans-serif;
+  // font-family:'Roboto', sans-serif;
+font-family: 'Rubik', sans-serif !important
 }
+
+
+
+// @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+// body {
+//   font-family: 'Roboto', sans-serif;
+// }
 
 /* styles.scss */
 
 /* styles.scss */
 
 /* Override the styles for the PrimeNG Toast component */
+// .p-toast {
+//     .p-toast-message {
+//         padding: 3px;
+//         backdrop-filter: blur(5px); 
+//         -webkit-backdrop-filter: blur(px); 
+//         border: 0px solid; 
+//         border-radius: 8px; 
+//         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+//         cursor: pointer;
+//     }
+//   }
+
+
+
 .p-toast {
-    .p-toast-message {
-        backdrop-filter: blur(5px); 
-        -webkit-backdrop-filter: blur(px); 
-        border: 1px solid; 
-        border-radius: 8px; 
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        cursor: pointer;
+  .p-toast-message {
+    padding: 10px 12px;
+    border-left: 4px solid;
+    border-radius: 3px;
+    box-shadow: 0 0 0 1px rgba(32,34,37,0.6), 0 2px 10px 0 rgba(0,0,0,0.2);
+    cursor: default;
+    font-family: 'Whitney', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #36393f;
+    color: #dcddde;
+    width: 100%;
+    max-width: 440px;
+    margin-bottom: 8px;
+
+    &.p-toast-message-success {
+      border-left-color: #43b581;
+    }
+
+    &.p-toast-message-info {
+      border-left-color: #7289da;
+    }
+
+    &.p-toast-message-warn {
+      border-left-color: #faa61a;
+    }
+
+    &.p-toast-message-error {
+      border-left-color: #f04747;
+    }
+
+    .p-toast-icon-close {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      color: #72767d;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+      width: 16px;
+      height: 16px;
+      
+      &:hover {
+        opacity: 1;
+      }
+    }
+
+    &:hover .p-toast-icon-close {
+      opacity: 0.5;
+    }
+
+    .p-toast-message-icon {
+      display: none;
+    }
+
+    .p-toast-message-content {
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .p-toast-summary {
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 20px;
+      color: #ffffff;
+      margin-bottom: 2px;
+    }
+
+    .p-toast-detail {
+      font-size: 14px;
+      line-height: 18px;
+      color: #b9bbbe;
     }
   }
+}
+
+  // :root {
+  //   --toast-success-bg: #000000;
+  //   --toast-info-bg: #2196F3;
+  //   --toast-warn-bg: #FF9800;
+  //   --toast-error-bg: #F44336;
+  //   --toast-text-color: #ffffff;
+  // }
+  
+  // .p-toast .p-toast-message {
+  //   border-width: 0 !important;
+  // }
+  
+  // .p-toast .p-toast-message.p-toast-message-success {
+  //   background-color: var(--toast-success-bg) !important;
+  //   color: var(--toast-text-color) !important;
+  // }
+  
   
 
   .custom-spinner .p-progress-spinner-svg circle {
@@ -55,5 +159,19 @@ font-family: 'Rubik', sans-serif;
 
  
   
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+// html, body { height: 100%; }
+// body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+
+@media (min-width: 640px) {
+  #main-content-wrapper {
+    margin-left: calc(70px + 16rem);
+  }
+}
+
+@media (max-width: 639px) {
+  #main-content-wrapper {
+    margin-left: 0;
+  }
+}

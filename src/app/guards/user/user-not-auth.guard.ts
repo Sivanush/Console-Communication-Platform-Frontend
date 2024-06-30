@@ -12,5 +12,4 @@ export const userNotAuthGuard: CanActivateFn = (route, state) => {
   } else {
     return true; 
   }
- 
 };

@@ -18,23 +18,21 @@
               </path>
             </svg>
           </button>
-          <div href="#" class="flex items-center ml-2 sm:ml-0">
-            <span class="self-center text-xl font-semibold whitespace-nowrap text-white">{{name}}</span>
+          <div [routerLink]="['']" routerLinkActive="router-link-active"  class="flex items-center ml-2 sm:ml-0">
+            <span class="self-center text-xl font-semibold whitespace-nowrap text-white cursor-pointer">{{name}}</span>
           </div>
         </div>
   
         <div class="flex-grow overflow-x-auto mx-4">
           <div class="flex gap-4 w-max">
-            <button
-              class="flex-shrink-0 border-0 px-5 hover:bg-secondary_color text-center text-white rounded-md h-10 whitespace-nowrap">Online</button>
-            <button
-              class="flex-shrink-0 border-0 px-5 hover:bg-secondary_color text-center text-white rounded-md h-10 whitespace-nowrap">All</button>
-            <button
-              class="flex-shrink-0 border-0 px-5 hover:bg-secondary_color text-center text-white rounded-md h-10 whitespace-nowrap">Pending</button>
-            <button
-              class="flex-shrink-0 border-0 px-5 hover:bg-secondary_color text-center text-white rounded-md h-10 whitespace-nowrap">Blocked</button>
-            <button
-              class="flex-shrink-0 border-0 px-5 text-center text-white rounded-md h-10 bg-green-600 whitespace-nowrap"
+            <button 
+              class="flex-shrink-0 border-0 px-5 hover:bg-primary_color text-center text-white rounded-md h-10 whitespace-nowrap">Online</button>
+            <button [routerLink]="['/friend/all-friends']" routerLinkActive="bg-primary_color" 
+              class="flex-shrink-0 border-0 px-5 hover:bg-primary_color  text-center text-white rounded-md h-10 whitespace-nowrap">All</button>
+            <button [routerLink]="['/friend/pending-request']" routerLinkActive="bg-primary_color" 
+              class="flex-shrink-0 border-0 px-5 transition duration-300 hover:bg-primary_color text-center text-white rounded-md h-10 ">Pending</button>
+            <button [routerLink]="['/friend/add-friend']" routerLinkActive="bg-green-700" 
+              class="flex-shrink-0 border-0 px-5 transition duration-300 hover:bg-green-700 text-center text-white rounded-md h-10 bg-green-600 whitespace-nowrap"
               (click)="showDialog()">Add Friend</button>
           </div>
         </div>

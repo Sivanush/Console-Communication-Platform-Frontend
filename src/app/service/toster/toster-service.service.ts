@@ -26,4 +26,12 @@ export class ToastService {
   showWarn(summary: string, detail?: string) {
     this.messageService.add({ severity: 'warn',  summary: summary, detail: detail });
   }
+
+  showContrast(summary: string, detail?: string) {
+    this.messageService.add({ severity: 'contrast',  summary: summary, detail: detail });
+  }
+
+  showSecondary(summary: string, detail?: string) {
+    this.messageService.add({ severity: 'secondary',  summary: summary, detail: detail });
+  }
 }

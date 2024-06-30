@@ -2,11 +2,13 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { UserService } from '../../../service/user/user.service';
+import { FriendsSidebarComponent } from '../reuse/friends-sidebar/friends-sidebar.component';
+import { FriendsHeaderComponent } from '../reuse/friends-header/friends-header.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [],
+  imports: [FriendsSidebarComponent,FriendsHeaderComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   providers:[MessageService]

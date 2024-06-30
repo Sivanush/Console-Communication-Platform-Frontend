@@ -50,7 +50,7 @@ export class UserService {
 
 
   login(user: object) {
-    return this.http.post<{result(arg0: string): unknown; token: string, message: string}>(`${this.apiLink}/login`, user)
+    return this.http.post<{ result(arg0: string): unknown; token: string, message: string }>(`${this.apiLink}/login`, user)
   }
 
 
@@ -85,13 +85,22 @@ export class UserService {
   }
 
 
- listPendingFriendRequest(){
-  return this.http.get<{ message: string, requests: UserRequestI[] }>(`${this.apiLink}/pending-request`)
- }
+  listPendingFriendRequest() {
+    return this.http.get<{ message: string, requests: UserRequestI[] }>(`${this.apiLink}/pending-request`)
+  }
 
 
- acceptFriendRequest(requestId:string){
-  return this.http.post<{ message: string }>(`${this.apiLink}/accept-request`, {requestId})
- }
+  acceptFriendRequest(requestId: string) {
+    return this.http.post<{ message: string }>(`${this.apiLink}/accept-request`, { requestId })
+  }
+
+
+  rejectFriendRequest(requestId: string) {
+    return this.http.post<{ message: string }>(`${this.apiLink}/reject-request`, { requestId })
+  }
+
+  getAllFriends(){
+    return this.http.get<{ message: string, friends: User[] }>(`${this.apiLink}/all-friends`)
+  }
 }
 

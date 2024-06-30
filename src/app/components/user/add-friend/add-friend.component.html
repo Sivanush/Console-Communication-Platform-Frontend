@@ -11,7 +11,7 @@
       <div class="flex flex-col h-full">
         <app-friends-header [name]="'Friends'"  />
     
-        <div class="flex-1 p-4 bg-main_bg overflow-y-auto flex flex-col border-l border-t border-primary_color">
+        <div class="flex-1 p-4 bg-main_bg overflow-y-auto flex flex-col ">
           <p class="text-white ps-2 text-lg">Add Friend</p>
           <div class="mt-4">
             <label for="search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">search</label>
@@ -30,10 +30,19 @@
             @for (user of users; track $index) {
               <div class="flex w-full bg-primary_color rounded-sm p-4 justify-between items-center">
                 <div class="flex items-center space-x-4">
-                  <img src="{{user.image}}" alt="user-profile" class="w-10 h-10 rounded-full">
-                  <p class="text-white">{{user.username}}</p>
+                  <img src="{{user._doc.image}}" alt="user-profile" class="w-10 h-10 rounded-full">
+                  <p class="text-white">{{user._doc.username}}</p>
                 </div>
-                <button class="bg-green-500 text-white px-4 py-2 rounded-md " (click)="sendFriendRequest(user._id)">Add Friend</button>
+                @if (user.friendshipStatus==="Friends") {
+                  <button  class="bg-blue-500 text-white px-4 py-2 rounded-md w-auto" >Friends</button>
+                }@else if (user.friendshipStatus==="Sended") {
+                  <button  class="bg-blue-500 text-white px-4 py-2 rounded-md" >Sended</button>
+                }
+                @else if (user.friendshipStatus==="Received") {
+                  <button  class="bg-blue-500 text-white px-4 py-2 rounded-md" >Received</button>
+                }@else(){
+                <button class="bg-green-500 text-white px-4 py-2 rounded-md " (click)="sendFriendRequest(user._doc._id)">Add Friend</button>
+                }
               </div>
             }@empty() {
               <div class="flex-grow flex items-center justify-center ">
