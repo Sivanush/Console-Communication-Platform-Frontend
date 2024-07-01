@@ -11,6 +11,7 @@ import { PasswordSectionComponent } from '../components/user/forget-password/pas
 import { AddFriendComponent } from '../components/user/add-friend/add-friend.component';
 import { PendingRequestsComponent } from '../components/user/pending-requests/pending-requests.component';
 import { AllFriendsComponent } from '../components/user/all-friends/all-friends.component';
+import { DirectChatComponent } from '../components/user/direct-chat/direct-chat.component';
 
 export const userRoute: Routes = [
     {
@@ -57,11 +58,16 @@ export const userRoute: Routes = [
                 path: 'all-friends',
                 component: AllFriendsComponent
             },
+           
+            {
+                path:'direct-chat',
+                component:DirectChatComponent
+            },
             {
                 path: '',
                 redirectTo: 'all-friends',
                 pathMatch: 'full'
-            }
+            },
         ]
-    }
+    },
 ];
