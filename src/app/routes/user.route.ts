@@ -60,7 +60,7 @@ export const userRoute: Routes = [
             },
            
             {
-                path:'direct-chat',
+                path:'direct-chat/:userId/:friendId',
                 component:DirectChatComponent
             },
             {

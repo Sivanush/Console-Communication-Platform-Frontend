@@ -21,6 +21,7 @@ import { EffectsModule, provideEffects } from '@ngrx/effects';
 import { userReducer } from './store/user-listing/user.reducer';
 import { userEffects } from './store/user-listing/user.effects';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDVmVRn5JBIuKonN9j7r6fTCxhKnCdS3cA",
@@ -32,6 +33,8 @@ const firebaseConfig = {
   appId: "1:694145689288:web:974310bf408678829b67fd",
   measurementId: "G-6T1826KL9W"
 };
+
+const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -58,5 +61,6 @@ export const appConfig: ApplicationConfig = {
     provideDatabase(() => getDatabase()),
     provideStore({user:userReducer}),
     provideEffects([userEffects]), provideAnimationsAsync(),
+    importProvidersFrom(SocketIoModule.forRoot(config)),
 ]
 };

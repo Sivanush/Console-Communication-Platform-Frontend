@@ -15,6 +15,7 @@ import { User } from '../../../../interface/user/user.model';
 export class FriendsSidebarComponent {
 
   users!:User[]
+  userId!:string|null
 
   constructor(private router: Router,private userService:UserService) { }
 
@@ -22,6 +23,7 @@ export class FriendsSidebarComponent {
 
 
   ngOnInit(): void {
+    this.userId = this.userService.getUserId();
     this.getallFriendsInSidebar()
   }
 

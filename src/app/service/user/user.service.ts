@@ -16,12 +16,34 @@ export class UserService {
   private jwtHelper = new JwtHelperService();
   private apiLink = environment.apiUrl
   private token: string | null = null;
+  userId!: string|null
 
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router) {
+    this.token = localStorage.getItem('token');
+    if (this.token) {
+      this.userId = this.getUserIdFromToken();
+    }
+   }
+
+
+
+   private getUserIdFromToken() {
+    if (this.token) {
+      const decodedToken = this.jwtHelper.decodeToken(this.token);
+    return decodedToken ? decodedToken.userId : null;
+    }
+  }
+
+  getUserId(): string | null {
+    return this.userId;
+  }
+
+
 
   logout() {
     this.token = null;
+    this.userId = null; 
     localStorage.removeItem('token');
     this.router.navigate(['/login']);
   }

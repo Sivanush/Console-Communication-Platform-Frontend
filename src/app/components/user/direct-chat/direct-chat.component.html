@@ -8,6 +8,36 @@
       <div class="flex-1 p-6 bg-[#36393f] overflow-y-auto flex flex-col">
         <div class="max-w-3xl mx-auto w-full">
           <!-- Welcome Section -->
+           
+
+
+          <!-- src/app/components/chat/chat.component.html -->
+<div class="chat-container">
+  <div class="messages">
+    <div *ngFor="let message of messages" class="message">
+      <span class="username">{{ message.userId === userId ? 'Me' : 'Friend' }}:</span>
+      <span class="text">{{ message.message }}</span>
+    </div>
+  </div>
+
+  <div class="input-container">
+    <input
+      type="text"
+      [(ngModel)]="message"
+      placeholder="Type a message..."
+      (keydown.enter)="sendMessage()"
+      class="message-input"
+    />
+    <button (click)="sendMessage()" class="send-button">Send</button>
+  </div>
+</div>
+
+
+
+
+
+
+
         </div>
       </div>
     </div>
