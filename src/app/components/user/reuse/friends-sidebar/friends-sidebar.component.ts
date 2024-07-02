@@ -4,11 +4,12 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../../../service/user/user.service';
 import { User } from '../../../../interface/user/user.model';
+import { ProgressSpinner, ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-friends-sidebar',
   standalone: true,
-  imports: [MainSidebarComponent,RouterLink,RouterLinkActive,FormsModule],
+  imports: [MainSidebarComponent,RouterLink,RouterLinkActive,FormsModule,ProgressSpinnerModule],
   templateUrl: './friends-sidebar.component.html',
   styleUrl: './friends-sidebar.component.scss'
 })
@@ -22,9 +23,11 @@ export class FriendsSidebarComponent {
 
 
 
-  ngOnInit(): void {
-    this.userId = this.userService.getUserId();
-    this.getallFriendsInSidebar()
+  async ngOnInit() {
+    this.userId = await this.userService.getUserId()
+    if (this.userId) {
+      this.getallFriendsInSidebar()
+    }
   }
 
 

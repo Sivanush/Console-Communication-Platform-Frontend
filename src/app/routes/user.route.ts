@@ -12,6 +12,7 @@ import { AddFriendComponent } from '../components/user/add-friend/add-friend.com
 import { PendingRequestsComponent } from '../components/user/pending-requests/pending-requests.component';
 import { AllFriendsComponent } from '../components/user/all-friends/all-friends.component';
 import { DirectChatComponent } from '../components/user/direct-chat/direct-chat.component';
+import { directChatGuard } from '../guards/user/direct-chat.guard';
 
 export const userRoute: Routes = [
     {
@@ -61,7 +62,8 @@ export const userRoute: Routes = [
            
             {
                 path:'direct-chat/:userId/:friendId',
-                component:DirectChatComponent
+                component:DirectChatComponent,
+                canActivate:[directChatGuard]
             },
             {
                 path: '',

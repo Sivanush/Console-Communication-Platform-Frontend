@@ -4,24 +4,31 @@ import { FriendsSidebarComponent } from '../reuse/friends-sidebar/friends-sideba
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../../service/user/user.service';
 import { User } from '../../../interface/user/user.model';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-all-friends',
   standalone: true,
-  imports: [FriendsHeaderComponent,FriendsSidebarComponent,FormsModule,],
+  imports: [FriendsHeaderComponent,FriendsSidebarComponent,FormsModule,RouterLink,RouterLinkActive],
   templateUrl: './all-friends.component.html',
   styleUrl: './all-friends.component.scss'
 })
 export class AllFriendsComponent {
 
   query!:string
-  users!:User[]  
+  users!:User[] 
+  userId!:string|null 
   constructor(private userService:UserService) {
     
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.getAllFriends()
+
+    this.userId = await this.userService.getUserId()
+    if (this.userId) {
+      this.getAllFriends()
+    }
   }
 
   getAllFriends(){
