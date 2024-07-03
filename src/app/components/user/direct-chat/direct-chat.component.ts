@@ -1,6 +1,4 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
-import { FriendsSidebarComponent } from '../reuse/friends-sidebar/friends-sidebar.component';
-import { FriendsHeaderComponent } from '../reuse/friends-header/friends-header.component';
 import { ActivatedRoute } from '@angular/router';
 import { ChatServiceService } from '../../../service/chat/chat-service.service';
 import { ToastService } from '../../../service/toster/toster-service.service';
@@ -8,6 +6,8 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { directChatI } from '../../../interface/user/direct-chat';
 import { DatePipe } from '@angular/common';
+import { FriendsHeaderComponent } from '../shared/friends-header/friends-header.component';
+import { FriendsSidebarComponent } from '../shared/friends-sidebar/friends-sidebar.component';
 
 @Component({
   selector: 'app-direct-chat',

@@ -5,9 +5,10 @@ import { UserService } from '../../../service/user/user.service';
 import { FormsModule } from '@angular/forms';
 import { AsyncPipe, JsonPipe } from '@angular/common';
 import { User } from '../../../interface/user/user.model';
-import { FriendsHeaderComponent } from '../reuse/friends-header/friends-header.component';
-import { FriendsSidebarComponent } from '../reuse/friends-sidebar/friends-sidebar.component';
+
 import { ToastService } from '../../../service/toster/toster-service.service';
+import { FriendsSidebarComponent } from '../shared/friends-sidebar/friends-sidebar.component';
+import { FriendsHeaderComponent } from '../shared/friends-header/friends-header.component';
 
 @Component({
   selector: 'app-add-friend',

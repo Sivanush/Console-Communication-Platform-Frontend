@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { UserService } from '../../../service/user/user.service';
-import { FriendsSidebarComponent } from '../reuse/friends-sidebar/friends-sidebar.component';
-import { FriendsHeaderComponent } from '../reuse/friends-header/friends-header.component';
+import { FriendsHeaderComponent } from '../shared/friends-header/friends-header.component';
+import { FriendsSidebarComponent } from '../shared/friends-sidebar/friends-sidebar.component';
+
 
 @Component({
   selector: 'app-home',
