@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../../../service/user/user.service';
 import { ToastService } from '../../../../service/toster/toster-service.service';
 
@@ -20,7 +20,13 @@ export class PasswordSectionComponent {
 
   passwordForm: FormGroup
 
-  constructor(private fb: FormBuilder,private userService:UserService,private activatedRoute: ActivatedRoute,private toaster:ToastService) {
+  constructor(
+    private fb: FormBuilder,
+    private userService:UserService,
+    private activatedRoute: ActivatedRoute,
+    private toaster:ToastService,
+    private router:Router
+  ) {
     this.passwordForm = fb.group({
       password: ['', [Validators.required, Validators.pattern(/^(?=\D*\d)(?=[^a-z]*[a-z])(?=[^A-Z]*[A-Z]).{8,30}$/), Validators.minLength(8),]],
       newPassword: ['', [Validators.required]]
@@ -40,6 +46,7 @@ export class PasswordSectionComponent {
       next:(response)=>{
         console.log('Success ',response);
         this.toaster.showSuccess('Success','Password Reset Successfully')
+        this.router.navigate([''])
       },
       error:(err)=>{
         console.log('Error ',err);

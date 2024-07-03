@@ -56,8 +56,7 @@ export class LoginComponent {
           this.router.navigate([''])
         },
         error:(err)=>{
-          console.error('Signup error:', err.error.message); 
-          
+          console.error('Login error:', err.error.message); 
           this.toster.showError('Error', err.error.message);
         }
       })
