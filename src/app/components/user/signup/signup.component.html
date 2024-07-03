@@ -90,6 +90,28 @@
                 }
             
             </div>
+
+            <div class="space-y-0" style="margin-top: 10px;">
+              <label
+                class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 text-gray-800 dark:text-gray-500"
+                for="password">
+                Confirm Password
+              </label>
+            <input
+                [ngClass]="{
+                  'bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 focus:border-red-500': userForm.get('confirmPassword')?.touched && userForm.get('confirmPassword')?.invalid || userForm.get('confirmPassword')?.value != userForm.get('password')?.value&&userForm.get('confirmPassword')?.touched }"
+                formControlName="confirmPassword" name="password" style="margin-bottom: 10px; margin-top: 6px;"
+                class="dark:bg-zinc-900 dark:border-0  flex h-10 w-full rounded-md border border-input bg-background  px-3 py-2  text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground dark:placeholder:text-neutral-700 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-ring focus-visible:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50"
+                id="confirmpassword" placeholder="Confirm your password" required="" type="password" />
+
+                @if (userForm.get('confirmPassword')?.errors?.['required'] && userForm.get('confirmPassword')?.['touched']) {
+                  <p class="ps-1  mt-2 text-sm text-red-600 dark:text-red-500">Please confirm your password.</p>
+                }@else if (userForm.get('password')?.value != userForm.get('confirmPassword')?.value && userForm.get('confirmPassword')?.['touched']) {
+                  <p class="ps-1 mt-2 text-sm text-red-600 dark:text-red-500">Password doesn't match above password.</p>
+                }
+            
+            </div>
+
             <button pRipple  style=" margin-top: 10px;"
               class="bg-black dark:text-black dark:bg-white text-white inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition duration-300 dark:duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed bg-primary text-primary-foreground hover:opacity-70 dark:hover:opacity-80  h-10 px-4 py-2 w-full"
               type="submit">

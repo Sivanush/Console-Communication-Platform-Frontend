@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
 })
 export class OtpComponent {
   otpValue!: number;
+  userEmail!:string
 
   counter: number = 60;
   private timerSubscription: Subscription | null = null;
@@ -26,8 +27,12 @@ export class OtpComponent {
   }
 
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.startCountdown();
+
+    this.userEmail = await this.userService.getEmailFromOtpToken()
+    console.log(this.userEmail);
+    
   }
 
   
@@ -47,14 +52,28 @@ export class OtpComponent {
     }
   }
 
+  
+
 
 
   resendOtp(): void {
     if (this.counter === 0) {
       this.counter = 60;  
       this.startCountdown();  
-      
       console.log('OTP resent');
+
+      this.userService.resendOtp(this.userEmail).subscribe({
+        next: (response) => {
+          console.log(response);
+          localStorage.setItem('otpToken',response.newOtpToken)
+          this.toster.showSuccess('Success',response.message)
+        },
+        error:(err)=>{
+          console.log(err);
+          this.toster.showError('Error',err.error.message)
+          
+        }
+      })
     }
   }
 
@@ -76,9 +95,7 @@ export class OtpComponent {
       next:async(response)=>{
         console.log(response);
         this.toster.showSuccess('Success',response.message)
-        setTimeout(() => {
           this.router.navigate(['login'])
-        }, 2000);
       },
       error:(err)=>{
         console.log(err);
