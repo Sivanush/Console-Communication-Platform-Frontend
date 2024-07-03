@@ -13,6 +13,7 @@ import { PendingRequestsComponent } from '../components/user/pending-requests/pe
 import { AllFriendsComponent } from '../components/user/all-friends/all-friends.component';
 import { DirectChatComponent } from '../components/user/direct-chat/direct-chat.component';
 import { directChatGuard } from '../guards/user/direct-chat.guard';
+import { UserProfileComponent } from '../components/user/user-profile/user-profile.component';
 
 export const userRoute: Routes = [
     {

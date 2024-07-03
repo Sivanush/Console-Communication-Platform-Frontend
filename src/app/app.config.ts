@@ -44,11 +44,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(adminRoute),
     provideHttpClient(),
     provideAnimations(),
-    // {
-    //     provide: HTTP_INTERCEPTORS,
-    //     useClass: UserAuthInterceptor,
-    //     multi: true
-    // },
     provideHttpClient(withInterceptors([UserAuthInterceptor])),
     MessageService,
     BrowserModule,

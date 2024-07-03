@@ -11,6 +11,7 @@
         "googleusercontent",
         "inputotp",
         "inputtext",
+        "maximizable",
         "ngrx",
         "nhnvtk",
         "oidc",
@@ -20,6 +21,7 @@
         "qnuhud",
         "signin",
         "ssvp",
+        "tabview",
         "tailwindcss",
         "toastr",
         "Toster"

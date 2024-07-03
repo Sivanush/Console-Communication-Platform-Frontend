@@ -20,17 +20,12 @@ export class FriendsSidebarComponent {
 
   constructor(private router: Router,private userService:UserService) { }
 
-
-
-
   async ngOnInit() {
     this.userId = await this.userService.getUserId()
     if (this.userId) {
       this.getallFriendsInSidebar()
     }
   }
-
-
 
 
 
@@ -46,6 +41,5 @@ export class FriendsSidebarComponent {
       }
     })
   }
-  
 }
 
