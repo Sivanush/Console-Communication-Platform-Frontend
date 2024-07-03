@@ -7,6 +7,7 @@ export interface User{
     isBlocked:boolean 
     result:[],
     _doc: UserDoc,
+    createdAt:Date
 }
 
 

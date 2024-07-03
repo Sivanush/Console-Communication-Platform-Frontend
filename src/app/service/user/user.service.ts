@@ -49,6 +49,7 @@ export class UserService {
     }
   }
 
+ 
 
   logout() {
     this.token = null;
@@ -136,6 +137,15 @@ export class UserService {
 
   getAllFriends() {
     return this.http.get<{ message: string, friends: User[] }>(`${this.apiLink}/all-friends`)
+  }
+
+
+  getUserData(){
+    return this.http.get<User>(`${this.apiLink}/user-data`)
+  }
+
+  getUserProfileById(userId:string){
+    return this.http.get<User>(`${this.apiLink}/user/${userId}`)
   }
 }
 

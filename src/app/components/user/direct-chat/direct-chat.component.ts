@@ -8,6 +8,7 @@ import { directChatI } from '../../../interface/user/direct-chat';
 import { DatePipe } from '@angular/common';
 import { FriendsHeaderComponent } from '../shared/friends-header/friends-header.component';
 import { FriendsSidebarComponent } from '../shared/friends-sidebar/friends-sidebar.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-direct-chat',
@@ -25,6 +26,9 @@ export class DirectChatComponent implements OnInit, AfterViewChecked {
   message!: string;
   messages: directChatI[] = [];
 
+  private paramSubscription!: Subscription;
+  private messagesSubscription!: Subscription;
+  private lastMessageSubscription!: Subscription;
 
   constructor(
     private datePipe: DatePipe,
@@ -34,31 +38,59 @@ export class DirectChatComponent implements OnInit, AfterViewChecked {
   ) { }
 
   ngOnInit(): void {
-    this.userId = this.route.snapshot.paramMap.get('userId');
-    this.friendId = this.route.snapshot.paramMap.get('friendId');
+    // this.userId = this.route.snapshot.paramMap.get('userId');
+    // this.friendId = this.route.snapshot.paramMap.get('friendId');
+
+    this.paramSubscription = this.route.paramMap.subscribe((params)=>{
+      this.userId = params.get('userId')
+      this.friendId = params.get('friendId')
+      this.initializeChat()
+    })
+
+    
+  }
+  
+
+
+
+  initializeChat():void{
+
+    this.messages = [];
 
     if (this.userId && this.friendId) {
       this.chatService.joinDirectChat(this.userId, this.friendId);
     } else {
       console.log("User ID or Friend ID is missing");
+      this.toaster.showError('Error','Something Went Wrong. Please Try Again')
     }
 
-    this.chatService.getAllMessages().subscribe(msg => {
+
+    this.messagesSubscription?.unsubscribe()
+    this.messagesSubscription = this.chatService.getAllMessages().subscribe(msg => {
       console.log(msg, "All messages");
       this.messages = msg;
       this.scrollToBottom();
     });
 
-    this.chatService.getLastMessages().subscribe((msg) => {
+
+    this.lastMessageSubscription?.unsubscribe()
+    this.lastMessageSubscription = this.chatService.getLastMessages().subscribe((msg) => {
       console.log("last message   ",msg);
-      
-    this.messages.push(msg)
-      
+      this.messages.push(msg)
       this.scrollToBottom();
     });
 
   }
-  
+
+
+
+  ngOnDestroy(): void {
+    this.paramSubscription?.unsubscribe();
+    this.messagesSubscription?.unsubscribe();
+    this.lastMessageSubscription?.unsubscribe();
+  }
+
+
 
   ngAfterViewChecked() {
     this.scrollToBottom();

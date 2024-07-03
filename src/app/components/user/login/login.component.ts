@@ -61,7 +61,7 @@ export class LoginComponent {
         }
       })
     }else{
-      this.toster.showWarn('Warning', 'Please fill all the fields');
+      this.toster.showWarn('Warning', 'Please fill all the fields Valid');
     }
   }
 

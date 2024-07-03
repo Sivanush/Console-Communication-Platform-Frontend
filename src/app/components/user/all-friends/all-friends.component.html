@@ -32,8 +32,8 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
                   </svg>
                 </button>
-                <button class="text-[#b9bbbe] hover:text-[#dcddde] transition-all">
-                  <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <button class="text-[#b9bbbe] hover:text-[#dcddde] transition-all" (click)="toggleProfile(user._id)"  >
+                  <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"> 
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
                   </svg>
@@ -54,3 +54,61 @@
     </div>
   </div>
 </main>
+
+
+@if (profileVisible) {
+  <div class="card flex justify-content-center">
+    <p-dialog 
+      [(visible)]="profileVisible" 
+      [modal]="true" 
+      [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
+      [style]="{ width: '50vw' }" 
+      [draggable]="false" 
+      [resizable]="false"
+      styleClass="dark-theme-dialog"
+      [contentStyle]="{'background-color': '#36393f', 'color': 'white'}"
+      header="User Profile">
+      
+      <ng-template pTemplate="header">
+        <span class="text-white">User Profile</span>
+      </ng-template>
+      
+      <div class="p-6">
+        <!-- User Info -->
+        <div class="flex items-center mb-6">
+          <div class="relative mr-4">
+            <img class="w-20 h-20 bg-gray-600 rounded-full flex items-center justify-center text-2xl font-bold" [src]="viewedUser.image">
+            <div class="absolute bottom-0 right-0 w-5 h-5 bg-green-500 border-2 border-[#36393f] rounded-full"></div>
+          </div>
+          <div>
+            <h2 class="text-xl font-semibold text-white">{{viewedUser.username}}</h2> 
+          </div>
+        </div>
+  
+        <!-- User Status -->
+        <div class="mb-6 p-3 bg-[#2f3136] rounded">
+          <p class="text-sm text-gray-300">online</p>
+        </div>
+  
+        <!-- User Details -->
+        <div class="space-y-4">
+          <div>
+            <strong class="block text-xs text-gray-400 mb-1">MEMBER SINCE</strong>
+            <span class="text-sm text-gray-300">1-1-2023</span>
+          </div>
+          <div>
+            <strong class="block text-xs text-gray-400 mb-1">ROLES</strong>
+            <!-- @for (role of viewedUser.roles; track role) {
+              <span class="inline-block px-2 py-1 bg-blue-600 rounded text-xs mr-2 text-white">{{role}}</span>
+            } -->
+          </div>
+          <div>
+            <strong class="block text-xs text-gray-400 mb-1">MUTUAL SERVERS</strong>
+            <span class="text-sm text-gray-300">6 servers in common</span>
+          </div>
+        </div>
+      </div>
+  
+    </p-dialog>
+  </div>
+  }
