@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { ChatServiceService } from '../../../service/chat/chat-service.service';
 import { ToastService } from '../../../service/toster/toster-service.service';
 import { FormsModule } from '@angular/forms';
@@ -8,10 +8,11 @@ import { directChatI } from '../../../interface/user/direct-chat';
 import { DatePipe } from '@angular/common';
 import { FriendsHeaderComponent } from '../shared/friends-header/friends-header.component';
 import { FriendsSidebarComponent } from '../shared/friends-sidebar/friends-sidebar.component';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, filter } from 'rxjs';
 import { DirectChatHeaderComponent } from '../shared/direct-chat-header/direct-chat-header.component';
 import { User } from '../../../interface/user/user.model';
 import { UserService } from '../../../service/user/user.service';
+import { log } from 'util';
 
 @Component({
   selector: 'app-direct-chat',
@@ -34,8 +35,11 @@ export class DirectChatComponent implements OnInit, AfterViewChecked, OnDestroy 
   private paramSubscription!: Subscription;
   private messagesSubscription!: Subscription;
   private lastMessageSubscription!: Subscription;
+  private routerSubscription!: Subscription;
+
 
   constructor(
+    private router: Router,
     private datePipe: DatePipe,
     private route: ActivatedRoute,
     private chatService: ChatServiceService,
@@ -44,9 +48,21 @@ export class DirectChatComponent implements OnInit, AfterViewChecked, OnDestroy 
   ) { }
 
   ngOnInit(): void {
+
     this.paramSubscription = this.route.paramMap.subscribe((params) => {
       this.userId = params.get('userId');
       this.friendId = params.get('friendId');
+      this.initializeChat();
+    });
+
+
+    console.log('❌❌❌❌❌❌');
+    
+   
+    
+    this.routerSubscription = this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
       this.initializeChat();
     });
 
@@ -56,8 +72,11 @@ export class DirectChatComponent implements OnInit, AfterViewChecked, OnDestroy 
   }
 
   initializeChat(): void {
+    console.log('⚽⚽');
+    
     this.messages = [];
 
+  
     if (this.userId && this.friendId) {
       this.chatService.joinDirectChat(this.userId, this.friendId);
       this.isFriendOnline$ = this.chatService.isUserOnline(this.friendId);
@@ -74,12 +93,15 @@ export class DirectChatComponent implements OnInit, AfterViewChecked, OnDestroy 
         console.log(err);
       }
     });
-
-    this.messagesSubscription = this.chatService.getAllMessages().subscribe(msg => {
+    console.log('start');
+    
+    this.messagesSubscription =  this.chatService.getAllMessages().subscribe(msg => {
       console.log(msg, "All messages");
       this.messages = msg;
       this.scrollToBottom();
     });
+    console.log('end');
+
 
     this.lastMessageSubscription = this.chatService.getLastMessage().subscribe((msg) => {
       console.log("last message   ", msg);
@@ -92,8 +114,9 @@ export class DirectChatComponent implements OnInit, AfterViewChecked, OnDestroy 
     this.paramSubscription?.unsubscribe();
     this.messagesSubscription?.unsubscribe();
     this.lastMessageSubscription?.unsubscribe();
+    this.routerSubscription?.unsubscribe();
     if (this.userId) {
-      this.chatService.disconnectUser();
+      // this.chatService.disconnectUser();
     }
   }
 

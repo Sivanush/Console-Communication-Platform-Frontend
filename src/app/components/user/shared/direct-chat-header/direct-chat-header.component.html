@@ -13,15 +13,24 @@
               </path>
             </svg>
           </button>
-          <div [routerLink]="['']" routerLinkActive="router-link-active" class="flex items-center ml-2 sm:ml-0">
-            <div class="relative mr-2">
-                <img class="w-8 h-8 rounded-full" src="{{userImage}}">
-            @if (isFriendOnline | async) {
-                <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-[#202225]"></div>
-            }
+          <div  class="flex items-center ml-2 sm:ml-0">
+            <div class="relative mr-3">
+                <img class="w-10 h-10 rounded-full" [src]="userImage" alt="User profile">
+                 @if (isFriendOnline | async) {
+                   <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-[#202225]"></div>
+                 }
             </div>
-            <span class="self-center text-xl font-semibold whitespace-nowrap text-white cursor-pointer">{{name}}</span>
-          </div>
+            <div class="flex flex-col">
+                <span class="text-lg font-semibold text-white">{{name}}</span>
+                 @if (isFriendOnline | async) {
+              <span class="text-xs text-green-400">Online</span>
+                 }@else {
+              <span class="text-xs text-gray-400">Offline</span>
+                 }
+                    
+                   
+            </div>
+        </div>
         </div>
   
         <!-- <div class="flex-grow overflow-x-auto mx-4 gap-9">

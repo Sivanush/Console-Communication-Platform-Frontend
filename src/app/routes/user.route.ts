@@ -60,12 +60,6 @@ export const userRoute: Routes = [
                 path: 'all-friends',
                 component: AllFriendsComponent
             },
-           
-            {
-                path:'direct-chat/:userId/:friendId',
-                component:DirectChatComponent,
-                canActivate:[directChatGuard]
-            },
             {
                 path: '',
                 redirectTo: 'all-friends',
@@ -73,4 +67,10 @@ export const userRoute: Routes = [
             },
         ]
     },
+    {
+        path:'direct-chat/:userId/:friendId',
+        component:DirectChatComponent,
+        canActivate:[directChatGuard]
+    },
+  
 ];

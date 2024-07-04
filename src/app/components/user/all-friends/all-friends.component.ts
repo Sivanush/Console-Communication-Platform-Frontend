@@ -6,6 +6,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { FriendsSidebarComponent } from '../shared/friends-sidebar/friends-sidebar.component';
 import { FriendsHeaderComponent } from '../shared/friends-header/friends-header.component';
 import { DialogModule } from 'primeng/dialog';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-all-friends',
@@ -21,6 +22,7 @@ export class AllFriendsComponent {
   users!:User[] 
   userId!:string|null 
   viewedUser: User  = {} as User
+  private subscriptions: Subscription = new Subscription();
 
   constructor(private userService:UserService) {
     
@@ -36,7 +38,7 @@ export class AllFriendsComponent {
   }
 
   getAllFriends(){
-    this.userService.getAllFriends().subscribe({
+    const friendsSubscription = this.userService.getAllFriends().subscribe({
       next: (response) => {
         console.log(response.friends)
         this.users = response.friends
@@ -45,13 +47,14 @@ export class AllFriendsComponent {
         console.log(err)
       }
     })
+    this.subscriptions.add(friendsSubscription);
   }
 
 
 
   toggleProfile(userId:string){
 
-    this.userService.getUserDataForFriend(userId).subscribe({
+    const profileSubscription = this.userService.getUserDataForFriend(userId).subscribe({
       next:(response)=>{
         console.log('data: ',response)
         this.viewedUser = response;
@@ -62,5 +65,10 @@ export class AllFriendsComponent {
         
       }
     })
+    this.subscriptions.add(profileSubscription);
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 }
