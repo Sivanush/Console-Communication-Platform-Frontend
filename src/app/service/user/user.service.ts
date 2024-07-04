@@ -144,7 +144,7 @@ export class UserService {
     return this.http.get<User>(`${this.apiLink}/user-data`)
   }
 
-  getUserProfileById(userId:string){
+  getUserDataForFriend(userId:string){
     return this.http.get<User>(`${this.apiLink}/user/${userId}`)
   }
 }

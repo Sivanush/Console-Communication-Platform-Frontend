@@ -1,31 +1,74 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {Socket} from 'ngx-socket-io';
-import { environment } from '../../../environments/environment.prod';
-import { Observable } from 'rxjs';
+import { Socket } from 'ngx-socket-io';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { directChatI } from '../../interface/user/direct-chat';
+
 @Injectable({
   providedIn: 'root'
 })
 export class ChatServiceService {
+  private onlineUsersSubject = new BehaviorSubject<string[]>([]);
+  private heartbeatInterval: any;
 
-  constructor(private socket:Socket, private http:HttpClient) { }
+  constructor(private socket: Socket) {
+    this.setupSocketListeners();
+  }
 
-  apiUrl = environment.apiUrl
+  private setupSocketListeners() {
+    this.socket.on('online-users', (users: string[]) => {
+      this.onlineUsersSubject.next(users);
+    });
+  }
 
-  // joinDirectChat(userId:string,friendId:string){
-  //   this.socket.emit('joinChat',{userId,friendId})
-  // }
+  connectUser(userId: string) {
+    this.socket.emit('user-connect', userId);
+    this.startHeartbeat(userId);
+  }
+
+  disconnectUser() {
+    this.socket.disconnect();
+    this.stopHeartbeat();
+  }
+
+  getOnlineUsers(): Observable<string[]> {
+    return this.onlineUsersSubject.asObservable();
+  }
+
+  isUserOnline(userId: string): Observable<boolean> {
+    return new Observable<boolean>(observer => {
+      this.getOnlineUsers().subscribe(users => {
+        observer.next(users.includes(userId));
+      });
+    });
+  }
+
+  private startHeartbeat(userId: string) {
+    this.heartbeatInterval = setInterval(() => {
+      this.socket.emit('heartbeat', userId);
+    }, 30000);
+  }
+
+  private stopHeartbeat() {
+    if (this.heartbeatInterval) {
+      clearInterval(this.heartbeatInterval);
+    }
+  }
+
+
+
+
+
+
+
   joinDirectChat(userId: string, friendId: string) {
-    
-      this.socket.emit('joinChat', { senderId:userId, receiverId:friendId });
+    this.socket.emit('joinChat', { senderId: userId, receiverId: friendId });
   }
 
-  sendDirectMessage(senderId: string, receiverId: string, message: string){
-    this.socket.emit('sendMessage',{senderId, receiverId, message})
+  sendDirectMessage(senderId: string, receiverId: string, message: string) {
+    this.socket.emit('sendMessage', { senderId, receiverId, message });
   }
 
-  getLastMessages(): Observable<directChatI> {
+  getLastMessage(): Observable<directChatI> {
     return this.socket.fromEvent<directChatI>('message');
   }
 

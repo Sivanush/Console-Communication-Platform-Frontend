@@ -1,30 +1,35 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ChatServiceService } from '../../../service/chat/chat-service.service';
 import { ToastService } from '../../../service/toster/toster-service.service';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { directChatI } from '../../../interface/user/direct-chat';
 import { DatePipe } from '@angular/common';
 import { FriendsHeaderComponent } from '../shared/friends-header/friends-header.component';
 import { FriendsSidebarComponent } from '../shared/friends-sidebar/friends-sidebar.component';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { DirectChatHeaderComponent } from '../shared/direct-chat-header/direct-chat-header.component';
+import { User } from '../../../interface/user/user.model';
+import { UserService } from '../../../service/user/user.service';
 
 @Component({
   selector: 'app-direct-chat',
   standalone: true,
-  imports: [FriendsSidebarComponent, FriendsHeaderComponent, FormsModule, CommonModule],
+  imports: [FriendsSidebarComponent, FriendsHeaderComponent, FormsModule, CommonModule, DirectChatHeaderComponent, AsyncPipe],
   templateUrl: './direct-chat.component.html',
   styleUrl: './direct-chat.component.scss',
   providers: [DatePipe]
 })
-export class DirectChatComponent implements OnInit, AfterViewChecked {
+export class DirectChatComponent implements OnInit, AfterViewChecked, OnDestroy {
   @ViewChild('scrollContainer') private scrollContainer!: ElementRef;
 
-  userId!: string | null;
-  friendId!: string | null;
+  friendUserData: User = {} as User;
+  userId: string | null = null;
+  friendId: string | null = null;
   message!: string;
   messages: directChatI[] = [];
+  isFriendOnline$: Observable<boolean> | undefined;
 
   private paramSubscription!: Subscription;
   private messagesSubscription!: Subscription;
@@ -34,68 +39,66 @@ export class DirectChatComponent implements OnInit, AfterViewChecked {
     private datePipe: DatePipe,
     private route: ActivatedRoute,
     private chatService: ChatServiceService,
-    private toaster: ToastService
+    private toaster: ToastService,
+    private userService: UserService
   ) { }
 
   ngOnInit(): void {
-    // this.userId = this.route.snapshot.paramMap.get('userId');
-    // this.friendId = this.route.snapshot.paramMap.get('friendId');
+    this.paramSubscription = this.route.paramMap.subscribe((params) => {
+      this.userId = params.get('userId');
+      this.friendId = params.get('friendId');
+      this.initializeChat();
+    });
 
-    this.paramSubscription = this.route.paramMap.subscribe((params)=>{
-      this.userId = params.get('userId')
-      this.friendId = params.get('friendId')
-      this.initializeChat()
-    })
-
-    
+    if (this.userId) {
+      this.chatService.connectUser(this.userId);
+    }
   }
-  
 
-
-
-  initializeChat():void{
-
+  initializeChat(): void {
     this.messages = [];
 
     if (this.userId && this.friendId) {
       this.chatService.joinDirectChat(this.userId, this.friendId);
+      this.isFriendOnline$ = this.chatService.isUserOnline(this.friendId);
     } else {
       console.log("User ID or Friend ID is missing");
-      this.toaster.showError('Error','Something Went Wrong. Please Try Again')
+      this.toaster.showError('Error', 'Something Went Wrong. Please Try Again');
     }
 
+    this.userService.getUserDataForFriend(this.friendId as string).subscribe({
+      next: (data) => {
+        this.friendUserData = data;
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
 
-    this.messagesSubscription?.unsubscribe()
     this.messagesSubscription = this.chatService.getAllMessages().subscribe(msg => {
       console.log(msg, "All messages");
       this.messages = msg;
       this.scrollToBottom();
     });
 
-
-    this.lastMessageSubscription?.unsubscribe()
-    this.lastMessageSubscription = this.chatService.getLastMessages().subscribe((msg) => {
-      console.log("last message   ",msg);
-      this.messages.push(msg)
+    this.lastMessageSubscription = this.chatService.getLastMessage().subscribe((msg) => {
+      console.log("last message   ", msg);
+      this.messages.push(msg);
       this.scrollToBottom();
     });
-
   }
-
-
 
   ngOnDestroy(): void {
     this.paramSubscription?.unsubscribe();
     this.messagesSubscription?.unsubscribe();
     this.lastMessageSubscription?.unsubscribe();
+    if (this.userId) {
+      this.chatService.disconnectUser();
+    }
   }
-
-
 
   ngAfterViewChecked() {
     this.scrollToBottom();
-
-
   }
 
   formatTime(dateString: Date): string {
@@ -103,8 +106,8 @@ export class DirectChatComponent implements OnInit, AfterViewChecked {
   }
 
   sendMessage() {
-    if (this.userId && this.friendId) {
-      this.chatService.sendDirectMessage(this.userId, this.friendId, this.message)
+    if (this.userId && this.friendId && this.message.trim()) {
+      this.chatService.sendDirectMessage(this.userId, this.friendId, this.message);
       this.message = '';
     } else {
       this.toaster.showError('Something went wrong. Try logging in again.');
@@ -120,7 +123,4 @@ export class DirectChatComponent implements OnInit, AfterViewChecked {
       this.scrollContainer.nativeElement.scrollTop = this.scrollContainer.nativeElement.scrollHeight;
     } catch (err) { }
   }
-
-
-
 }

@@ -42,9 +42,12 @@
      @for (user of users; track user) {
       <a class="flex items-center px-3 py-2 text-[#dcddde] transition-colors duration-200 transform rounded-md hover:bg-[#36393f] hover:text-white"
       [routerLink]="['/friend/direct-chat', userId, user._id]" routerLinkActive="router-link-active">
-      <img class="w-8 h-8 rounded-full mr-2" src="{{user.image}}">
-      <span class="mx-2 text-sm font-medium">{{user.username}}</span>
-    </a>
+     <div class="relative mr-2">
+       <img class="w-8 h-8 rounded-full" src="{{user.image}}">
+
+      </div>
+     <span class="text-sm font-medium">{{user.username}}</span>
+   </a>
      }
      
     </nav>

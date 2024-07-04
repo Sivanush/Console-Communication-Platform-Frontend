@@ -51,7 +51,7 @@ export class AllFriendsComponent {
 
   toggleProfile(userId:string){
 
-    this.userService.getUserProfileById(userId).subscribe({
+    this.userService.getUserDataForFriend(userId).subscribe({
       next:(response)=>{
         console.log('data: ',response)
         this.viewedUser = response;

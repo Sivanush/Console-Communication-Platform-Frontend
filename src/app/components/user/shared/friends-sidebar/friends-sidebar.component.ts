@@ -14,7 +14,7 @@ import { ProgressSpinner, ProgressSpinnerModule } from 'primeng/progressspinner'
   styleUrl: './friends-sidebar.component.scss'
 })
 export class FriendsSidebarComponent {
-
+  
   users!:User[]
   userId!:string|null
 

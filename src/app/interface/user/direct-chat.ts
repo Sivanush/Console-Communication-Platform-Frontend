@@ -29,3 +29,8 @@ export interface directChatI extends Document{
     updatedAt: Date;
     __v: number;
 }
+
+export interface UserStatus {
+  userId: string;
+  isOnline: boolean;
+}
