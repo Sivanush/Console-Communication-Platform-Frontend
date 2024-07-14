@@ -1,13 +1,9 @@
-// #profile-bottom{
-//     border-width: 15px;
-//   }
+#sidebar::-webkit-scrollbar {
+    display: none;
+  }
 
-
-//     #rounded-custom {
-//     border-radius: 50%;
-//     transition: border-radius 0.3s;
-//   }
-//   #rounded-custom:hover {
-//     border-radius: 30%; /* equivalent to rounded-lg */
-//   }
-
+  /* Hide scrollbar for IE, Edge and Firefox */
+#sidebar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }

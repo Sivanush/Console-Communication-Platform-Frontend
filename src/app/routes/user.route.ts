@@ -14,6 +14,7 @@ import { AllFriendsComponent } from '../components/user/all-friends/all-friends.
 import { DirectChatComponent } from '../components/user/direct-chat/direct-chat.component';
 import { directChatGuard } from '../guards/user/direct-chat.guard';
 import { UserProfileComponent } from '../components/user/user-profile/user-profile.component';
+import { ServerDetailsComponent } from '../components/user/server-details/server-details.component';
 
 export const userRoute: Routes = [
     {
@@ -72,5 +73,9 @@ export const userRoute: Routes = [
         component:DirectChatComponent,
         canActivate:[directChatGuard]
     },
+    {
+        path:'server/:serverId',
+        component:ServerDetailsComponent
+    }
   
 ];

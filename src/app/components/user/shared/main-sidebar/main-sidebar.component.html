@@ -1,9 +1,5 @@
-
-<div id="first-sidebar" style="width: 72px;"
-  class="flex flex-col overflow-y-auto h-full items-center py-3 bg-[#202225] dark:bg-gray-900">
-
-  <nav class="flex flex-col items-center flex-1 space-y-2 w-full">
-
+<div id="first-sidebar" style="width: 72px;" class="flex flex-col h-full bg-[#202225] dark:bg-gray-900">
+  <nav class="flex flex-col items-center pt-3 w-full">
     <a id="rounded-custom" [routerLink]="['/friend']" 
        routerLinkActive="bg-[#5865f2] rounded-2xl" 
        class="group relative flex items-center justify-center w-12 h-12 rounded-3xl hover:rounded-2xl bg-[#36393f] hover:bg-[#5865f2] transition-all duration-300 ease-out">
@@ -14,51 +10,35 @@
       </svg>
     </a>
 
-    <div class="w-8 h-0.5 bg-[#36393f] rounded-full my-1"></div>
-
-    <a href="#"
-      class="relative flex items-center justify-center w-12 h-12 rounded-3xl hover:rounded-2xl bg-[#36393f] hover:bg-[#5865f2] transition-all duration-300 ease-out group">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" 
-           class="w-6 h-6 text-[#dcddde] group-hover:text-white transition-colors duration-300">
-        <path stroke-linecap="round" stroke-linejoin="round"
-          d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
-      </svg>
-    </a>
-
-    <a href="#"
-      class="relative flex items-center justify-center w-12 h-12 rounded-3xl hover:rounded-2xl bg-[#36393f] hover:bg-[#5865f2] transition-all duration-300 ease-out group">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" 
-           class="w-6 h-6 text-[#dcddde] group-hover:text-white transition-colors duration-300">
-        <path stroke-linecap="round" stroke-linejoin="round"
-          d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
-      </svg>
-    </a>
-
+    <div class="w-8 h-0.5 bg-[#36393f] rounded-full my-2"></div>
   </nav>
 
-  <div id="profile-bottom" (click)="toggleUserProfile()"
-    class="fixed bottom-0 left-0 flex flex-col items-center mt-4 pb-3 z-50 bg-[#202225] w-[72px]">
-    <a href="#" class="relative group">
-      <img class="object-cover w-10 h-10 rounded-full transition-all duration-300 ease-out group-hover:rounded-2xl"
-        [src]="userImage"
-        alt="avatar" />
-      <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-[#202225]"></div>
+  <div id="sidebar" class="flex-1 overflow-y-auto py-2 space-y-2">
+    @for (server of servers; track server) {
+      <a [routerLink]="['/server', server._id]" 
+        class="relative w-12 h-12 rounded-3xl hover:rounded-xl bg-[#36393f] hover:bg-[#5865f2] cursor-pointer transition-all duration-300 ease-linear group overflow-hidden mx-auto block">
+        <div class="absolute inset-0 transition-all duration-300 ease-in-out">
+          <img [src]="server.image" alt="" class="w-[100%] h-[100%] object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group-hover:w-[100%] group-hover:h-[100%]">
+        </div>
+      </a>
+    }
+
+    <a (click)="createServerVisibleToggle()" title="Add a Server" 
+       class="relative flex items-center justify-center w-12 h-12 rounded-3xl cursor-pointer bg-[#36393f] hover:bg-[#5865f2] transition-all duration-300 ease-out group mx-auto">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" 
+           class="w-6 h-6 text-[#3ba55d] group-hover:text-white transition-colors duration-300">
+        <path fill-rule="evenodd" d="M12 3.75a.75.75 0 01.75.75v6.75h6.75a.75.75 0 010 1.5h-6.75v6.75a.75.75 0 01-1.5 0v-6.75H4.5a.75.75 0 010-1.5h6.75V4.5a.75.75 0 01.75-.75z" clip-rule="evenodd" />
+      </svg>
     </a>
   </div>
 
-
-
-  <!-- <div id="profile-bottom"
-    class="fixed bottom-0 left-0 flex flex-col items-center pb-3 pt-2 z-50 bg-[#202225] w-[72px]">
-    <div class="relative group cursor-pointer">
-      <img class="object-cover w-12 h-12 rounded-full transition-all duration-300 ease-out group-hover:rounded-[16px]"
-        src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&h=634&q=80"
-        alt="avatar" />
-      <div class="absolute bottom-0 right-0 w-4 h-4 bg-green-500 rounded-full border-[3px] border-[#202225]"></div>
-    </div>
-  </div> -->
-
-
+  <div id="profile-bottom" (click)="toggleUserProfile()"
+       class="flex flex-col items-center pt-3 pb-3 bg-[#202225]">
+    <a href="#" class="relative group">
+      <img class="object-cover w-10 h-10 rounded-full transition-all duration-300 ease-out"
+           [src]="userImage"
+           alt="avatar" />
+      <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-[#202225]"></div>
+    </a>
+  </div>
 </div>
-
-

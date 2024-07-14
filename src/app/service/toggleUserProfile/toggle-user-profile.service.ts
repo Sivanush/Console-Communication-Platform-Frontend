@@ -11,7 +11,7 @@ export class ToggleUserProfileService {
   private userProfileSubjectValue = new BehaviorSubject<boolean>(false)
   booleanValue$ = this.userProfileSubjectValue.asObservable()
 
-  updateUserProfileValue(value:boolean){
+  updateUserProfileValue(){
     const current = this.userProfileSubjectValue.value
     this.userProfileSubjectValue.next(!current)
   }

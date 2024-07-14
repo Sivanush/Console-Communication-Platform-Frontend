@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-all-friends',
   standalone: true,
-  imports: [FriendsHeaderComponent  ,FriendsSidebarComponent,FormsModule,RouterLink,RouterLinkActive,DialogModule],
+  imports: [FriendsHeaderComponent,FriendsSidebarComponent,FormsModule,RouterLink,RouterLinkActive,DialogModule],
   templateUrl: './all-friends.component.html',
   styleUrl: './all-friends.component.scss'
 })

@@ -1,0 +1,11 @@
+<main class="flex h-screen bg-[#36393f] overflow-hidden">
+  <app-server-sidebar />
+  
+  <div class="flex-1 flex flex-col h-full w-full" id="main-content-wrapper">
+    <app-friends-header [name]="'Home'" />
+    
+    <div class="flex-1 overflow-hidden">
+      <app-community-chat class="h-full flex flex-col" />
+    </div>
+  </div>
+</main>

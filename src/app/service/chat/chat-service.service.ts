@@ -10,7 +10,7 @@ export class ChatServiceService {
   private onlineUsersSubject = new BehaviorSubject<string[]>([]);
   private heartbeatInterval: any;
 
-  constructor(private socket: Socket) {
+  constructor(private socket: Socket) {       
     this.setupSocketListeners();
   }
 

@@ -7,12 +7,14 @@ import { FriendsSidebarComponent } from '../shared/friends-sidebar/friends-sideb
 import { UserProfileComponent } from '../user-profile/user-profile.component';
 import { ToggleUserProfileService } from '../../../service/toggleUserProfile/toggle-user-profile.service';
 import { Subscription } from 'rxjs';
+import { CreateServerComponent } from '../shared/create-server/create-server.component';
+import { ToggleCreateServerService } from '../../../service/toggleCreateServer/toggle-create-server.service';
 
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [FriendsSidebarComponent,FriendsHeaderComponent,UserProfileComponent],
+  imports: [FriendsSidebarComponent,FriendsHeaderComponent,UserProfileComponent,CreateServerComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   providers:[MessageService]
@@ -20,9 +22,16 @@ import { Subscription } from 'rxjs';
 export class HomeComponent {
 
   profileVisible:boolean = false
+  createServerVisible:boolean = false
   private subscription!: Subscription;
 
-  constructor(private userService:UserService, private router: Router, private messageService: MessageService,private userProfileService:ToggleUserProfileService) { }
+  constructor(
+    private userService:UserService,
+    private router: Router,
+    private messageService: MessageService,
+    private userProfileService:ToggleUserProfileService,
+    private toggleCreateServerService:ToggleCreateServerService
+  ) { }
 
 
   ngOnInit(): void {
@@ -32,6 +41,14 @@ export class HomeComponent {
     if (state) {
       this.showToast(state.message, state.type);
     }
+
+    this.subscription = this.toggleCreateServerService.booleanValue$.subscribe({
+      next: (value) => {
+        this.createServerVisible = value 
+        
+      },
+      error:(err)=> console.log(err)
+    })
 
     this.subscription = this.userProfileService.booleanValue$.subscribe((data: boolean) => {
       this.profileVisible = data;

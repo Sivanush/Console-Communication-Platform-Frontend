@@ -1,0 +1,54 @@
+<div class="card flex justify-content-center">
+  <p-dialog [(visible)]="createServerVisible$" (onHide)="close()" [modal]="true"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" [style]="{ width: '29vw' }" [draggable]="false"
+    [resizable]="false" styleClass="dark-theme-dialog"
+    [contentStyle]="{'background-color': '#36393f', 'color': 'white'}" header="Create a Server">
+
+    <ng-template pTemplate="header">
+      <div class="w-full flex justify-center items-center">
+        <p class="text-white text-2xl">Create Your Server</p>
+      </div>
+    </ng-template>
+
+    <div class="p-6">
+      <div class="flex flex-col items-center mb-6">
+
+        <div class="relative mb-4">
+          @if (!imagePreview) {
+          <div class="w-24 h-24 bg-[#36393f] rounded-full flex items-center justify-center cursor-pointer"
+            (click)="fileInput.click()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" fill="none" class="w-16 h-16">
+              <circle cx="40" cy="40" r="38" stroke="#8E9297" stroke-width="4" />
+              <path d="M40 26.5V53.5M26.5 40H53.5" stroke="#8E9297" stroke-width="4" stroke-linecap="round" />
+            </svg>
+          </div>
+          }@else {
+          <img [src]="imagePreview" 
+            class="w-24 h-24 bg-gray-600 rounded-full flex items-center justify-center text-2xl font-bold cursor-pointer"
+            (click)="fileInput.click()">
+          <div
+            class="absolute bottom-0 right-0 w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center cursor-pointer"
+            (click)="fileInput.click()">
+            <i class="pi pi-plus text-white"></i>
+          </div>
+          }
+          <input type="file" #fileInput style="display: none;" (change)="onFileSelected($event)" accept="image/*">
+        </div>
+
+        <p class="text-sm text-gray-300 mb-4">Recommended size: 128x128</p>
+      </div>
+
+      <div class="mb-6">
+        <label for="serverName" class="block text-sm font-medium text-gray-300 mb-2">SERVER NAME</label>
+        <input type="text" id="serverName" [(ngModel)]="serverName" 
+          class="w-full p-2 bg-[#2f3136] text-white rounded border border-gray-700 focus:border-blue-500 focus:outline-none"
+          placeholder="Enter server name">
+      </div>
+
+      <button (click)="createServer()"
+        class="w-full p-2 bg-[#5865F2] hover:bg-[#4752C4] text-white rounded transition duration-300">
+        {{ isLoading ? 'Creating...' : 'Create Server' }}
+      </button>
+    </div>
+  </p-dialog>
+</div>

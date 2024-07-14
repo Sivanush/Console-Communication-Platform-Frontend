@@ -1,4 +1,4 @@
-<p-sidebar [style]="{'background-color': '#36393f', 'color':'white'}" [(visible)]="sidebarVisible" [fullScreen]="true">
+<p-sidebar [style]="{'background-color': '#36393f', 'color':'white'}" (onHide)="close()" [(visible)]="sidebarVisible" [fullScreen]="true">
   <ng-template pTemplate="content">
     <div class="flex justify-center items-center h-full">
       <div class="w-full max-w-3xl bg-[#2f3136] rounded-lg shadow-lg overflow-hidden">

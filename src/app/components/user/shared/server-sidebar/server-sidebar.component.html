@@ -1,0 +1,38 @@
+<aside class="flex h-screen fixed left-0 top-0 transition-transform -translate-x-full sm:translate-x-0"
+  id="main-sidebar">
+  <app-main-sidebar/>
+  
+  <div id="second-sidebar"
+    class="h-full w-60 bg-[#2f3136] text-[#dcddde] overflow-y-auto">
+    
+    <!-- Server name -->
+    <div class="px-4 py-1 flex justify-between items-center border-b border-[#202225]">
+      <h2 class="font-semibold text-white">{{ server.name  }}</h2>
+      <span class="text-[#b9bbbe]">▼</span>
+    </div>
+
+    <!-- Channels and categories -->
+    <nav class="mt-2 px-2">
+      <ng-container *ngFor="let category of treeData">
+        <div class="category" [class.expanded]="category.expanded">
+          <div class="category-header" (click)="toggleCategory(category)">
+            <span class="expand-icon">{{ category.expanded ? '▼' : '▶' }}</span>
+            {{ category.label.toUpperCase() }}
+            <span class="add-icon">+</span>
+          </div>
+          <div class="category-channels" *ngIf="category.expanded">
+            <div *ngFor="let channel of category.children" class="channel-item">
+              <span class="channel-icon" [ngSwitch]="channel.type">
+                <ng-container *ngSwitchCase="'text'">#</ng-container>
+                <ng-container *ngSwitchCase="'voice'">🔊</ng-container>
+                <ng-container *ngSwitchCase="'video'">📹</ng-container>
+                <ng-container *ngSwitchDefault>#</ng-container>
+              </span>
+              {{ channel.label }}
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </nav>
+  </div>
+</aside>
