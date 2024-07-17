@@ -15,67 +15,67 @@ import { DirectChatComponent } from '../components/user/direct-chat/direct-chat.
 import { directChatGuard } from '../guards/user/direct-chat.guard';
 import { UserProfileComponent } from '../components/user/user-profile/user-profile.component';
 import { ServerDetailsComponent } from '../components/user/server-details/server-details.component';
+import { CommunityChatComponent } from '../components/user/shared/community-chat/community-chat.component';
 
 export const userRoute: Routes = [
-    {
-        path: 'signup',
-        component: SignupComponent,
-        canActivate: [userNotAuthGuard]
-    },
-    {
+  {
+    path: 'signup',
+    component: SignupComponent,
+    canActivate: [userNotAuthGuard]
+  },
+  {
+    path: '',
+    component: HomeComponent,
+    canActivate: [userAuthGuard]
+  },
+  {
+    path: 'otp',
+    component: OtpComponent,
+    canActivate: [otpGuardGuard]
+  },
+  {
+    path: 'forget-password',
+    component: EmailSectionComponent
+  },
+  {
+    path: 'reset-password/:token',
+    component: PasswordSectionComponent
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+    canActivate: [userNotAuthGuard]
+  },
+  {
+    path: 'friend',
+    canActivate: [userAuthGuard],
+    children: [
+      {
+        path: 'add-friend',
+        component: AddFriendComponent
+      },
+      {
+        path: 'pending-request',
+        component: PendingRequestsComponent
+      },
+      {
+        path: 'all-friends',
+        component: AllFriendsComponent
+      },
+      {
         path: '',
-        component: HomeComponent,
-        canActivate: [userAuthGuard]
-    },
-    {
-        path: 'otp',
-        component: OtpComponent,
-        canActivate: [otpGuardGuard]
-    },
-    {
-        path: 'forget-password',
-        component: EmailSectionComponent
-    },
-    {
-        path: 'reset-password/:token',
-        component: PasswordSectionComponent
-    },
-    {
-        path: 'login',
-        component: LoginComponent,
-        canActivate: [userNotAuthGuard]
-    },
-    {
-        path: 'friend',
-        canActivate: [userAuthGuard],
-        children: [
-            {
-                path: 'add-friend',
-                component: AddFriendComponent
-            },
-            {
-                path: 'pending-request',
-                component: PendingRequestsComponent
-            },
-            {
-                path: 'all-friends',
-                component: AllFriendsComponent
-            },
-            {
-                path: '',
-                redirectTo: 'all-friends',
-                pathMatch: 'full'
-            },
-        ]
-    },
-    {
-        path:'direct-chat/:userId/:friendId',
-        component:DirectChatComponent,
-        canActivate:[directChatGuard]
-    },
-    {
-        path:'server/:serverId',
-        component:ServerDetailsComponent
-    }
-  
+        redirectTo: 'all-friends',
+        pathMatch: 'full'
+      }
+    ]
+  },
+  {
+    path: 'direct-chat/:userId/:friendId',
+    component: DirectChatComponent,
+    canActivate: [directChatGuard]
+  },
+  {
+    path: 'server/:serverId/:channelId',
+    component: ServerDetailsComponent,
+  }
 ];

@@ -21,7 +21,7 @@
             <span class="add-icon">+</span>
           </div>
           <div class="category-channels" *ngIf="category.expanded">
-            <div *ngFor="let channel of category.children" class="channel-item">
+            <div [routerLink]="['/server', server._id, channel._id]"  *ngFor="let channel of category.children" class="channel-item" (click)="onChannelClick(channel)">
               <span class="channel-icon" [ngSwitch]="channel.type">
                 <ng-container *ngSwitchCase="'text'">#</ng-container>
                 <ng-container *ngSwitchCase="'voice'">🔊</ng-container>

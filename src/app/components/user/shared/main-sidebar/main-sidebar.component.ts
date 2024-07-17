@@ -49,7 +49,7 @@ export class MainSidebarComponent {
       next:(response)=>{
         console.log(response);
         this.servers = response
-        console.log('all servers',this.servers);
+        // console.log('all servers',this.servers);
         this.cdr.detectChanges();
         
       },
@@ -61,7 +61,6 @@ export class MainSidebarComponent {
   getUserProfile(){
     this.userService.getUserData().subscribe({
       next:(response)=>{
-        console.log(response);
         this.userImage = response.image
       },
       error:(err)=>{

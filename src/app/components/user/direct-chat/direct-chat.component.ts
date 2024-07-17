@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked, OnDestroy } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { ChatServiceService } from '../../../service/chat/chat-service.service';
+import { ChatServiceService } from '../../../service/direct-chat/chat-service.service';
 import { ToastService } from '../../../service/toster/toster-service.service';
 import { FormsModule } from '@angular/forms';
 import { AsyncPipe, CommonModule } from '@angular/common';
@@ -54,9 +54,6 @@ export class DirectChatComponent implements OnInit, AfterViewChecked, OnDestroy 
       this.friendId = params.get('friendId');
       this.initializeChat();
     });
-
-
-    console.log('❌❌❌❌❌❌');
     
    
     
@@ -72,7 +69,6 @@ export class DirectChatComponent implements OnInit, AfterViewChecked, OnDestroy 
   }
 
   initializeChat(): void {
-    console.log('⚽⚽');
     
     this.messages = [];
 
