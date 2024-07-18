@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment.prod';
 import { User, UserRequestI } from '../../interface/user/user.model';
 // import { User } from '../../interface/user/user.model';
@@ -11,6 +11,8 @@ import { User, UserRequestI } from '../../interface/user/user.model';
   providedIn: 'root'
 })
 export class UserService {
+  private authStatusSubject = new BehaviorSubject<boolean>(false);
+  authStatus$ = this.authStatusSubject.asObservable();
 
 
   private jwtHelper = new JwtHelperService();
@@ -55,12 +57,13 @@ export class UserService {
     this.token = null;
     this.userId = null;
     localStorage.removeItem('token');
+    this.authStatusSubject.next(false);
     this.router.navigate(['/login']);
   }
 
   getToken(): string | null {
     if (!this.token) {
-      this.token = localStorage.getItem('token');
+      this.token = localStorage.getItem('token')
     }
     return this.token;
   }

@@ -1,125 +1,77 @@
-<!-- <div class="flex flex-col h-full bg-[#36393f]">
-    <div class="flex-1 overflow-y-auto px-4 py-6" id="scrollContainer" #scrollContainer>
-        @for (msg of messages; track msg) { 
-           <div class="flex mb-4" [ngClass]="{'justify-end': msg.sender._id === userId}">
-            <div class="flex items-start" [ngClass]="{'flex-row-reverse': msg.sender._id === userId}">
-              <img [src]="msg.sender.image"
-                   alt="User avatar" 
-                   class="w-10 h-10 rounded-full" 
-                   [ngClass]="{'mr-3': msg.sender._id !== userId, 'ml-3': msg.sender._id === userId}">
-              <div>
-                <div class="flex items-baseline mb-1" [ngClass]="{'justify-end': msg.sender._id === userId}">
-                  <span class="text-[#ffffff] font-medium" 
-                        [ngClass]="{'mr-2': msg.sender._id !== userId, 'ml-2 order-2': msg.sender._id === userId}">
-                    {{ msg.sender.username }}
-                  </span>
-                  <span class="text-[#72767d] text-xs">{{ formatTime(msg.updatedAt) }}</span>
-                </div>
-                <div class="rounded-lg px-4 py-2 max-w-md" 
-                     [ngClass]="{'bg-[#40444b]': msg.sender._id !== userId, 'bg-[#5865f2]': msg.sender._id === userId}">
-                  <p class="text-white text-sm">{{ msg.message }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-      } @empty {
-      <div class="h-full flex flex-col items-center justify-center text-center">
-        <svg class="w-16 h-16 text-[#72767d] mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-          stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
-          </path>
-        </svg>
-        <p class="text-[#ffffff] text-lg font-medium">No messages yet</p>
-        <p class="text-[#72767d] mt-1 text-sm">Start the conversation!</p>
+<div class="flex-grow overflow-y-auto px-4 py-6" id="scrollContainer" #scrollContainer>
+  @if(groupedMessages.length !== 0){
+    @if (allMessagesLoaded) {
+      <div class="text-center text-sm text-[#72767d] py-2">All messages loaded</div>
+    }
+  }
+  <div #scrollSentinel></div>
+  @for (group of groupedMessages; track group.date) {
+  @if (isLoading) {
+  <div role="status" class="flex justify-center items-center mb-2">
+    <svg aria-hidden="true" class="w-8 h-8 text-transparent animate-spin dark:text-gray-600 fill-[#2f3136]"
+      viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+        fill="currentColor" />
+      <path
+        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+        fill="currentFill" />
+    </svg>
+    <span class="sr-only">Loading...</span>
+  </div>
+  }
+  <div class="mb-6">
+    <div class="text-xs text-[#72767d] mb-2 flex items-center">
+      <hr class="flex-grow border-t border-[#40444b]">
+      <span class="px-2">{{ group.date }}</span>
+      <hr class="flex-grow border-t border-[#40444b]">
+    </div>
+    @for (msg of group.messages; track msg._id) {
+    <div class="flex mb-1" [ngClass]="{'mt-4': !msg.grouped}">
+      @if (!msg.grouped) {
+      <img [src]="msg.sender.image" alt="User avatar" class="w-10 h-10 rounded-full mr-3 mt-1">
+      }
+      <div class="flex-1" [ngClass]="{'pl-[50px]': msg.grouped}">
+        @if (!msg.grouped) {
+        <div class="flex items-baseline">
+          <span class="text-[#ffffff] font-medium mr-2">{{ msg.sender.username }}</span>
+          <span class="text-[#72767d] text-xs">{{ formatTime(msg.createdAt) }}</span>
+        </div>
+        }
+        <div class="text-[#dcddde] text-sm">
+          {{ msg.message }}
+        </div>
       </div>
+    </div>
     }
   </div>
-
-  <div class="px-2 py-2 bg-[#40444b] mb-3 mr-3 rounded-md text-">
-    <div class="relative">
-      <input 
-        type="text" 
-        [(ngModel)]="message" 
-        (keydown.enter)="sendMessage()"
-        class="w-full bg-[#40444b] text-[#dcddde] rounded-md pl-4 pr-12 py-2 focus:outline-0 focus:ring-0 transition-all"
-        placeholder="Type a message...">
-      <button 
-        (click)="sendMessage()" 
-        class="absolute right-2 top-1/2 transform -translate-y-1/2 text-[#b9bbbe] hover:text-[#dcddde] transition-all">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-        </svg>
-      </button>
-    </div>
+  }
+  @empty {
+  <div class="h-full flex flex-col items-center justify-center text-center">
+    <svg class="w-16 h-16 text-[#72767d] mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+      stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+      </path>
+    </svg>
+    <p class="text-[#ffffff] text-lg font-medium">No messages yet</p>
+    <p class="text-[#72767d] mt-1 text-sm">Start the conversation!</p>
   </div>
-</div> -->
+  }
+</div>
 
-
-
-
-
-
-    <div class="flex-grow overflow-y-auto px-4 py-6" id="scrollContainer" #scrollContainer>
-      @for (group of groupedMessages; track group.date) {
-        <div class="mb-6">
-          <div class="text-xs text-[#72767d] mb-2 flex items-center">
-            <hr class="flex-grow border-t border-[#40444b]">
-            <span class="px-2">{{ group.date }}</span>
-            <hr class="flex-grow border-t border-[#40444b]">
-          </div>
-          @for (msg of group.messages; track msg) {
-            <div class="flex mb-1" [ngClass]="{'mt-4': !msg.grouped}">
-              @if (!msg.grouped) {
-                <img [src]="msg.sender.image"
-                     alt="User avatar" 
-                     class="w-10 h-10 rounded-full mr-3 mt-1">
-              }
-              <div class="flex-1" [ngClass]="{'pl-[50px]': msg.grouped}">
-                @if (!msg.grouped) {
-                  <div class="flex items-baseline">
-                    <span class="text-[#ffffff] font-medium mr-2">{{ msg.sender.username }}</span>
-                    <span class="text-[#72767d] text-xs">{{ formatTime(msg.createdAt) }}</span>
-                  </div>
-                }
-                <div class="text-[#dcddde] text-sm">
-                  {{ msg.message }}
-                </div>
-              </div>
-            </div>
-          }
-        </div>
-      }
-      @empty {
-        <div class="h-full flex flex-col items-center justify-center text-center">
-          <svg class="w-16 h-16 text-[#72767d] mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
-            </path>
-          </svg>
-          <p class="text-[#ffffff] text-lg font-medium">No messages yet</p>
-          <p class="text-[#72767d] mt-1 text-sm">Start the conversation!</p>
-        </div>
-      }
-    </div>
-
-    <!-- Input area -->
-    <div class="px-2 py-2 bg-[#40444b] mb-3 mr-3 rounded-md text-">
-      <div class="relative">
-        <input 
-          type="text" 
-          [(ngModel)]="message" 
-          (keydown.enter)="sendMessage()"
-          class="w-full bg-[#40444b] text-[#dcddde] rounded-md pl-4 pr-12 py-2 focus:outline-0 focus:ring-0 transition-all"
-          placeholder="Type a message...">
-        <button 
-          (click)="sendMessage()" 
-          class="absolute right-2 top-1/2 transform -translate-y-1/2 text-[#b9bbbe] hover:text-[#dcddde] transition-all">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
-          </svg>
-        </button>
-      </div>
-    </div>
+<!-- Input area -->
+<div class="px-2 py-2 bg-[#40444b] mb-3 mr-3 rounded-md text-">
+  <div class="relative">
+    <input type="text" [(ngModel)]="message" (keydown.enter)="sendMessage()"
+      class="w-full bg-[#40444b] text-[#dcddde] rounded-md pl-4 pr-12 py-2 focus:outline-0 focus:ring-0 transition-all"
+      placeholder="Type a message...">
+    <button (click)="sendMessage()"
+      class="absolute right-2 top-1/2 transform -translate-y-1/2 text-[#b9bbbe] hover:text-[#dcddde] transition-all">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8">
+        </path>
+      </svg>
+    </button>
+  </div>
+</div>

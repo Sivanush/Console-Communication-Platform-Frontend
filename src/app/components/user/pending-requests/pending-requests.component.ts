@@ -8,26 +8,56 @@ import { ToastService } from '../../../service/toster/toster-service.service';
 import { FriendsSidebarComponent } from '../shared/friends-sidebar/friends-sidebar.component';
 import { MainSidebarComponent } from '../shared/main-sidebar/main-sidebar.component';
 import { FriendsHeaderComponent } from '../shared/friends-header/friends-header.component';
+import { CreateServerComponent } from "../shared/create-server/create-server.component";
+import { UserProfileComponent } from "../user-profile/user-profile.component";
+import { Subscription } from 'rxjs';
+import { ToggleCreateServerService } from '../../../service/toggleCreateServer/toggle-create-server.service';
+import { ToggleUserProfileService } from '../../../service/toggleUserProfile/toggle-user-profile.service';
 
 @Component({
-  selector: 'app-pending-requests',
-  standalone: true,
-  imports: [FriendsHeaderComponent,FriendsSidebarComponent,MainSidebarComponent,FormsModule],
-  templateUrl: './pending-requests.component.html',
-  styleUrl: './pending-requests.component.scss'
+    selector: 'app-pending-requests',
+    standalone: true,
+    templateUrl: './pending-requests.component.html',
+    styleUrl: './pending-requests.component.scss',
+    imports: [FriendsHeaderComponent, FriendsSidebarComponent, MainSidebarComponent, FormsModule, CreateServerComponent, UserProfileComponent]
 })
 export class PendingRequestsComponent {
+
+  profileVisible:boolean = false
+  createServerVisible:boolean = false
+  private subscription!: Subscription;
 
   query!:string
   users!:UserRequestI[]
   
-  constructor(private userService:UserService,private toaster:ToastService) {
+  constructor(
+    private userService:UserService,
+    private toaster:ToastService,
+    private userProfileService:ToggleUserProfileService,
+    private toggleCreateServerService:ToggleCreateServerService
+  ) {
     
   }
 
   ngOnInit(): void {
 
     this.getPendingRequests()
+
+
+
+    this.subscription = this.toggleCreateServerService.booleanValue$.subscribe({
+      next: (value) => {
+        this.createServerVisible = value 
+        
+      },
+      error:(err)=> console.log(err)
+    })
+
+    this.subscription = this.userProfileService.booleanValue$.subscribe((data: boolean) => {
+      this.profileVisible = data;
+      console.log('Data Updated ',this.profileVisible);
+      
+    });
   }
 
   getPendingRequests(){
@@ -79,5 +109,11 @@ export class PendingRequestsComponent {
         
       }
     })
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 }

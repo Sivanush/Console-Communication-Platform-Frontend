@@ -52,15 +52,18 @@ export const userRoute: Routes = [
     children: [
       {
         path: 'add-friend',
-        component: AddFriendComponent
+        component: AddFriendComponent,
+        canActivate:[userAuthGuard]
       },
       {
         path: 'pending-request',
-        component: PendingRequestsComponent
+        component: PendingRequestsComponent,
+        canActivate:[userAuthGuard]
       },
       {
         path: 'all-friends',
-        component: AllFriendsComponent
+        component: AllFriendsComponent,
+        canActivate:[userAuthGuard]
       },
       {
         path: '',
@@ -72,7 +75,7 @@ export const userRoute: Routes = [
   {
     path: 'direct-chat/:userId/:friendId',
     component: DirectChatComponent,
-    canActivate: [directChatGuard]
+    canActivate: [directChatGuard,userAuthGuard]
   },
   {
     path: 'server/:serverId/:channelId',

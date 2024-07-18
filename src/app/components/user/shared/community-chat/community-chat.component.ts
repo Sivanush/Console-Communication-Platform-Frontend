@@ -1,107 +1,9 @@
-// import { CommonModule, DatePipe } from '@angular/common';
-// import { Component } from '@angular/core';
-// import { FormsModule } from '@angular/forms';
-// import { ChannelChatService } from '../../../../service/channel-chat/channel-chat.service';
-// import { Subscription } from 'rxjs';
-// import { ActivatedRoute } from '@angular/router';
-// import { UserService } from '../../../../service/user/user.service';
-// import { ToastService } from '../../../../service/toster/toster-service.service';
 
-// @Component({
-//   selector: 'app-community-chat',
-//   standalone: true,
-//   imports: [CommonModule, FormsModule],
-//   templateUrl: './community-chat.component.html',
-//   styleUrl: './community-chat.component.scss',
-//   providers: [DatePipe]
-
-// })
-// export class CommunityChatComponent {
-//   messages: any
-//   // msg: string;
-//   userId!: string | null
-//   message!: string
-//   channelId!: string | null
-//   private routeSubscription!: Subscription;
-//   private messageSubscription!: Subscription
-
-
-//   constructor(
-//     private chatService: ChannelChatService,
-//     private route: ActivatedRoute,
-//     private userService: UserService,
-//     private datePipe: DatePipe,
-//     private toastService: ToastService
-//   ) { }
-
-//   async ngOnInit(): Promise<void> {
-//     console.log('ngOninit anne ');
-//     this.userId = await this.userService.getUserId()
-//     this.routeSubscription = this.route.params.subscribe(params => {
-//       if (this.channelId) {
-//         this.chatService.leaveChannel(this.channelId);
-//       }
-//       this.channelId = params['channelId'];
-//     this.loadChannelMessages();
-      
-//     });
-    
-
-//   }
-
-//   loadChannelMessages() {
-//     if (this.messageSubscription) {
-//       this.messageSubscription.unsubscribe();
-//     }
-//     if (this.channelId && this.userId) {
-
-//       this.chatService.joinChannel(this.userId, this.channelId);
-//       this.messageSubscription = this.chatService.getAllMessages().subscribe(messages => {
-//         this.messages = messages;
-//         console.log('all messages ',this.messages);
-        
-//       });
-//     }else{
-//       console.log(this.channelId , this.userId);
-      
-//       this.toastService.showWarn('Warning', 'Something Went Wrong Please Try Again')
-//     }
-//   }
-
-//   sendMessage() {
-//     console.log(this.userId);
-
-//     if (this.userId && this.channelId && this.message) {
-//       this.chatService.sendMessage(this.userId, this.channelId, this.message)
-//       this.message = ''
-//     } else {
-//       console.log(this.userId, this.channelId,this.message);
-      
-//       this.toastService.showWarn('Warning', 'Something Went Wrong Please Try Again')
-//     }
-//   }
-//   formatTime(dateString: Date): string {
-//     return this.datePipe.transform(dateString, 'shortTime')!;
-//   }
-
-//   ngOnDestroy(): void {
-//     if (this.routeSubscription) {
-//       this.routeSubscription.unsubscribe
-//     }
-//     if (this.messageSubscription) {
-//       this.messageSubscription.unsubscribe()
-//     }
-//     if (this.channelId) {
-//       this.chatService.leaveChannel(this.channelId)
-//     }
-//   }
-
-// }
 
 
 
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked, OnDestroy, AfterViewInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ChannelChatService } from '../../../../service/channel-chat/channel-chat.service';
 import { Subscription } from 'rxjs';
@@ -109,18 +11,22 @@ import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../../../../service/user/user.service';
 import { ToastService } from '../../../../service/toster/toster-service.service';
 import { currentGroupI, MessageGroupI, MessageI } from '../../../../interface/server/channelChat';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-community-chat',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ProgressSpinnerModule],
   templateUrl: './community-chat.component.html',
   styleUrls: ['./community-chat.component.scss'],
   providers: [DatePipe]
 })
-export class CommunityChatComponent implements OnInit, AfterViewChecked {
+export class CommunityChatComponent implements OnInit, AfterViewChecked, AfterViewInit, OnDestroy {
   @ViewChild('scrollContainer') private scrollContainer!: ElementRef;
-  
+  @ViewChild('scrollSentinel') private scrollSentinel!: ElementRef;
+  private loadTriggerOffset = 400;
+  allMessagesLoaded = false;
+
   messages: MessageI[] = [];
   groupedMessages: MessageGroupI[] = [];
   userId!: string | null;
@@ -128,6 +34,9 @@ export class CommunityChatComponent implements OnInit, AfterViewChecked {
   channelId!: string | null;
   private routeSubscription!: Subscription;
   private messageSubscription!: Subscription;
+  isLoading = false;
+
+  private observer!: IntersectionObserver;
 
   constructor(
     private chatService: ChannelChatService,
@@ -148,26 +57,91 @@ export class CommunityChatComponent implements OnInit, AfterViewChecked {
     });
   }
 
+  ngAfterViewInit() { 
+    setTimeout(() => {
+      this.setUpObserver();
+      this.scrollContainer.nativeElement.addEventListener('scroll', this.onScroll.bind(this))
+    }, 0);
+  }
+
+  setUpObserver() {
+    this.observer = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && !this.isLoading) {
+        this.loadMoreMessages();
+      }
+      if (this.allMessagesLoaded) {
+        this.observer.disconnect()
+      }
+    },{
+      root:this.scrollContainer.nativeElement,
+      rootMargin:`${this.loadTriggerOffset}px 0px 0px 0px`,
+      threshold:0
+    });
+    this.observer.observe(this.scrollSentinel.nativeElement);
+  }
+
+  onScroll() {
+    if (this.scrollContainer.nativeElement.scrollTop <= this.loadTriggerOffset && !this.isLoading && !this.allMessagesLoaded) {
+      this.loadMoreMessages();
+    }
+  } 
+
+
   loadChannelMessages() {
     if (this.messageSubscription) {
       this.messageSubscription.unsubscribe();
     }
+    this.allMessagesLoaded = false;
     if (this.channelId && this.userId) {
       this.chatService.joinChannel(this.userId, this.channelId);
       this.messageSubscription = this.chatService.getAllMessages().subscribe(messages => {
-        this.messages = messages;
+        this.messages = messages.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
         this.groupMessages();
+        // this.scrollToBottom();
       });
     } else {
       this.toastService.showWarn('Warning', 'Something Went Wrong Please Try Again');
     }
   }
 
+  loadMoreMessages() {
+    if (this.isLoading || !this.userId || !this.channelId) {
+      return;
+    }
+    this.isLoading = true;
+    const prevHeight = this.scrollContainer.nativeElement.scrollHeight;
+
+    this.chatService.loadMoreMessages(this.userId, this.channelId).subscribe({
+      next: (response) => {
+        if (response.length === 0) {
+          this.allMessagesLoaded = true;
+          this.isLoading = false;
+          return;
+        }
+        console.log('new Messages ', response);
+
+        this.messages = [...response, ...this.messages].sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+        this.groupMessages();
+
+        setTimeout(() => {
+          const newHeight = this.scrollContainer.nativeElement.scrollHeight;
+          const scrollOffset = newHeight - prevHeight;
+          this.scrollContainer.nativeElement.scrollTop = scrollOffset > 0 ? scrollOffset : 0;
+          this.isLoading = false;
+        }, 100);
+      },
+      error: (err) => {
+        console.error('Error loading more messages:', err);
+        this.isLoading = false;
+      }
+    });
+  }
+
   groupMessages() {
     this.groupedMessages = [];
     let currentDate = '';
     let currentGroup!: MessageGroupI;
-  
+
     this.messages.forEach((msg: MessageI, index: number) => {
       const messageDate = this.formatDate(msg.createdAt);
       if (messageDate !== currentDate) {
@@ -175,17 +149,19 @@ export class CommunityChatComponent implements OnInit, AfterViewChecked {
         currentGroup = { date: currentDate, messages: [] };
         this.groupedMessages.push(currentGroup);
       }
-  
+
       const prevMsg = index > 0 ? this.messages[index - 1] : null;
       if (prevMsg) {
         msg.grouped = this.shouldGroupWithPreviousMessage(msg, prevMsg);
       } else {
-        msg.grouped = false; // or any default value you want
+        msg.grouped = false;
       }
-      currentGroup.messages.push(msg);
+      if (!currentGroup.messages.some(existingMsg => existingMsg._id === msg._id)) {
+        currentGroup.messages.push(msg);
+
+      }
     });
   }
-  
 
   shouldGroupWithPreviousMessage(currentMsg: MessageI, prevMsg: MessageI): boolean {
     if (!prevMsg) return false;
@@ -215,9 +191,9 @@ export class CommunityChatComponent implements OnInit, AfterViewChecked {
   }
 
   scrollToBottom(): void {
-    try {
-      this.scrollContainer.nativeElement.scrollTop = this.scrollContainer.nativeElement.scrollHeight;
-    } catch(err) { }
+    // try {
+    //   this.scrollContainer.nativeElement.scrollTop = this.scrollContainer.nativeElement.scrollHeight;
+    // } catch (err) {}
   }
 
   ngOnDestroy(): void {
@@ -230,5 +206,9 @@ export class CommunityChatComponent implements OnInit, AfterViewChecked {
     if (this.channelId) {
       this.chatService.leaveChannel(this.channelId);
     }
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+    this.scrollContainer.nativeElement.removeEventListener('scroll', this.onScroll.bind(this));
   }
 }

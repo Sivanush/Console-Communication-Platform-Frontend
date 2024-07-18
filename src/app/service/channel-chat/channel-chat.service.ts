@@ -10,6 +10,10 @@ export class ChannelChatService {
 
  
   private channelMessages = new BehaviorSubject<MessageI[]>([])
+  private currentPage = 1
+  private pageSize = 20
+
+
   constructor( private socket:Socket) {
     this.setupSocketListeners()
    }
@@ -41,5 +45,20 @@ export class ChannelChatService {
 
    getAllMessages(): Observable<MessageI[]>{
     return this.channelMessages.asObservable()
+   }
+
+   loadMoreMessages(userId:string,channelId:string):Observable<MessageI[]>{
+    return new Observable(observe=>{
+      this.socket.emit('getMoreMessages',{userId,channelId,page:this.currentPage,pageSize:this.pageSize})
+      this.socket.once('paginatedMessages',(messages:MessageI[])=>{
+        observe.next(messages)
+        observe.complete()
+        this.currentPage++
+      })
+     
+    })
+
+
+   
    }
 }

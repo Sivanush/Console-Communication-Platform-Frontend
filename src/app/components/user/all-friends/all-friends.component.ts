@@ -7,24 +7,31 @@ import { FriendsSidebarComponent } from '../shared/friends-sidebar/friends-sideb
 import { FriendsHeaderComponent } from '../shared/friends-header/friends-header.component';
 import { DialogModule } from 'primeng/dialog';
 import { Subscription } from 'rxjs';
+import { UserProfileComponent } from "../user-profile/user-profile.component";
+import { CreateServerComponent } from "../shared/create-server/create-server.component";
+import { ToggleUserProfileService } from '../../../service/toggleUserProfile/toggle-user-profile.service';
+import { ToggleCreateServerService } from '../../../service/toggleCreateServer/toggle-create-server.service';
 
 @Component({
-  selector: 'app-all-friends',
-  standalone: true,
-  imports: [FriendsHeaderComponent,FriendsSidebarComponent,FormsModule,RouterLink,RouterLinkActive,DialogModule],
-  templateUrl: './all-friends.component.html',
-  styleUrl: './all-friends.component.scss'
+    selector: 'app-all-friends',
+    standalone: true,
+    templateUrl: './all-friends.component.html',
+    styleUrl: './all-friends.component.scss',
+    imports: [FriendsHeaderComponent, FriendsSidebarComponent, FormsModule, RouterLink, RouterLinkActive, DialogModule, UserProfileComponent, CreateServerComponent]
 })
 export class AllFriendsComponent {
-
   profileVisible:boolean = false
+  createServerVisible:boolean = false
+  private subscription!: Subscription;
+
+  friendProfileVisible:boolean = false
   query!:string
   users!:User[] 
   userId!:string|null 
   viewedUser: User  = {} as User
   private subscriptions: Subscription = new Subscription();
 
-  constructor(private userService:UserService) {
+  constructor(private userService:UserService, private userProfileService:ToggleUserProfileService, private toggleCreateServerService:ToggleCreateServerService) {
     
   }
 
@@ -35,6 +42,22 @@ export class AllFriendsComponent {
     if (this.userId) {
       this.getAllFriends()
     }
+
+    this.subscription = this.toggleCreateServerService.booleanValue$.subscribe({
+      next: (value) => {
+        this.createServerVisible = value 
+        
+      },
+      error:(err)=> console.log(err)
+    })
+
+    this.subscription = this.userProfileService.booleanValue$.subscribe((data: boolean) => {
+      this.profileVisible = data;
+      console.log('Data Updated ',this.profileVisible);
+      
+    });
+
+
   }
 
   getAllFriends(){
@@ -58,7 +81,7 @@ export class AllFriendsComponent {
       next:(response)=>{
         console.log('data: ',response)
         this.viewedUser = response;
-        this.profileVisible = true;
+        this.friendProfileVisible = true;
       },
       error:(err)=>{
         console.log(err);
@@ -69,6 +92,11 @@ export class AllFriendsComponent {
   }
 
   ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
     this.subscriptions.unsubscribe();
   }
+
+ 
 }
