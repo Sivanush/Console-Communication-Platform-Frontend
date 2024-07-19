@@ -21,7 +21,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
   styleUrls: ['./community-chat.component.scss'],
   providers: [DatePipe]
 })
-export class CommunityChatComponent implements OnInit, AfterViewChecked, AfterViewInit, OnDestroy {
+export class CommunityChatComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('scrollContainer') private scrollContainer!: ElementRef;
   @ViewChild('scrollSentinel') private scrollSentinel!: ElementRef;
   private loadTriggerOffset = 400;
@@ -172,9 +172,9 @@ export class CommunityChatComponent implements OnInit, AfterViewChecked, AfterVi
   sendMessage() {
     if (this.userId && this.channelId && this.message.trim()) {
       this.chatService.sendMessage(this.userId, this.channelId, this.message.trim());
+      this.scrollToBottom()
       this.message = '';
-    } else {
-      this.toastService.showWarn('Warning', 'Unable to send message. Please try again.');
+
     }
   }
 
@@ -186,14 +186,14 @@ export class CommunityChatComponent implements OnInit, AfterViewChecked, AfterVi
     return this.datePipe.transform(date, 'shortTime')!;
   }
 
-  ngAfterViewChecked() {
-    this.scrollToBottom();
-  }
+  // ngAfterViewChecked() {
+  //   // this.scrollToBottom();
+  // }
 
   scrollToBottom(): void {
-    // try {
-    //   this.scrollContainer.nativeElement.scrollTop = this.scrollContainer.nativeElement.scrollHeight;
-    // } catch (err) {}
+    try {
+      this.scrollContainer.nativeElement.scrollTop = this.scrollContainer.nativeElement.scrollHeight;
+    } catch (err) {}
   }
 
   ngOnDestroy(): void {

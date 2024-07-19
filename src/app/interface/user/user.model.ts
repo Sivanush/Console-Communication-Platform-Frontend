@@ -1,7 +1,10 @@
 export interface User{
+    customStatus:string
+    status:string
     friendshipStatus: string
     _id:string 
     username:string
+    bio:string
     email:string
     image:string
     isBlocked:boolean 
