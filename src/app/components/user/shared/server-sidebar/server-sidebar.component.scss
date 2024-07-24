@@ -1,57 +1,177 @@
-#second-sidebar {
-    font-size: 14px;
-  }
-  
-  .category {
-    margin-bottom: 8px;
-  }
-  
-  .category-header {
-    display: flex;
-    align-items: center;
-    color: #8e9297;
-    font-size: 12px;
-    font-weight: 500;
-    padding: 4px 0;
-    cursor: pointer;
-  
-    &:hover {
-      color: #dcddde;
+  #second-sidebar {
+      font-size: 14px;
+      display: flex;
+      flex-direction: column;
     }
-  
-    .expand-icon {
-      margin-right: 4px;
-      font-size: 10px;
+    
+    .category {
+      margin-bottom: 8px;
     }
-  
-    .add-icon {
-      margin-left: auto;
-      font-size: 18px;
-      opacity: 0;
-    }
-  
-    &:hover .add-icon {
-      opacity: 1;
-    }
-  }
-  
-  .category-channels {
-    margin-top: 2px;
-  }
-  
-  .channel-item {
-    display: flex;
-    align-items: center;
-    padding: 4px 8px;
-    border-radius: 4px;
-    cursor: pointer;
-  
-    &:hover {
-      background-color: #36393f;
-    }
-  
-    .channel-icon {
-      margin-right: 6px;
+    
+    .category-header {
+      display: flex;
+      align-items: center;
       color: #8e9297;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 4px 0;
+      cursor: pointer;
+    
+      &:hover {
+        color: #dcddde;
+      }
+    
+      .expand-icon {
+        margin-right: 4px;
+        font-size: 10px;
+      }
+    
+      .add-icon {
+        margin-left: auto;
+        font-size: 18px;
+        opacity: 0;
+      }
+    
+      &:hover .add-icon {
+        opacity: 1;
+      }
     }
-  }
+    
+    .category-channels {
+      margin-top: 2px;
+    }
+    
+    .channel-item {
+      display: flex;
+      align-items: center;
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+    
+      &:hover {
+        background-color: #36393f;
+      }
+    
+      .channel-icon {
+        margin-right: 6px;
+        color: #8e9297;
+      }
+    }
+
+    .server-header {
+      background-color: #2f3136;
+      border-bottom: 1px solid #202225;
+    }
+    
+
+
+
+
+
+
+
+
+
+
+    ::ng-deep .discord-menu {
+      background-color: #111214 !important;
+      border-radius: 2px !important;
+      padding: 0px 0px !important;
+      position: absolute;
+      left: 15px;
+      top: 5px;
+      min-width: 220px !important; // Increased width
+      max-width: 280px !important; 
+
+      .mat-menu-content {
+        padding: 0 !important;
+      }
+    
+      .mat-menu-item {
+        height: 32px !important;
+        line-height: 32px !important;
+        font-size: 14px !important;
+        color: #dcddde !important;
+        padding: 0px 0px !important;
+        margin: 2px 0 !important;
+        border-radius: 2px !important;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        
+        &:hover {
+          background-color: rgba(255, 255, 255, 0.1) !important;
+          color: white !important;
+        }
+    
+        .mat-icon {
+          color: #b9bbbe !important;
+          margin-right: 8px !important;
+          font-size: 18px !important;
+          height: 18px !important;
+          width: 18px !important;
+        }
+    
+        &:hover .mat-icon {
+          color: white !important;
+        }
+      }
+
+      .common {
+        color: #ffffff !important;
+    
+        .mat-icon {
+          color: #ffffff !important;
+        }
+        &:hover {
+          color: #00a8fc;
+          .mat-icon {
+            color: #00a8fc;
+          }
+        }
+        span{
+          font-size: 14px
+        }
+        
+      }
+
+      .common:hover{
+        color: #00a8fc;
+          .mat-icon {
+            color: #00a8fc;
+          }
+          
+      }
+    
+      .invite-people {
+        color: #00a8fc !important;
+    
+        .mat-icon {
+          color: #00a8fc !important;
+        }
+        span{
+          font-size: 14px
+        }
+      }
+    
+      .leave-server {
+        color: #ed4245 !important;
+    
+        .mat-icon {
+          color: #ed4245 !important;
+        }
+        span{
+          font-size: 14px
+        }
+      }
+    
+      .mat-divider {
+        border-top-color: #292b2f !important;
+        margin: 4px 0 !important;
+      }
+    }
+    
+    // Override Material's default hover effect
+    ::ng-deep .mat-menu-item:hover:not([disabled]) {
+      background: #4752c4 !important;
+    }

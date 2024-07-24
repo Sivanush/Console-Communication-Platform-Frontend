@@ -6,23 +6,63 @@
     class="h-full w-60 bg-[#2f3136] text-[#dcddde] overflow-y-auto">
     
     <!-- Server name -->
-    <div class="px-4 py-1 flex justify-between items-center border-b border-[#202225]">
-      <h2 class="font-semibold text-white">{{ server.name  }}</h2>
+    <div class="px-4 py-[10px] flex justify-between items-center border-b border-[#202225] cursor-pointer hover:bg-[#34373c] transition duration-300" mat-button [matMenuTriggerFor]="serverMenu">
+      @if (server.name) {
+        <h2 style="margin-bottom: 0px;" class="font-semibold text-white">{{ server.name }}</h2>
+      } @else {
+        <div class="animate-pulse flex space-x-4 h-8">
+          <div class="h-8 bg-[#36393f] rounded w-0"></div>
+        </div>
+      }
       <span class="text-[#b9bbbe]">▼</span>
+    </div>
+
+    <div class="relative">
+    <mat-menu #serverMenu="matMenu" class="discord-menu">
+      <button mat-menu-item class="invite-people">
+        <div (click)="generateInviteCode()" class="menu-item-content">
+        <mat-icon>person_add</mat-icon>
+        <span>Invite People</span>
+      </div>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item class="common">
+        <mat-icon>settings</mat-icon>
+        <span>Server Settings</span>
+      </button>
+      <button mat-menu-item  class="common">
+        <mat-icon>add</mat-icon>
+        <span>Create Channel</span>
+      </button>
+      <button mat-menu-item  class="common">
+        <mat-icon>create_new_folder</mat-icon>
+        <span>Create Category</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item class="leave-server">
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Leave Server</span>
+      </button>
+    </mat-menu>
     </div>
 
     <!-- Channels and categories -->
     <nav class="mt-2 px-2">
-      <ng-container *ngFor="let category of treeData">
-        <div class="category" [class.expanded]="category.expanded">
-          <div class="category-header" (click)="toggleCategory(category)">
-            <span class="expand-icon">{{ category.expanded ? '▼' : '▶' }}</span>
-            {{ category.label.toUpperCase() }}
-            <span class="add-icon">+</span>
+      @for (category of treeData; track category) {
+        <div class="category mb-2">
+          <div class="category-header flex items-center justify-between text-xs font-semibold text-[#8e9297] hover:text-[#dcddde] cursor-pointer px-1 py-1" (click)="toggleCategory(category)">
+            <div>
+              <span class="expand-icon mr-1">{{ category.expanded ? '▼' : '▶' }}</span>
+              {{ category.label.toUpperCase() }}
+            </div>
+            <span class="add-icon hover:text-white">+</span>
           </div>
           <div class="category-channels" *ngIf="category.expanded">
-            <div [routerLink]="['/server', server._id, channel._id]"  *ngFor="let channel of category.children" class="channel-item" (click)="onChannelClick(channel)">
-              <span class="channel-icon" [ngSwitch]="channel.type">
+            <div *ngFor="let channel of category.children" 
+                 class="channel-item flex items-center px-2 py-1 rounded cursor-pointer hover:bg-[#393c43] text-[#8e9297] hover:text-[#dcddde]" 
+                 [routerLink]="['/server', server._id, channel._id]" 
+                 (click)="onChannelClick(channel)">
+              <span class="channel-icon mr-1" [ngSwitch]="channel.type">
                 <ng-container *ngSwitchCase="'text'">#</ng-container>
                 <ng-container *ngSwitchCase="'voice'">🔊</ng-container>
                 <ng-container *ngSwitchCase="'video'">📹</ng-container>
@@ -32,7 +72,28 @@
             </div>
           </div>
         </div>
-      </ng-container>
+      }@empty {
+        <div class="p-3 bg-[#2f3136] w-[232px] ">
+          <!-- Category skeletons -->
+          @for (item of [1, 2]; track item) {
+            <div class="category mb-4">
+              <!-- Category header skeleton -->
+              <div class="category-header flex items-center justify-between text-xs font-semibold px-1 py-1">
+                <div class="w-24 h-4 bg-[#36393f] rounded animate-pulse"></div>
+                <div class="w-4 h-4 bg-[#36393f] rounded animate-pulse"></div>
+              </div>
+              
+              <!-- Channel skeletons -->
+              @for (channel of [1, 2, 3]; track channel) {
+                <div class="channel-item flex items-center px-2 py-1 mt-1">
+                  <div class="w-4 h-4 bg-[#36393f] rounded mr-2 animate-pulse"></div>
+                  <div class="w-32 h-4 bg-[#36393f] rounded animate-pulse"></div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      }
     </nav>
   </div>
 </aside>

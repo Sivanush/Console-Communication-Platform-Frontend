@@ -1,4 +1,4 @@
-<div class="flex-grow overflow-y-auto px-4 py-6" id="scrollContainer" #scrollContainer>
+<div class="flex-grow overflow-y-auto px-4 py-1" id="scrollContainer" #scrollContainer>
   @if(groupedMessages.length !== 0){
     @if (allMessagesLoaded) {
       <div class="text-center text-sm text-[#72767d] py-2">All messages loaded</div>
@@ -47,16 +47,18 @@
   </div>
   }
   @empty {
-  <div class="h-full flex flex-col items-center justify-center text-center">
-    <svg class="w-16 h-16 text-[#72767d] mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-      stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
-      </path>
-    </svg>
-    <p class="text-[#ffffff] text-lg font-medium">No messages yet</p>
-    <p class="text-[#72767d] mt-1 text-sm">Start the conversation!</p>
-  </div>
+    <div class="p-4">
+      @for (item of [1,2,3,4,5,6,7,8]; track item) {
+        <div class="flex mb-6">
+          <div class="w-10 h-10 rounded-full bg-[#2f3136] mr-4 animate-pulse"></div>
+          <div class="flex-1">
+            <div class="h-5 w-32 bg-[#2f3136] mb-2 rounded animate-pulse"></div>
+            <div class="h-4 bg-[#2f3136] mb-1.5 rounded animate-pulse"></div>
+            <div class="h-4 w-3/4 bg-[#2f3136] rounded animate-pulse"></div>
+          </div>
+        </div>
+      }
+    </div>
   }
 </div>
 
@@ -75,3 +77,5 @@
     </button>
   </div>
 </div>
+
+

@@ -1,40 +1,37 @@
-.dark-theme-dialog .p-dialog-header {
-    background-color: #36393f !important;
-    color: white !important;
-    border-bottom: none !important;
-  }
-  
-  .dark-theme-dialog .p-dialog-content {
-    background-color: #36393f !important;
-    color: white !important;
-  }
-  
-  .dark-theme-dialog .p-dialog-footer {
-    background-color: #36393f !important;
-    color: white !important;
-    border-top: none !important;
-  }
-  
-  .dark-theme-dialog .p-dialog-header-icon {
-    color: white !important;
-  }
-  
-  .dark-theme-dialog .p-dialog-header-icon:hover {
-    background-color: rgba(255,255,255,0.1) !important;
-  }
+::ng-deep .discord-tabs .p-tabview-nav {
+  background-color: #2f3136;
+  border: none;
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
 
-  :host ::ng-deep .p-dialog .p-dialog-header,
-:host ::ng-deep .p-dialog .p-dialog-content,
-:host ::ng-deep .p-dialog .p-dialog-footer {
-  background: #36393f;
-  color: white;
+::ng-deep .discord-tabs .p-tabview-nav li .p-tabview-nav-link {
+  background-color: #2f3136;
+  color: #8e9297;
+  border: none;
+  width: 100%;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+}
+
+::ng-deep .discord-tabs .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+  background-color: #2f3136;
+  color: #ffffff;
+}
+
+::ng-deep .discord-tabs .p-tabview-panels {
+  background-color: #2f3136;
   border: none;
 }
 
-:host ::ng-deep .p-dialog .p-dialog-header .p-dialog-title {
-  color: white;
+::ng-deep .discord-tabs .p-tabview-nav li .p-tabview-nav-link:not(.p-disabled):focus {
+  box-shadow: none;
 }
 
-:host ::ng-deep .p-dialog .p-dialog-header .p-dialog-header-icon {
-  color: white;
+::ng-deep .discord-tabs .p-tabview-panels {
+  height: 500px; /* Set a fixed height for the tab content */
+  overflow-y: auto; /* Add vertical scroll if content overflows */
 }
+
+

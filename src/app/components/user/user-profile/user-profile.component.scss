@@ -35,3 +35,17 @@
 }
 
 
+#scrollContainer::-webkit-scrollbar-track {
+    scroll-behavior: smooth;
+    background-color: #36393f;
+}
+
+#scrollContainer::-webkit-scrollbar {
+    width: 8px;
+    background-color: transparent;
+}
+
+#scrollContainer::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: #2F3136;
+}

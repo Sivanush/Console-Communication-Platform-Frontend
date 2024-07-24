@@ -16,6 +16,7 @@ import { directChatGuard } from '../guards/user/direct-chat.guard';
 import { UserProfileComponent } from '../components/user/user-profile/user-profile.component';
 import { ServerDetailsComponent } from '../components/user/server-details/server-details.component';
 import { CommunityChatComponent } from '../components/user/shared/community-chat/community-chat.component';
+import { AcceptInviteComponent } from '../components/user/accept-invite/accept-invite.component';
 
 export const userRoute: Routes = [
   {
@@ -80,5 +81,9 @@ export const userRoute: Routes = [
   {
     path: 'server/:serverId/:channelId',
     component: ServerDetailsComponent,
+  },
+  {
+    path:'invite/:inviteCode',
+    component:AcceptInviteComponent
   }
 ];

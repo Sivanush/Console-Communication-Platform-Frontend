@@ -1,16 +1,16 @@
 <aside class="flex h-screen fixed left-0 top-0 transition-transform -translate-x-full sm:translate-x-0"
   id="main-sidebar">
-  <app-main-sidebar/>
+  <app-main-sidebar />
   <div id="second-sidebar"
     class="h-full px-3 pb-4 overflow-y-auto bg-[#2f3136] w-60 dark:bg-gray-900 dark:border-gray-700">
-    
+
     <div class="flex justify-center items-center w-full py-3">
       <form class="w-full">
         <label for="search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">search</label>
         <div class="relative">
           <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-            <svg class="w-4 h-4 text-[#72767d]" aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+            <svg class="w-4 h-4 text-[#72767d]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+              viewBox="0 0 20 20">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
             </svg>
@@ -23,38 +23,42 @@
     </div>
 
     <nav class="mt-2 ">
-    <div>
-      <a class="flex items-center px-3 py-2 text-[#dcddde] transition-colors duration-200 transform rounded-md hover:bg-[#36393f] hover:text-white"
-      [routerLink]="['/friend']" 
-      routerLinkActive="bg-[#36393f] text-white"
-      [routerLinkActiveOptions]="{exact: false}"
-   >
-     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" 
-        class="w-6 h-6 transition-colors duration-300">
-       <path d="M4.5 6.375a4.125 4.125 0 1 1 8.25 0 4.125 4.125 0 0 1-8.25 0ZM14.25 8.625a3.375 3.375 0 1 1 6.75 0 3.375 3.375 0 0 1-6.75 0ZM1.5 19.125a7.125 7.125 0 0 1 14.25 0v.003l-.001.119a.75.75 0 0 1-.363.63 13.067 13.067 0 0 1-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 0 1-.364-.63l-.001-.122ZM17.25 19.128l-.001.144a2.25 2.25 0 0 1-.233.96 10.088 10.088 0 0 0 5.06-1.01.75.75 0 0 0 .42-.643 4.875 4.875 0 0 0-6.957-4.611 8.586 8.586 0 0 1 1.71 5.157v.003Z" />
-     </svg>
-     <span class="mx-2 text-sm font-medium">Friends</span>
-   </a>
-    </div>
+      <div>
+        <a class="flex items-center px-3 py-2 text-[#dcddde] transition-colors duration-200 transform rounded-md hover:bg-[#36393f] hover:text-white"
+          [routerLink]="['/friend']" routerLinkActive="bg-[#36393f] text-white"
+          [routerLinkActiveOptions]="{exact: false}">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+            class="w-6 h-6 transition-colors duration-300">
+            <path
+              d="M4.5 6.375a4.125 4.125 0 1 1 8.25 0 4.125 4.125 0 0 1-8.25 0ZM14.25 8.625a3.375 3.375 0 1 1 6.75 0 3.375 3.375 0 0 1-6.75 0ZM1.5 19.125a7.125 7.125 0 0 1 14.25 0v.003l-.001.119a.75.75 0 0 1-.363.63 13.067 13.067 0 0 1-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 0 1-.364-.63l-.001-.122ZM17.25 19.128l-.001.144a2.25 2.25 0 0 1-.233.96 10.088 10.088 0 0 0 5.06-1.01.75.75 0 0 0 .42-.643 4.875 4.875 0 0 0-6.957-4.611 8.586 8.586 0 0 1 1.71 5.157v.003Z" />
+          </svg>
+          <span class="mx-2 text-sm font-medium">Friends</span>
+        </a>
+      </div>
 
       <div class="w-full h-0.5 bg-[#36393f] rounded-full my-3"></div>
 
-     @for (user of users; track user) {
-      <a class="flex items-center px-3 py-2 mb-1 text-[#dcddde] transition-colors duration-200 transform rounded-md hover:bg-[#36393f] hover:text-white"
-      [routerLink]="['/direct-chat', userId, user._id]" routerLinkActive="bg-[#36393f]">
-     <div class="relative mr-2">
-       <img class="w-8 h-8 rounded-full" src="{{user.image}}">
-      <!-- @if (isFriendOnline) {
-        <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-[#202225]"></div>
-      } -->
-      </div>
-     <span class="text-sm font-medium">{{user.username}}</span>
-   </a>
-     }
-     
+      @for (user of users; track user) {
+      <a class="flex items-center justify-between px-3 py-2 mb-1 text-[#dcddde] transition-colors duration-200 transform rounded-md hover:bg-[#36393f] hover:text-white"
+        [routerLink]="['/direct-chat', userId, user._id]" routerLinkActive="bg-[#36393f]">
+        <div class="flex items-center">
+          <div class="relative mr-3">
+            <img class="w-8 h-8 rounded-full" src="{{user.image}}">
+            <!-- @if (isFriendOnline) { -->
+            <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-[#202225]"></div>
+            <!-- } -->
+          </div>
+          <span class="text-sm font-medium">{{user.username}}</span>
+        </div>
+        @if (unreadCounts[user._id] && unreadCounts[user._id] > 0) {
+        <p-badge [value]="unreadCounts[user._id].toString()" severity="danger"></p-badge>
+        }
+      </a>
+      }
+
     </nav>
-    
+
     <!-- Add more sidebar content as needed -->
-    
+
   </div>
 </aside>

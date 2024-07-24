@@ -1,0 +1,38 @@
+<div class="min-h-screen bg-[#36393f] flex flex-col items-center justify-center px-4">
+    <div class="bg-[#2f3136] rounded-lg shadow-xl max-w-md w-full p-8 text-center">
+      @if (isLoading) {
+      <ng-container>
+        <div class="text-white">Loading invite details...</div>
+      </ng-container>
+    }
+    @if (!isLoading && !error) {
+      <ng-container>
+        <img [src]="serverIcon" alt="Server Icon" class="w-24 h-24 rounded-full mx-auto mb-4">
+        <h1 class="text-2xl font-bold text-white mb-2">You've been invited to join a server</h1>
+        <div class="bg-[#36393f] rounded-lg p-4 mb-6">
+          <h2 class="text-xl font-semibold text-white mb-1">{{ serverName }}</h2>
+          <p class="text-[#b9bbbe] text-sm">{{ memberCount.toLocaleString() }} Members</p>
+        </div>
+        <button 
+          (click)="acceptInvite()"
+          class="w-full bg-[#5865f2] hover:bg-[#4752c4] text-white font-medium py-3 px-4 rounded-md transition duration-200 mb-4"
+        >
+          Accept Invite
+        </button>
+        <p class="text-[#b9bbbe] text-sm">
+          By accepting, you agree to Discord's
+          <a href="#" class="text-[#00b0f4] hover:underline">Community Guidelines</a>
+        </p>
+      </ng-container>
+
+    }
+    @if (error) {
+      <ng-container>
+        <div class="text-red-500">{{ error }}</div>
+      </ng-container>
+    }
+    </div>
+    <div class="mt-6 text-[#b9bbbe] text-sm">
+      <a href="#" class="hover:underline">Don't have Discord yet? Download it!</a>
+    </div>
+  </div>

@@ -1,9 +1,9 @@
-<p-sidebar [style]="{'background-color': '#36393f', 'color':'white'}" (onHide)="close()" [(visible)]="sidebarVisible" [fullScreen]="true">
-  <ng-template pTemplate="content">
+<p-sidebar [style]="{'background-color': '#36393f', 'color':'white'}" (onHide)="close()" [(visible)]="sidebarVisible" [fullScreen]="true" >
+  <ng-template pTemplate="content" >
     <div class="flex justify-center items-center h-full">
-      <div class="w-full max-w-3xl bg-[#2f3136] rounded-lg shadow-lg overflow-hidden">
-        <p-tabView styleClass="discord-tabs">
-          <p-tabPanel header="User Profile">
+      <div  #scrollContainer class="w-full max-w-3xl bg-[#2f3136] rounded-lg shadow-lg overflow-hidden">
+        <p-tabView styleClass="discord-tabs" >
+          <p-tabPanel header="User Profile"#scrollContainer >
             <div class="p-6">
               <!-- User Info -->
               <div class="flex items-center mb-6">
@@ -41,22 +41,25 @@
                   <strong class="block text-xs text-gray-400 mb-1">MEMBER SINCE</strong>
                   <span class="text-sm text-gray-300">{{ formatDate(userData.createdAt) }}</span>
                 </div>
-                <div>
-                  <strong class="block text-xs text-gray-400 mb-1">NOTE</strong>
-                  <span class="text-sm text-gray-300">Add a note</span>
-                </div>
-                <button [routerLink]="['/forget-password']"   class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+               <div class="flex flex-col gap-3 w-auto items-start">
+                <strong class="block text-xs text-gray-400 ">CHANGE PASSWORD</strong>
+                <button [routerLink]="['/forget-password']" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ">
                   Change Password
                 </button>
+                <strong class="block text-xs text-gray-400">LOGOUT</strong>
+                <button (click)="logout()"   class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                  Logout
+                </button>
+               </div>
               </div>
             </div>
           </p-tabPanel>
           
-          <p-tabPanel header="User Settings">
+          <!-- <p-tabPanel header="User Settings"> -->
             <!-- ... (existing user settings content) ... -->
-          </p-tabPanel>
+          <!-- </p-tabPanel> -->
           
-          <p-tabPanel header="Servers">
+          <!-- <p-tabPanel header="Servers">
             <div class="p-6">
               <h3 class="text-lg font-semibold text-white mb-4">Joined Servers</h3>
               <ul class="space-y-2">
@@ -68,7 +71,7 @@
                 }
               </ul>
             </div>
-          </p-tabPanel>
+          </p-tabPanel> -->
         </p-tabView>
       </div>
     </div>

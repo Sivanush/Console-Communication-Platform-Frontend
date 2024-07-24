@@ -77,7 +77,15 @@ export class DirectChatComponent implements OnInit, AfterViewChecked, OnDestroy 
         console.log('Data Updated ',this.profileVisible);
         
       });
+
+      
     });
+
+    if (this.userId && this.friendId) {
+      this.chatService.markMessagesAsRead(this.userId, this.friendId);
+    }
+
+
     
    
     
@@ -90,6 +98,8 @@ export class DirectChatComponent implements OnInit, AfterViewChecked, OnDestroy 
     if (this.userId) {
       this.chatService.connectUser(this.userId);
     }
+
+    this.chatService.setCurrentChatPartner(this.friendId)
   }
 
   initializeChat(): void {
@@ -113,24 +123,28 @@ export class DirectChatComponent implements OnInit, AfterViewChecked, OnDestroy 
         console.log(err);
       }
     });
-    console.log('start');
     
     this.messagesSubscription =  this.chatService.getAllMessages().subscribe(msg => {
       console.log(msg, "All messages");
       this.messages = msg;
       this.scrollToBottom();
     });
-    console.log('end');
 
 
     this.lastMessageSubscription = this.chatService.getLastMessage().subscribe((msg) => {
+      if (this.userId && this.friendId) {
+        this.chatService.markMessagesAsRead(this.userId, this.friendId);
+        }
       console.log("last message   ", msg);
       this.messages.push(msg);
+    
       this.scrollToBottom();
+
     });
   }
 
   ngOnDestroy(): void {
+    this.chatService.setCurrentChatPartner(null);
     this.paramSubscription?.unsubscribe();
     this.messagesSubscription?.unsubscribe();
     this.lastMessageSubscription?.unsubscribe();

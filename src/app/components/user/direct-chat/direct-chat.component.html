@@ -7,7 +7,7 @@
 
       <div class="flex-1 flex flex-col bg-[#36393f] overflow-hidden">
         <div class="flex-1 overflow-y-auto px-4 py-6" id="scrollContainer" #scrollContainer>
-          @for (msg of messages; track msg._id) {
+          @for (msg of messages; track msg) {
 
             <div class="flex mb-4" [ngClass]="{'justify-end': msg.senderId._id === userId}">
               <div class="flex items-start" [ngClass]="{'flex-row-reverse': msg.senderId._id === userId}">

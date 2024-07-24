@@ -1,49 +1,48 @@
 <main class="flex h-screen bg-[#36393f] overflow-hidden">
   <app-friends-sidebar />
-  
+
   <div class="flex-1 flex flex-col h-full w-full" id="main-content-wrapper">
     <div class="flex flex-col h-full">
       <app-friends-header [name]="'Friends'" />
-    
+
       <div class="flex-1 p-6 bg-[#36393f] overflow-y-auto flex flex-col">
         <h2 class="text-[#ffffff] text-xl font-semibold mb-4">All Friends</h2>
-        
-        <!-- <div class="mb-6">
-          <div class="relative">
-            <input [(ngModel)]="query" type="search" 
-                   class="w-full bg-[#202225] text-[#dcddde] rounded-md pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#5865f2] transition-all"
-                   placeholder="Search friends">
-            <svg class="w-5 h-5 text-[#72767d] absolute left-3 top-1/2 transform -translate-y-1/2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-          </div>
-        </div> -->
-        
+
         <div class="space-y-2 flex-grow flex flex-col">
           @for (user of users; track user) {
             <div class="flex w-full bg-[#2f3136] rounded-md p-3 justify-between items-center hover:bg-[#292b2f] transition-all">
               <div class="flex items-center space-x-3">
-                <img src="{{user.image}}" alt="user-profile" class="w-10 h-10 rounded-full">
+                <img [src]="user.image" alt="user-profile" class="w-10 h-10 rounded-full">
                 <p class="text-[#ffffff] text-base font-medium">{{user.username}}</p>
               </div>
               <div class="flex space-x-2">
-                <button class="text-[#b9bbbe] hover:text-[#dcddde] transition-all"  [routerLink]="['/direct-chat', userId, user._id]" routerLinkActive="router-link-active" >
-                  <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                <button class="text-[#b9bbbe] hover:text-[#dcddde] transition-all"
+                  [routerLink]="['/direct-chat', userId, user._id]" routerLinkActive="router-link-active">
+                  <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+                    </path>
                   </svg>
                 </button>
-                <button class="text-[#b9bbbe] hover:text-[#dcddde] transition-all" (click)="toggleProfile(user._id)"  >
-                  <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"> 
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                <button class="text-[#b9bbbe] hover:text-[#dcddde] transition-all" (click)="toggleProfile(user._id)">
+                  <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                    </path>
                   </svg>
                 </button>
               </div>
             </div>
-          } @empty() {
+          } @empty {
             <div class="flex-grow flex flex-col items-center justify-center text-center">
-              <svg class="w-16 h-16 text-[#72767d] mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+              <svg class="w-16 h-16 text-[#72767d] mb-4" xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
               </svg>
               <p class="text-[#ffffff] text-lg font-medium">No friends found</p>
               <p class="text-[#72767d] mt-1 text-sm">Try adjusting your search or add some friends!</p>
@@ -55,70 +54,58 @@
   </div>
 </main>
 
+<p-sidebar [style]="{'background-color': '#36393f', 'color':'white'}" (onHide)="close()" [(visible)]="friendProfileVisible" [fullScreen]="true">
+  <ng-template pTemplate="content">
+    <div class="flex justify-center items-center h-full">
+      <div class="w-full max-w-3xl bg-[#2f3136] rounded-lg shadow-lg overflow-hidden">
+        <p-tabView styleClass="discord-tabs">
+          <p-tabPanel header="User Profile">
+            <div class="p-6">
+              <!-- User Info -->
+              <div class="flex items-center mb-6">
+                <div class="relative mr-4">
+                  @if (viewedUser.image) {
+                    <img class="w-20 h-20 bg-gray-600 rounded-full flex items-center justify-center text-2xl font-bold" [src]="viewedUser.image">
+                  }
+                  <div class="absolute bottom-0 right-0 w-5 h-5 rounded-full" [ngClass]="getStatusClass()"></div>
+                </div>
+                <div>
+                  <h2 class="text-xl font-semibold text-white">{{viewedUser.username}}</h2>
+                  <p class="text-sm text-gray-300">{{viewedUser.customStatus}}</p>
+                </div>  
+              </div>
 
-@if (friendProfileVisible) {
-  <div class="card flex justify-content-center">
-    <p-dialog 
-      [(visible)]="friendProfileVisible" 
-      [modal]="true" 
-      [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
-      [style]="{ width: '50vw' }" 
-      [draggable]="false" 
-      [resizable]="false"
-      styleClass="dark-theme-dialog"
-      [contentStyle]="{'background-color': '#36393f', 'color': 'white'}"
-      header="User Profile">
-      
-      <ng-template pTemplate="header">
-        <span class="text-white">User Profile</span>
-      </ng-template>
-      
-      <div class="p-6">
-        <!-- User Info -->
-        <div class="flex items-center mb-6">
-          <div class="relative mr-4">
-            <img class="w-20 h-20 bg-gray-600 rounded-full flex items-center justify-center text-2xl font-bold" [src]="viewedUser.image">
-            <div class="absolute bottom-0 right-0 w-5 h-5 bg-green-500 border-2 border-[#36393f] rounded-full"></div>
-          </div>
-          <div>
-            <h2 class="text-xl font-semibold text-white">{{viewedUser.username}}</h2> 
-          </div>
-        </div>
-  
-        <!-- User Status -->
-        <!-- <div class="mb-6 p-3 bg-[#2f3136] rounded">
-          <p class="text-sm text-gray-300">online</p>
-        </div> -->
-  
-        <!-- User Details -->
-        <!-- <div class="space-y-4">
-          <div>
-            <strong class="block text-xs text-gray-400 mb-1">MEMBER SINCE</strong>
-            <span class="text-sm text-gray-300">1-1-2023</span>
-          </div>
-          <div>
-            <strong class="block text-xs text-gray-400 mb-1">ROLES</strong>
-            <!-- @for (role of viewedUser.roles; track role) {
-              <span class="inline-block px-2 py-1 bg-blue-600 rounded text-xs mr-2 text-white">{{role}}</span>
-            } -->
-          <!-- </div>
-          <div>
-            <strong class="block text-xs text-gray-400 mb-1">MUTUAL SERVERS</strong>
-            <span class="text-sm text-gray-300">6 servers in common</span>
-          </div>  -->
-        <!-- </div> -->
+              <!-- User Bio -->
+              <div class="mb-6">
+                <strong class="block text-xs text-gray-400 mb-1">ABOUT ME</strong>
+                <div class="p-2 bg-[#36393f] rounded">
+                  <p class="text-sm text-gray-300">{{viewedUser.bio}}</p>
+                </div>
+              </div>
+
+              <!-- User Details -->
+              <div class="space-y-4">
+                <div>
+                  <strong class="block text-xs text-gray-400 mb-1">MEMBER SINCE</strong>
+                  <span class="text-sm text-gray-300">{{ formatDate(viewedUser.createdAt) }}</span>
+                </div>
+              </div>
+            </div>
+          </p-tabPanel>
+          
+          <!-- ... (other tab panels if needed) ... -->
+        </p-tabView>
       </div>
-  
-    </p-dialog>
-  </div>
-  }
+    </div>
+  </ng-template>
+</p-sidebar>
 
 
 
-  @if (profileVisible) {
-    <app-user-profile />
-  }
-  
-  @if (createServerVisible) {
-    <app-create-server />
-  }
+@if (profileVisible) {
+  <app-user-profile />
+}
+
+@if (createServerVisible) {
+  <app-create-server />
+}

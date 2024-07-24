@@ -12,11 +12,13 @@ import { UserService } from '../../../../service/user/user.service';
 import { ToastService } from '../../../../service/toster/toster-service.service';
 import { currentGroupI, MessageGroupI, MessageI } from '../../../../interface/server/channelChat';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+
 
 @Component({
   selector: 'app-community-chat',
   standalone: true,
-  imports: [CommonModule, FormsModule, ProgressSpinnerModule],
+  imports: [CommonModule, FormsModule, ProgressSpinnerModule,NgxSkeletonLoaderModule],
   templateUrl: './community-chat.component.html',
   styleUrls: ['./community-chat.component.scss'],
   providers: [DatePipe]
@@ -24,6 +26,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 export class CommunityChatComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('scrollContainer') private scrollContainer!: ElementRef;
   @ViewChild('scrollSentinel') private scrollSentinel!: ElementRef;
+  
   private loadTriggerOffset = 400;
   allMessagesLoaded = false;
 
@@ -54,6 +57,7 @@ export class CommunityChatComponent implements OnInit, AfterViewInit, OnDestroy 
       }
       this.channelId = params['channelId'];
       this.loadChannelMessages();
+      this.scrollToBottom()
     });
   }
 
@@ -97,7 +101,7 @@ export class CommunityChatComponent implements OnInit, AfterViewInit, OnDestroy 
       this.messageSubscription = this.chatService.getAllMessages().subscribe(messages => {
         this.messages = messages.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
         this.groupMessages();
-        // this.scrollToBottom();
+        this.scrollToBottom();
       });
     } else {
       this.toastService.showWarn('Warning', 'Something Went Wrong Please Try Again');
@@ -192,8 +196,12 @@ export class CommunityChatComponent implements OnInit, AfterViewInit, OnDestroy 
 
   scrollToBottom(): void {
     try {
-      this.scrollContainer.nativeElement.scrollTop = this.scrollContainer.nativeElement.scrollHeight;
-    } catch (err) {}
+      setTimeout(() => {
+        this.scrollContainer.nativeElement.scrollTop = this.scrollContainer.nativeElement.scrollHeight;
+      }, 200);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   ngOnDestroy(): void {

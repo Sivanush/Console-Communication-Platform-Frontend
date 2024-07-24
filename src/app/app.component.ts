@@ -19,8 +19,7 @@ export class AppComponent {
   title = 'Frontend';
   userId!:string | null
 
-  constructor(private userService:UserService,private chatService:ChatServiceService) {
-    
+  constructor(private userService:UserService,private chatService:ChatServiceService ) {
   }
 
   async ngOnInit(): Promise<void> {

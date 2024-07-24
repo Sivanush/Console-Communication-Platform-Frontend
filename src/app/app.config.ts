@@ -56,6 +56,7 @@ export const appConfig: ApplicationConfig = {
     provideDatabase(() => getDatabase()),
     provideStore({user:userReducer}),
     provideEffects([userEffects]), provideAnimationsAsync(),
-    importProvidersFrom(SocketIoModule.forRoot(config)),
+    importProvidersFrom(SocketIoModule.forRoot(config)), provideAnimationsAsync(),
+    
 ]
 };

@@ -13,32 +13,6 @@ font-family: 'Rubik', sans-serif !important
 }
 
 
-
-// @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-
-// body {
-//   font-family: 'Roboto', sans-serif;
-// }
-
-/* styles.scss */
-
-/* styles.scss */
-
-/* Override the styles for the PrimeNG Toast component */
-// .p-toast {
-//     .p-toast-message {
-//         padding: 3px;
-//         backdrop-filter: blur(5px); 
-//         -webkit-backdrop-filter: blur(px); 
-//         border: 0px solid; 
-//         border-radius: 8px; 
-//         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-//         cursor: pointer;
-//     }
-//   }
-
-
-
 .p-toast {
   .p-toast-message {
     padding: 10px 12px;
@@ -173,5 +147,22 @@ font-family: 'Rubik', sans-serif !important
 @media (max-width: 639px) {
   #main-content-wrapper {
     margin-left: 0;
+  }
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+@layer components {
+  .mat-dialog-container {
+    @apply p-0 bg-transparent shadow-none;
+  }
+
+  .mat-flat-button.mat-primary {
+    @apply bg-[#5865f2] hover:bg-[#4752c4];
+  }
+
+  .mat-button {
+    @apply text-white hover:bg-[#40444b];
   }
 }

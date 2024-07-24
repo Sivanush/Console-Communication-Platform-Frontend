@@ -41,4 +41,16 @@ export class ServerService {
     return this.http.get<IServer>(`${this.apiLink}/server-detail/${serverId}`,)
   }
 
+  generateInviteLink(serverId:string){
+    return this.http.post<{inviteCode:string,expireDate:string}>(`${this.apiLink}/generate-invite-code`,{serverId})
+  }
+
+  joinServer(inviteCode:string,userId:string){
+    return this.http.post<{serverData:string}>(`${this.apiLink}/join-server`,{inviteCode,userId})
+  }
+
+  getInviteDetails(inviteCode: string){
+    return this.http.get<{ serverDetail: { serverId: IServer }, memberCount: number }>(`${this.apiLink}/server-detail-by-invite/${inviteCode}`);
+  }
+
 }
