@@ -40,7 +40,8 @@ interface ChannelNode {
     providers:[ {provide: MatDialogRef, useValue:{}},{ provide: MAT_DIALOG_DATA, useValue: {} },]
 })
 export class ServerSidebarComponent {
-  @Output() toggleChat = new EventEmitter<boolean>()
+  @Output() toggleChat = new EventEmitter<boolean>(false)
+  @Output() toggleVideo = new EventEmitter<boolean>(false)
   @Output() channelSelected = new EventEmitter<string>();
 
   server: IServer = {
@@ -130,10 +131,20 @@ export class ServerSidebarComponent {
 
 
   onChannelClick(channel: ChannelNode) {
+    
+  
+    
     if (channel.type === 'text') {
+      console.log(channel);
       this.toggleChat.emit(true);
+      this.toggleVideo.emit(false);
+      this.channelSelected.emit(channel._id);
+    }else if(channel.type === 'video'){
+      this.toggleVideo.emit(true);
+      this.toggleChat.emit(false);
       this.channelSelected.emit(channel._id);
     } else {
+      this.toggleVideo.emit(false);
       this.toggleChat.emit(false);
       this.channelSelected.emit(channel._id);
     }

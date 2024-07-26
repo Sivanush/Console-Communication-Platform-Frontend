@@ -58,6 +58,9 @@ export class CommunityChatComponent implements OnInit, AfterViewInit, OnDestroy 
       this.channelId = params['channelId'];
       this.loadChannelMessages();
       this.scrollToBottom()
+     
+      
+      
     });
   }
 

@@ -14,7 +14,7 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './create-channel.component.scss'
 })
 export class CreateChannelComponent {
-  type: 'text' | 'voice' = 'text';
+  type: 'text' | 'voice'| 'video' = 'text';
   categoryId!: string
   name!: string
   serverId!: string

@@ -8,17 +8,18 @@ import { CreateServerComponent } from "../shared/create-server/create-server.com
 import { ToggleUserProfileService } from '../../../service/toggleUserProfile/toggle-user-profile.service';
 import { ToggleCreateServerService } from '../../../service/toggleCreateServer/toggle-create-server.service';
 import { Subscription } from 'rxjs';
+import { CommunityVideoChatComponent } from "../shared/community-video-chat/community-video-chat.component";
 
 @Component({
     selector: 'app-server-details',
     standalone: true,
     templateUrl: './server-details.component.html',
     styleUrl: './server-details.component.scss',
-    imports: [FriendsSidebarComponent, FriendsHeaderComponent, ServerSidebarComponent, CommunityChatComponent, UserProfileComponent, CreateServerComponent]
+    imports: [FriendsSidebarComponent, FriendsHeaderComponent, ServerSidebarComponent, CommunityChatComponent, UserProfileComponent, CreateServerComponent, CommunityVideoChatComponent]
 })
 export class ServerDetailsComponent {
-    isChat:boolean = true
-
+    isChat!:boolean
+    isVideo!:boolean
     profileVisible:boolean = false
     createServerVisible:boolean = false
     private subscription!: Subscription;
@@ -35,6 +36,10 @@ export class ServerDetailsComponent {
         this.isChat = value
     }
 
+    isVideoToggle(value:boolean){
+      this.isVideo = value
+  }
+
     ngOnInit(): void {
         this.subscription = this.toggleCreateServerService.booleanValue$.subscribe({
             next: (value) => {
@@ -46,7 +51,7 @@ export class ServerDetailsComponent {
       
           this.subscription = this.userProfileService.booleanValue$.subscribe((data: boolean) => {
             this.profileVisible = data;
-            console.log('Data Updated ',this.profileVisible);
+            // console.log('Data Updated ',this.profileVisible);
             
           });
     }
