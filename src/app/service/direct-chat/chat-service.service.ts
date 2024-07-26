@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { directChatI } from '../../interface/user/direct-chat';
+import { User } from '../../interface/user/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,8 @@ export class ChatServiceService {
   private heartbeatInterval: any;
   private unreadMessagesSubject = new BehaviorSubject<{[userId: string]: number}>({});
   private currentChatPartner: string | null = null;
-
-
+  private friendsStatus = new BehaviorSubject<any>([]);
+  
   constructor(private socket: Socket) {
     this.setupSocketListeners();
   }
@@ -35,10 +36,23 @@ export class ChatServiceService {
         // Otherwise, update the unread count
         this.getUnreadMessageCount(message.receiverId._id, message.senderId._id);
       }
-      // if (message.senderId && message.senderId._id) {
-      //   this.getUnreadMessageCount(message.receiverId._id, message.senderId._id);
-      // }
+  
     });
+
+
+
+    this.socket.on('friendsStatus',(friends:directChatI[])=>{
+      this.friendsStatus.next(friends);
+    })
+
+    this.socket.on('userStatusUpdate', ({ userId, status }:{userId:string,status:string}) => {
+      const currentFriends = this.friendsStatus.value;
+      const updatedFriends = currentFriends.map((friend: { _id: string; }) => 
+          friend._id === userId ? { ...friend, status } : friend
+      );
+      this.friendsStatus.next(updatedFriends);
+  });
+
 
   }
 
@@ -55,6 +69,11 @@ export class ChatServiceService {
     this.socket.emit('user-connect', userId);
     this.startHeartbeat(userId);
   }
+
+  getFriendsStatus(userId: string): Observable<{  friends: User[] }> {
+    this.socket.emit('getFriendsStatus', userId);
+    return this.friendsStatus.asObservable();
+}
 
   disconnectUser() {
     this.socket.disconnect();

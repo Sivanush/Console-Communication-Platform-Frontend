@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { IAllServer } from '../../interface/server/getAllServer';
 import { Subject } from 'rxjs';
 import { IServer } from '../../interface/server/serverDetails';
+import { ICategory } from '../../interface/server/categories';
 
 @Injectable({
   providedIn: 'root'
@@ -53,4 +54,15 @@ export class ServerService {
     return this.http.get<{ serverDetail: { serverId: IServer }, memberCount: number }>(`${this.apiLink}/server-detail-by-invite/${inviteCode}`);
   }
 
+  createCategory(serverId:string,name:string){
+    return this.http.post<{message:string}>(`${this.apiLink}/create-category`,{name,serverId})
+  }
+
+  getCategoriesUnderServer(serverId:string){
+    return this.http.get<{categories:ICategory[]}>(`${this.apiLink}/server-category/${serverId}` )
+  }
+
+  createChannel(name:string,type:string,categoryId:string){
+    return this.http.post<{message:string}>(`${this.apiLink}/create-channel`,{name,type,categoryId})
+  }
 }

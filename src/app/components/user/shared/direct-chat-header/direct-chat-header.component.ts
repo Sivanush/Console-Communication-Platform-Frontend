@@ -14,4 +14,5 @@ export class DirectChatHeaderComponent {
   @Input() name:string = ''
   @Input() userImage:string = ''
   @Input() isFriendOnline:Observable<boolean> | undefined 
+  
 }

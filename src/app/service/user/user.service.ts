@@ -5,6 +5,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment.prod';
 import { User, UserRequestI } from '../../interface/user/user.model';
+import { Socket } from 'ngx-socket-io';
 // import { User } from '../../interface/user/user.model';
 
 @Injectable({
@@ -13,7 +14,7 @@ import { User, UserRequestI } from '../../interface/user/user.model';
 export class UserService {
   private authStatusSubject = new BehaviorSubject<boolean>(false);
   authStatus$ = this.authStatusSubject.asObservable();
-
+  private hasPendingRequests = new BehaviorSubject<boolean>(false);
 
   private jwtHelper = new JwtHelperService();
   private apiLink = environment.apiUrl
@@ -21,9 +22,16 @@ export class UserService {
   userId!: string | null
 
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient, private router: Router,private socket:Socket) {
     this.token = localStorage.getItem('token');
     this.setUserIdFromToken()
+    this.setupSocketListeners();
+  }
+
+  private setupSocketListeners(){
+    this.socket.on('newFriendRequest',()=>{
+      this.hasPendingRequests.next(true);
+    })
   }
 
 
@@ -119,8 +127,17 @@ export class UserService {
 
 
   sendFriendRequest(receiverId: string) {
-
+    this.socket.emit('sendFriendRequest', { senderId:this.userId, receiverId });
     return this.http.post<{ message: string }>(`${this.apiLink}/send-request`, { receiverId })
+  }
+
+  getPendingRequestsStatus() {
+
+    return this.hasPendingRequests.asObservable();
+  }
+
+  updatePendingRequestsStatus(status: boolean) {
+    this.hasPendingRequests.next(status);
   }
 
 
@@ -158,5 +175,7 @@ export class UserService {
   updateStatus(status: string, customStatus: string) {
     return this.http.post(`${this.apiLink}/update-status`, { status, customStatus });
   }
+
+  
 }
 

@@ -7,11 +7,12 @@ import { User } from '../../../../interface/user/user.model';
 import { ProgressSpinner, ProgressSpinnerModule } from 'primeng/progressspinner';
 import { BadgeModule } from 'primeng/badge';
 import { ChatServiceService } from '../../../../service/direct-chat/chat-service.service';
-import { filter, Subscription } from 'rxjs';
+import { BehaviorSubject, filter, interval, map, Observable, Subscription, switchMap } from 'rxjs';
+import { AsyncPipe, CommonModule } from '@angular/common';
 @Component({
   selector: 'app-friends-sidebar',
   standalone: true,
-  imports: [MainSidebarComponent,RouterLink,RouterLinkActive,FormsModule,ProgressSpinnerModule,BadgeModule],
+  imports: [MainSidebarComponent,RouterLink,RouterLinkActive,FormsModule,ProgressSpinnerModule,BadgeModule,CommonModule, AsyncPipe],
   templateUrl: './friends-sidebar.component.html',
   styleUrl: './friends-sidebar.component.scss'
 })
@@ -20,6 +21,11 @@ export class FriendsSidebarComponent {
   users!:User[]
   userId!:string|null
   private subscriptions: Subscription = new Subscription();
+
+  private statusPollingSubscription!: Subscription;
+  private usersSubject = new BehaviorSubject<User[]>([]);
+  users$ = this.usersSubject.asObservable();
+
 
   constructor(private router: Router,private userService:UserService,private chatService: ChatServiceService,  private cdr: ChangeDetectorRef) {
     this.router.events.pipe(
@@ -40,14 +46,27 @@ export class FriendsSidebarComponent {
       this.getallFriendsInSidebar()
       this.subscribeToUnreadCounts()
       this.subscribeToNewMessages()
+      // this.setupStatusPolling()
     }
 
    
   }
 
+  getStatusClass(status:string): string {
+    switch (status) {
+      case 'online': return 'bg-green-500 border-2 border-[#2f3136]';
+      case 'idle': return 'bg-yellow-500 border-2 border-[#2f3136]';
+      case 'dnd': return 'bg-red-500 border-2 border-[#2f3136]';
+      case 'invisible': return 'bg-gray-500 border-2 border-[#2f3136]';
+      default: return 'bg-gray-500 border-2 border-[#2f3136]';
+    }
+  }
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
+    if (this.statusPollingSubscription) {
+      this.statusPollingSubscription.unsubscribe()
+    }
   }
 
   private subscribeToUnreadCounts(){
@@ -79,8 +98,9 @@ export class FriendsSidebarComponent {
   getallFriendsInSidebar(){
     this.userService.getAllFriends().subscribe({
       next:(response)=>{
-        console.log(response);
         this.users = response.friends
+        this.usersSubject.next(response.friends);
+          this.cdr.detectChanges();
         response.friends.forEach(user=>{
           this.chatService.getUnreadMessageCount(this.userId as string,user._id)
         })
@@ -91,5 +111,43 @@ export class FriendsSidebarComponent {
       }
     })
   }
+
+
+  setupStatusPolling() {
+    if (this.userId) {
+      setTimeout(() => {
+        this.statusPollingSubscription = interval(3000).pipe(
+          switchMap(() => this.chatService.getFriendsStatus(this.userId as string))
+        ).subscribe({
+          next: (updatedFriends) => {
+            console.log(updatedFriends.friends);
+            this.usersSubject.next(updatedFriends.friends);
+            updatedFriends.friends.forEach(user=>{
+              this.chatService.getUnreadMessageCount(this.userId as string,user._id)
+            })
+            this.cdr.detectChanges();
+            console.log('------');
+  
+          },
+          error: (error) => {
+            console.error('Error polling friends status:', error);
+          }
+        });
+      }, 3000);
+    }
+  }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 

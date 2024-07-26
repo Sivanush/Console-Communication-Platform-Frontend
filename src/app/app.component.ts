@@ -5,7 +5,7 @@ import { ToastModule } from 'primeng/toast';
 import { DirectChatComponent } from "./components/user/direct-chat/direct-chat.component";
 import { UserService } from './service/user/user.service';
 import { ChatServiceService } from './service/direct-chat/chat-service.service';
-// import { ConfirmDialogModule } from 'primeng/confirmdialog';
+
 
 @Component({
     selector: 'app-root',
@@ -24,7 +24,7 @@ export class AppComponent {
 
   async ngOnInit(): Promise<void> {
     this.userId = await this.userService.getUserId()
-    if (this.userId) {
+    if (this.userId) {      
       this.chatService.connectUser(this.userId)
     }
   }

@@ -1,0 +1,35 @@
+<div class="fixed inset-0 bg-[#000000] bg-opacity-80 flex items-center justify-center z-50">
+  <div class="bg-[#36393f] rounded-md w-[440px] shadow-lg">
+    <!-- Header -->
+    <div class="px-6 py-4 border-b border-[#40444b]">
+      <h3 style="margin-bottom: 0px;" class="text-lg font-semibold text-white">Create Category</h3>
+    </div>
+
+    <!-- Body -->
+    <div class="px-6 py-4">
+      <div class="mb-4">
+        <label for="categoryName" class="block text-xs font-semibold text-[#b9bbbe] uppercase mb-2">
+          CATEGORY NAME
+        </label>
+        <input type="text" id="categoryName" 
+               class="w-full px-3 py-2 bg-[#202225] border border-[#18191c] rounded-sm text-white focus:outline-none focus:ring-2 focus:ring-[#5865F2]"
+               placeholder="New Category" [(ngModel)]="name">
+      </div>
+
+      
+      <div class="text-[#b9bbbe] text-xs">
+        By creating a private category, you'll be able to create channels within this category that are only visible to selected members and roles.
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="px-6 py-4 bg-[#2f3136] flex justify-end">
+      <button class="px-4 py-2 text-white text-sm font-medium hover:underline" (click)="close()">
+        Cancel
+      </button>
+      <button class="ml-4 px-4 py-2 bg-[#5865F2] text-white text-sm font-medium rounded-sm hover:bg-[#4752C4]" (click)="createCategory()">
+        Create Category
+      </button>
+    </div>
+  </div>
+</div>

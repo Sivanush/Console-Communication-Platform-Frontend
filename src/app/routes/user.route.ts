@@ -81,9 +81,10 @@ export const userRoute: Routes = [
   {
     path: 'server/:serverId/:channelId',
     component: ServerDetailsComponent,
+    canActivate:[userAuthGuard]
   },
   {
     path:'invite/:inviteCode',
-    component:AcceptInviteComponent
+    component:AcceptInviteComponent,
   }
 ];

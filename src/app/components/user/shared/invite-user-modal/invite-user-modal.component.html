@@ -17,20 +17,9 @@
           Copy
         </button>
       </div>
-     @if (!data.expiresAt) {
       <p class="text-[#b9bbbe] text-sm">
         Expires at: {{ data.expiresAt | date:'medium' }}
       </p>
-     }@else {
-      <div class="w-full xl:w-6 p-3">
-        <h5>Rectangle</h5>
-        <p-skeleton styleClass="mb-2" />
-        <p-skeleton width="10rem" styleClass="mb-2" />
-        <p-skeleton width="5rem" styleClass="mb-2" />
-        <p-skeleton height="2rem" styleClass="mb-2" />
-        <p-skeleton width="10rem" height="4rem" />
-    </div>
-     }
     </div>
     <div class="bg-[#2f3136] px-4 py-3 flex justify-end">
       <button 

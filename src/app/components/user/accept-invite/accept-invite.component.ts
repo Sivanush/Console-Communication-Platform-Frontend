@@ -55,6 +55,12 @@ export class AcceptInviteComponent {
   }
 
   acceptInvite() {
+
+    if(!this.userId){
+      this.toaster.showInfo('Info', 'Please create or login to your account')
+      this.router.navigate([`/login`])
+    }
+
     if (this.inviteCode && this.userId) {
       this.serverService.joinServer(this.inviteCode, this.userId).subscribe({
         next: (response) => {

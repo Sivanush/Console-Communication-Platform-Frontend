@@ -28,10 +28,15 @@
           class="flex-shrink-0 px-3 py-1 hover:bg-[#2f3136]  text-white rounded-md whitespace-nowrap transition-all">
           Online
         </button> -->
-          <button [routerLink]="['/friend/pending-request']" routerLinkActive="bg-[#2f3136] " 
-            class="flex-shrink-0 px-3 py-1 hover:bg-[#2f3136]  text-white rounded-md whitespace-nowrap transition-all">
-            Pending
-          </button>
+        <button [routerLink]="['/friend/pending-request']" routerLinkActive="bg-[#2f3136]" 
+                class="flex-shrink-0 px-3 py-1 hover:bg-[#2f3136] text-white rounded-md whitespace-nowrap transition-all relative">
+       <div class="flex justify-center items-center gap-2">
+        <span>Pending</span>
+        @if (hasPendingRequests) {
+          <div class=" w-3 h-3 rounded-full bg-red-600"></div>
+        }
+       </div>
+        </button>
           <button [routerLink]="['/friend/add-friend']" routerLinkActive="bg-[#3ba55c] " 
             class="flex-shrink-0 px-3 py-1 bg-[#3ba55d]   hover:bg-[#2d7d46] text-white rounded-md whitespace-nowrap transition-all"
             (click)="showDialog()">

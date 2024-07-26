@@ -9,6 +9,7 @@ import { ToggleUserProfileService } from '../../../service/toggleUserProfile/tog
 import { Subscription } from 'rxjs';
 import { CreateServerComponent } from '../shared/create-server/create-server.component';
 import { ToggleCreateServerService } from '../../../service/toggleCreateServer/toggle-create-server.service';
+import { ChatServiceService } from '../../../service/direct-chat/chat-service.service';
 
 
 @Component({
@@ -30,11 +31,12 @@ export class HomeComponent {
     private router: Router,
     private messageService: MessageService,
     private userProfileService:ToggleUserProfileService,
-    private toggleCreateServerService:ToggleCreateServerService
+    private toggleCreateServerService:ToggleCreateServerService,
+    private chatServiceService : ChatServiceService
   ) { }
 
 
-  ngOnInit(): void {
+  async ngOnInit(){
     const navigation = this.router.getCurrentNavigation();
     const state = navigation?.extras.state as { message: string, type: string };
 
@@ -55,6 +57,11 @@ export class HomeComponent {
       console.log('Data Updated ',this.profileVisible);
       
     });
+
+    const userId = await this.userService.getUserId()
+    if (userId) {
+      this.chatServiceService.connectUser(userId)
+    }
   }
 
 

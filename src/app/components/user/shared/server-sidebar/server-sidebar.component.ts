@@ -15,6 +15,8 @@ import { MatDividerModule } from '@angular/material/divider';
 import { InviteUserModalComponent } from "../invite-user-modal/invite-user-modal.component";
 import { environment } from '../../../../../environments/environment.prod';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { CreateCategoryComponent } from '../create-category/create-category.component';
+import { CreateChannelComponent } from '../create-channel/create-channel.component';
 
 interface TreeNode {
   label: string;
@@ -100,6 +102,26 @@ export class ServerSidebarComponent {
         
       }
     })
+  }
+
+  createCategory(){
+    this.dialog.open(CreateCategoryComponent, {
+      width: '400px',
+      data: {
+        serverId: this.serverId,
+      },
+      panelClass: 'invite-dialog'
+    });
+  }
+
+  createChannel(){
+    this.dialog.open(CreateChannelComponent, {
+      width: '400px',
+      data: {
+        serverId: this.serverId,
+      },
+      panelClass: 'invite-dialog'
+    });
   }
 
   closeModal() {

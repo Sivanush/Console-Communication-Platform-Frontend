@@ -26,17 +26,21 @@
       </div>
       </button>
       <mat-divider></mat-divider>
-      <button mat-menu-item class="common">
+      <!-- <button mat-menu-item class="common">
         <mat-icon>settings</mat-icon>
         <span>Server Settings</span>
-      </button>
+      </button> -->
       <button mat-menu-item  class="common">
+        <div (click)="createChannel()" class="menu-item-content">
         <mat-icon>add</mat-icon>
         <span>Create Channel</span>
+        </div>
       </button>
       <button mat-menu-item  class="common">
-        <mat-icon>create_new_folder</mat-icon>
-        <span>Create Category</span>
+        <div (click)="createCategory()" class="menu-item-content">
+          <mat-icon>create_new_folder</mat-icon>
+          <span>Create Category</span>
+        </div>
       </button>
       <mat-divider></mat-divider>
       <button mat-menu-item class="leave-server">
