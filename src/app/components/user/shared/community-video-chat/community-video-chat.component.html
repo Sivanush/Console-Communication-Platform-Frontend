@@ -1,0 +1,19 @@
+<div class="container-fluid">
+  <div class="row p-2">
+    <button mat-raised-button color="primary" class="m-2">Start Call</button>
+    <button mat-raised-button class="m-2">Join Call</button>
+    <button mat-raised-button color="warn" class="m-2" (click)="endCall()">End Call</button>
+  </div>
+  <div class="row">
+    <div class="col text-center">
+      <div id="video-wrapper">
+        <video #localVideo id="local-video" autoplay playsinline [muted]="true"></video>
+      </div>
+    </div>
+    <div class="row">
+      <div id="remote-videos" class="col text-center">
+        <!-- Remote video elements will be dynamically added here -->
+      </div>
+    </div>
+  </div>
+</div>

@@ -35,7 +35,6 @@ export class MainSidebarComponent {
 
   ngOnInit(): void {
     this.getUserProfile()
-    console.log(this.userImage);
     this.loadAllServers()
     this.serverUpdateSubscription = this.serverService.serverUpdate$.subscribe({
       next: () => this.loadAllServers()

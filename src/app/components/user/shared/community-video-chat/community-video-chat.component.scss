@@ -1,0 +1,40 @@
+#local-video {
+	text-align: center;
+	background-color: #343434;
+	transform: scaleX(-1);
+	border-radius: 4px;
+}
+
+// #remote-video {
+// 	max-width: 100%;
+// 	max-height: 90vh;
+// 	border-radius: 4px;
+// }
+
+#local-video {
+    	z-index: 1;
+    	position: absolute;
+    	right: 1.5rem;
+	bottom: 1.5rem;
+	width: 10vw;
+	height: 10vw;
+	max-width: 10rem;
+	max-height: 10rem;
+	border: 3px solid white;
+	border-radius: 4px;
+}
+
+#remote-videos {
+	display: flex;
+	flex-wrap: nowrap; /* Prevent wrapping to the next line */
+	overflow-x: auto; /* Enable horizontal scrolling if needed */
+	gap: 10px; /* Space between videos */
+	padding: 10px; /* Padding around the container */
+  }
+  
+  #remote-videos video {
+	width: 120px; /* Adjust the width of each video */
+	height: 90px; /* Adjust the height of each video */
+	object-fit: cover; /* Maintain aspect ratio and cover the element */
+  }
+  
