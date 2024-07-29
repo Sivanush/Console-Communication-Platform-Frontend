@@ -108,20 +108,16 @@
 
 
 
-
-
-
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, } from '@angular/core';
-import { ToastService } from '../../../../service/toster/toster-service.service';
 import { ServerVideoCallService } from '../../../../service/server-video-call/server-video-call.service';
-import { filter, Observable, Subscription, switchMap } from 'rxjs';
+import { Subscription,  } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { UserService } from '../../../../service/user/user.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-community-video-chat',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './community-video-chat.component.html',
   styleUrl: './community-video-chat.component.scss'
 })
@@ -131,6 +127,9 @@ export class CommunityVideoChatComponent implements OnInit, AfterViewInit, OnDes
   isCallStarted = false;
   channelId: string | null = null;
   remoteStreams: Map<string, MediaStream> = new Map();
+
+  isAudioMuted = false;
+  isVideoOff = false;
 
   private subscriptions: Subscription[] = [];
 
@@ -163,8 +162,24 @@ export class CommunityVideoChatComponent implements OnInit, AfterViewInit, OnDes
         this.updateRemoteVideos();
       })
     );
+
+
+    window.addEventListener('beforeunload', this.handleTabClose.bind(this));
   }
 
+
+  handleTabClose() {
+    this.leaveCall();
+  }
+
+  getGridClass(): string {
+    const count = this.remoteStreams.size;
+    if (count === 0) return 'hidden';
+    if (count === 1) return 'grid-cols-1';
+    if (count === 2) return 'grid-cols-2';
+    if (count <= 4) return 'grid-cols-2';
+    return 'grid-cols-3';
+  }
 
 
   async initializeVideoCall(channelId: string) {
@@ -188,6 +203,7 @@ export class CommunityVideoChatComponent implements OnInit, AfterViewInit, OnDes
       try {
         await this.serverVideoCallService.initializePeerConnection(this.channelId);
         await this.serverVideoCallService.joinRoom();
+        this.isCallStarted = true;
       } catch (error) {
         console.error('Failed to join the call:', error);
       }
@@ -196,34 +212,119 @@ export class CommunityVideoChatComponent implements OnInit, AfterViewInit, OnDes
 
   leaveCall(): void {
     this.serverVideoCallService.leaveRoom();
+    this.isCallStarted = false;
   }
 
+
+
   private updateRemoteVideos(): void {
-    const container = document.getElementById('remote-videos');
+    const container = document.getElementById('video-grid');
     if (!container) return;
 
     // Remove old video elements
-    while (container.firstChild) {
-      container.removeChild(container.firstChild);
+    Array.from(container.children).forEach(child => {
+      if (child.id.startsWith('remote-video-') && !this.remoteStreams.has(child.id.replace('remote-video-', ''))) {
+        container.removeChild(child);
+      }
+    });
+
+    // Add or update video elements
+    this.remoteStreams.forEach((stream, peerId) => {
+      let videoWrapper = document.getElementById(`remote-video-${peerId}`);
+      if (!videoWrapper) {
+        videoWrapper = document.createElement('div');
+        videoWrapper.id = `remote-video-${peerId}`;
+        videoWrapper.className = 'relative bg-[#2f3136] rounded-lg overflow-hidden';
+        
+        const videoElement = document.createElement('video');
+        videoElement.autoplay = true;
+        videoElement.playsInline = true;
+        videoElement.className = 'w-full h-full object-cover';
+        
+        
+        const usernameElement = document.createElement('div');
+        usernameElement.className = 'absolute bottom-2 left-2 bg-black bg-opacity-50 px-2 py-1 rounded text-sm';
+        usernameElement.textContent = 'Loading...';
+
+        videoWrapper.appendChild(videoElement);
+        videoWrapper.appendChild(usernameElement);
+        container.appendChild(videoWrapper);
+        
+        this.serverVideoCallService.getUserName(peerId).subscribe({
+          next:(username)=>{
+            usernameElement.textContent = username;
+          },
+          error:(error)=>{
+            console.error('Error fetching username:', error);
+            usernameElement.textContent = `User ${peerId.substr(0, 8)}`;
+          }
+        })
+      }
+
+
+      const videoElement = videoWrapper.querySelector('video');
+      if (videoElement && videoElement.srcObject !== stream) {
+        videoElement.srcObject = stream;
+      }
+    });
+
+    // Update grid layout
+    this.updateGridLayout();
+  }
+
+  private updateGridLayout(): void {
+    const container = document.getElementById('video-grid');
+    if (!container) return;
+  
+    const count = this.remoteStreams.size;
+    let gridClass = '';
+  
+    if (count === 0) {
+      gridClass = 'hidden';
+    } else if (count === 1) {
+      gridClass = 'grid-cols-1';
+    } else if (count === 2) {
+      gridClass = 'grid grid-cols-2';
+    } else if (count <= 4) {
+      gridClass = 'grid grid-cols-2 grid-rows-2';
+    } else {
+      gridClass = 'grid grid-cols-3 grid-rows-3';
     }
 
-    // Add new video elements
-    this.remoteStreams.forEach((stream, peerId) => {
-      const videoElement = document.createElement('video');
-      videoElement.srcObject = stream;
-      videoElement.autoplay = true;
-      videoElement.playsInline = true;
-      videoElement.muted = false;
-      videoElement.style.width='200px'
-      videoElement.id = `remote-video-${peerId}`;
-      videoElement.className = 'remote-video';
-      container.appendChild(videoElement);
+    container.className = `${gridClass} gap-2 h-full w-full`;
+  
+    // Adjust video sizes
+    const videos = container.querySelectorAll('.relative');
+    videos.forEach((video: Element) => {
+      const videoElement = video as HTMLElement;
+      if (count === 1) {
+        videoElement.style.width = '100%';
+        videoElement.style.height = '100%';
+      } else {
+        videoElement.style.width = '';
+        videoElement.style.height = '';
+      }
     });
   }
+
+
+  toggleAudio() {
+    this.isAudioMuted = !this.isAudioMuted;
+    this.serverVideoCallService.toggleAudio(this.isAudioMuted);
+  }
+  
+  toggleVideo() {
+    this.isVideoOff = !this.isVideoOff;
+    this.serverVideoCallService.toggleVideo(this.isVideoOff);
+  }
+
+
+  
 
   ngOnDestroy(): void {
     this.subscriptions.forEach(sub => sub.unsubscribe());
     this.serverVideoCallService.leaveRoom();
+    window.removeEventListener('beforeunload', this.handleTabClose.bind(this));
   }
 }
 

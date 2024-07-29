@@ -161,7 +161,8 @@ import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import Peer, { MediaConnection } from 'peerjs';
 import { ToastService } from '../toster/toster-service.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, map, of, tap } from 'rxjs';
+import { UserService } from '../user/user.service';
 
 @Injectable({
     providedIn: 'root'
@@ -170,6 +171,8 @@ export class ServerVideoCallService {
     private peer!: Peer;
     private roomId!: string;
     private connections: Map<string, MediaConnection> = new Map();
+    private userNames: Map<string, string> = new Map();
+    networkQuality:string = ''
 
     localStreamBs = new BehaviorSubject<MediaStream | null>(null);
     remoteStreamsBs = new BehaviorSubject<Map<string, MediaStream>>(new Map());
@@ -177,17 +180,14 @@ export class ServerVideoCallService {
 
     constructor(
         private socket: Socket,
-        private toaster: ToastService
+        private toaster: ToastService,
+        private userService:UserService
     ) {
         this.setupSocketListeners();
     }
 
     private setupSocketListeners() {
-        // this.socket.fromEvent<string>('user-joined').subscribe(peerId => {
-        //   if (this.peer && this.localStreamBs.value) {
-        //     this.callPeer(peerId, this.localStreamBs.value);
-        //   }
-        // });
+
 
         this.socket.fromEvent<string>('user-joined').subscribe(peerId => {
             console.log('Server notified: User joined:', peerId);
@@ -209,13 +209,6 @@ export class ServerVideoCallService {
             }
         });
 
-        // this.socket.fromEvent<string[]>('existing-peers').subscribe(peerIds => {
-        //   peerIds.forEach(peerId => {
-        //     if (this.peer && this.localStreamBs.value) {
-        //       this.callPeer(peerId, this.localStreamBs.value);
-        //     }
-        //   });
-        // });
 
 
         this.socket.fromEvent<string[]>('existing-peers').subscribe(peerIds => {
@@ -231,67 +224,7 @@ export class ServerVideoCallService {
         });
     }
 
-    // async initializePeerConnection(channelId: string): Promise<void> {
-    //     this.roomId = `video-room-${channelId}`;
-    //     this.peer = new Peer('', {
-    //         debug: 3,
-    //         config: {
-    //             iceServers: [
-    //                 { urls: 'stun:stun.l.google.com:19302' },
-    //                 { urls: 'stun:stun1.l.google.com:19302' },
-    //                 { urls: 'stun:stun2.l.google.com:19302' },
-    //                 { urls: 'stun:stun3.l.google.com:19302' },
-    //                 { urls: 'stun:stun4.l.google.com:19302' }
-    //             ]
-    //         }
-    //     });
-
-    //     return new Promise((resolve, reject) => {
-    //         this.peer.on('open', (id) => {
-    //             console.log('My peer ID is:', id);
-    //             this.socket.emit('join-room', this.roomId, id);
-    //             resolve();
-    //         });
-
-    //         this.peer.on('error', (error) => {
-    //             console.error('PeerJS error:', error);
-    //             this.toaster.showError('Connection Error', error.toString());
-    //             reject(error);
-    //         });
-    //     });
-    // }
-
-    // async joinRoom(): Promise<void> {
-    //     try {
-    //         const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-    //         this.localStreamBs.next(stream);
-
-    //         this.peer.on('call', (call) => {
-    //             call.answer(stream);
-    //             this.handleIncomingCall(call);
-    //         });
-
-    //         this.isCallStartedBs.next(true);
-    //     } catch (error) {
-    //         console.error('Error accessing media devices:', error);
-    //         this.toaster.showError('Media Error', 'Failed to access camera or microphone');
-    //     }
-    // }
-
-    // private callPeer(peerId: string, stream: MediaStream): void {
-    //     const call = this.peer.call(peerId, stream);
-    //     this.handleIncomingCall(call);
-    // }
-
-    // private handleIncomingCall(call: MediaConnection): void {
-    //     call.on('stream', (remoteStream) => {
-    //         console.log('Received remote stream from:', call.peer);
-    //         const remoteStreams = this.remoteStreamsBs.value;
-    //         remoteStreams.set(call.peer, remoteStream);
-    //         this.remoteStreamsBs.next(remoteStreams);
-    //     });
-
-
+  
 
 
 
@@ -300,15 +233,20 @@ export class ServerVideoCallService {
     async initializePeerConnection(channelId: string): Promise<void> {
         this.roomId = `video-room-${channelId}`;
         console.log('Initializing peer connection for room:', this.roomId);
-        this.peer = new Peer('', {
-          debug: 3, // Enable debug logs
-          config: {
-            iceServers: [
-              { urls: 'stun:stun.l.google.com:19302' },
-              { urls: 'stun:stun1.l.google.com:19302' },
-            ]
-          }
-        });
+        const userId = await this.userService.getUserId();
+        if (userId) {
+            this.peer = new Peer(userId, {
+                debug: 3, // Enable debug logs
+                config: {
+                  iceServers: [
+                    { urls: 'stun:stun.l.google.com:19302' },
+                    { urls: 'stun:stun1.l.google.com:19302' },
+                  ]
+                }
+              });
+        }else{
+            this.toaster.showError('Error','User data is not able to read, Try login again')
+        }
     
         return new Promise((resolve, reject) => {
           this.peer.on('open', (id) => {
@@ -373,6 +311,56 @@ export class ServerVideoCallService {
         });
 
         this.connections.set(call.peer, call);
+    }
+
+
+    toggleAudio(mute: boolean) {
+        this.localStreamBs.value?.getAudioTracks().forEach(track => track.enabled = !mute);
+      }
+      
+      toggleVideo(turnOff: boolean) {
+        this.localStreamBs.value?.getVideoTracks().forEach(track => track.enabled = !turnOff);
+      }
+
+
+
+      checkNetworkQuality() {
+        this.peer.on('connection', (conn) => {
+          setInterval(() => {
+            conn.peerConnection.getStats(null).then(stats => {
+              stats.forEach(report => {
+                if (report.type === 'candidate-pair' && report.state === 'succeeded') {
+                  const rtt = report.currentRoundTripTime;
+                  if (rtt < 0.1) this.networkQuality = 'Excellent';
+                  else if (rtt < 0.3) this.networkQuality = 'Good';
+                  else if (rtt < 0.5) this.networkQuality = 'Fair';
+                  else this.networkQuality = 'Poor';
+                }
+              });
+            });
+          }, 5000); // Check every 5 seconds
+        });
+      }
+
+
+    
+    getUserData(userId:string){
+        return this.userService.getUserDataForFriend(userId).pipe(
+            tap(userData=>{
+                this.userNames.set(userId,userData.username)
+            }),
+            map(()=> void 0)
+        )
+    }
+
+    getUserName(userId:string){
+        if (this.userNames.has(userId)) {
+            return of(this.userNames.get(userId)!);
+        }else{
+            return this.getUserData(userId).pipe(
+                map(()=> this.userNames.get(userId)!)
+            )
+        }
     }
 
     leaveRoom(): void {
