@@ -3,7 +3,7 @@ import { environment } from '../../../environments/environment.prod';
 import { HttpClient } from '@angular/common/http';
 import { IAllServer } from '../../interface/server/getAllServer';
 import { Subject } from 'rxjs';
-import { IServer } from '../../interface/server/serverDetails';
+import { IChannel, IServer } from '../../interface/server/serverDetails';
 import { ICategory } from '../../interface/server/categories';
 
 @Injectable({
@@ -55,7 +55,7 @@ export class ServerService {
   }
 
   createCategory(serverId:string,name:string){
-    return this.http.post<{message:string}>(`${this.apiLink}/create-category`,{name,serverId})
+    return this.http.post<{message:string,category:ICategory}>(`${this.apiLink}/create-category`,{name,serverId})
   }
 
   getCategoriesUnderServer(serverId:string){
@@ -63,6 +63,10 @@ export class ServerService {
   }
 
   createChannel(name:string,type:string,categoryId:string){
-    return this.http.post<{message:string}>(`${this.apiLink}/create-channel`,{name,type,categoryId})
+    return this.http.post<{message:string,channel:IChannel}>(`${this.apiLink}/create-channel`,{name,type,categoryId})
+  }
+
+  getChannelDetail(channelId:string){
+    return this.http.get<{message:string,channelDetail:IChannel}>(`${this.apiLink}/channel-detail/${channelId}`)
   }
 }

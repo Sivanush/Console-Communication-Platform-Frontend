@@ -1,10 +1,11 @@
-import { Component, Inject } from '@angular/core';
+import { Component, EventEmitter, Inject, Output } from '@angular/core';
 import { InviteUserModalComponent } from '../invite-user-modal/invite-user-modal.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { UserService } from '../../../../service/user/user.service';
 import { ServerService } from '../../../../service/server/server.service';
 import { FormsModule } from '@angular/forms';
 import { ToastService } from '../../../../service/toster/toster-service.service';
+import { ICategory } from '../../../../interface/server/categories';
 
 @Component({
   selector: 'app-create-category',
@@ -15,7 +16,8 @@ import { ToastService } from '../../../../service/toster/toster-service.service'
 })
 export class CreateCategoryComponent {
 
-  serverId!:string  
+  serverId!:string 
+  @Output() categoryCreated = new EventEmitter<ICategory>() 
   name!:string
   constructor(public dialogRef: MatDialogRef<CreateCategoryComponent>,private serverService:ServerService,
     private toaster:ToastService,
@@ -33,6 +35,7 @@ export class CreateCategoryComponent {
       next:(response)=>{
         console.log(response);
         this.toaster.showSuccess('Success','Category created Successfully')
+        this.categoryCreated.emit(response.category)
         this.dialogRef.close()
       },
       error:(error)=>{

@@ -59,12 +59,13 @@
               <span class="expand-icon mr-1">{{ category.expanded ? '▼' : '▶' }}</span>
               {{ category.label.toUpperCase() }}
             </div>
-            <span class="add-icon hover:text-white">+</span>
+            <span (click)="createChannel(category._id)" class="add-icon hover:text-white">+</span>
           </div>
           <div class="category-channels" *ngIf="category.expanded">
             <div *ngFor="let channel of category.children" 
                  class="channel-item flex items-center px-2 py-1 rounded cursor-pointer hover:bg-[#393c43] text-[#8e9297] hover:text-[#dcddde]" 
                  [routerLink]="['/server', server._id, channel._id]" 
+                  routerLinkActive="bg-[#393c43]" 
                  (click)="onChannelClick(channel)">
               <span class="channel-icon mr-1" [ngSwitch]="channel.type">
                 <ng-container *ngSwitchCase="'text'">#</ng-container>

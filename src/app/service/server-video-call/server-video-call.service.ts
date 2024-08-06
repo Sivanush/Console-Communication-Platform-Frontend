@@ -1,158 +1,3 @@
-// import { Injectable } from '@angular/core';
-// import Peer, { MediaConnection, PeerJSOption } from 'peerjs';
-// import { ToastService } from '../toster/toster-service.service';
-// import { BehaviorSubject, Subject } from 'rxjs';
-
-// @Injectable({
-//   providedIn: 'root'
-// })
-// export class ServerVideoCallService {
-//   constructor(private toaster: ToastService) { }
-
-//   private _peer!: Peer;
-//   private _roomId!: string;
-//   private _isHost: boolean = false;
-//   private _connections: MediaConnection[] = [];
-//   private _peers: Set<string> = new Set(); 
-
-//   localStreamBs: BehaviorSubject<MediaStream | null> = new BehaviorSubject<MediaStream | null>(null);
-//   remoteStreamsBs: BehaviorSubject<MediaStream[]> = new BehaviorSubject<MediaStream[]>([]);
-
-
-
-//   private _isCallStartedBs = new Subject<boolean>();
-//   public isCallStarted$ = this._isCallStartedBs.asObservable();
-
-//   async initPeer(channelId: string): Promise<void> {
-//     this._roomId = `video-room-${channelId}`;
-//     const peerJsOptions: PeerJSOption = {
-//       debug: 3,
-//       config: {
-//         iceServers: [
-//           {
-//             urls: [
-//               'stun:stun1.l.google.com:19302',
-//               'stun:stun2.l.google.com:19302',
-//             ]
-//           }
-//         ]
-//       }
-//     };
-
-//     return new Promise((resolve, reject) => {
-//       this._peer = new Peer(this._roomId, peerJsOptions);
-
-//       this._peer.on('open', (id) => {
-//         console.log('My peer ID is:', id);
-//         // this._isHost = true;  // First to connect becomes host
-//         this._isHost = id === this._roomId;
-//         resolve();
-//       });
-
-//       this._peer.on('error', (error: any) => {
-//         if (error.type === 'unavailable-id') {
-//           // ID is taken, so we're not the host. Create a new peer with a unique ID
-//           this._peer = new Peer(peerJsOptions);
-//           this._peer.on('open', (id) => {
-//             console.log('My peer ID is:', id);
-//             resolve();
-//           });
-//         } else {
-//           console.error('PeerJS error:', error);
-//           this.toaster.showError('PeerJS Error', error.toString());
-//           reject(error);
-//         }
-//       });
-//     });
-//   }
-
-//   async joinRoom(): Promise<void> {
-//     try {
-//       const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-//       this.localStreamBs.next(stream);
-
-//       if (this._isHost) {
-//         this.waitForPeers();
-//       } else {
-//         await this.connectToHost();
-//       }
-
-//     } catch (error) {
-//       console.error('Error accessing media devices:', error);
-//       this.toaster.showError('Media Error', 'Failed to access camera or microphone');
-//     }
-//   }
-
-//   private waitForPeers(): void {
-//     console.log('Waiting for peers to connect...');
-//     this._peer.on('call', (call) => {
-//       call.answer(this.localStreamBs.value!);
-//       this.handleIncomingStream(call);
-//     });
-//   }
-
-//   private async connectToHost(): Promise<void> {
-//     return new Promise((resolve, reject) => {
-//       const call = this._peer.call(this._roomId, this.localStreamBs.value!);
-//       this.handleIncomingStream(call);
-//       resolve();
-//     });
-//   }
-
-//   private handleIncomingStream(call: MediaConnection): void {
-//     call.on('stream', (remoteStream) => {
-//       console.log('Received remote stream');
-//       this.addRemoteStream(remoteStream);
-//     });
-
-//     call.on('error', (error) => {
-//       console.error('Call error:', error);
-//       this.toaster.showError('Call Error', error.toString());
-//     });
-//   }
-
-//   private addRemoteStream(remoteStream: MediaStream): void {
-//     const currentStreams = this.remoteStreamsBs.value;
-//     if (!currentStreams.find(stream => stream.id === remoteStream.id)) {
-//       this.remoteStreamsBs.next([...currentStreams, remoteStream]);
-//     }
-//     this._isCallStartedBs.next(true);
-//   }
-
-//   closeMediaCall() {
-//     this._peer?.disconnect();
-//     this._peer?.destroy();
-//     this.onCallClose();
-//   }
-
-//   private onCallClose(): void {
-//     this.remoteStreamsBs.value.forEach(stream => {
-//       stream.getTracks().forEach(track => track.stop());
-//     });
-//     this.localStreamBs.value?.getTracks().forEach(track => track.stop());
-//     this.remoteStreamsBs.next([]);
-//     this.localStreamBs.next(null);
-//     this._isCallStartedBs.next(false);
-//     this.toaster.showSuccess('Call Ended', 'The call has been ended');
-//   }
-
-//   destroyPeer() {
-//     this.closeMediaCall();
-//   }
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -168,11 +13,12 @@ import { UserService } from '../user/user.service';
     providedIn: 'root'
 })
 export class ServerVideoCallService {
-    private peer!: Peer;
+    private peer!: Peer
     private roomId!: string;
     private connections: Map<string, MediaConnection> = new Map();
+    private screenStream:MediaStream | null = null
     private userNames: Map<string, string> = new Map();
-    networkQuality:string = ''
+    networkQualityBs = new BehaviorSubject<string>('Unknown');
 
     localStreamBs = new BehaviorSubject<MediaStream | null>(null);
     remoteStreamsBs = new BehaviorSubject<Map<string, MediaStream>>(new Map());
@@ -227,16 +73,25 @@ export class ServerVideoCallService {
   
 
 
-
-
-
     async initializePeerConnection(channelId: string): Promise<void> {
+      if (this.peer) {
+        this.peer.destroy();
+      }
         this.roomId = `video-room-${channelId}`;
         console.log('Initializing peer connection for room:', this.roomId);
         const userId = await this.userService.getUserId();
+        if (!userId) {
+          this.toaster.showError('Error', 'User data is not available. Try logging in again');
+          throw new Error('User ID not available');
+        }
+      
+        // Generate a random string to append to the userId
+        const randomSuffix = Math.random().toString(36).substring(2, 8);
+        const peerId = `${userId}-${randomSuffix}`;
+
         if (userId) {
-            this.peer = new Peer(userId, {
-                debug: 3, // Enable debug logs
+            this.peer = new Peer(peerId, {
+                debug: 3, 
                 config: {
                   iceServers: [
                     { urls: 'stun:stun.l.google.com:19302' },
@@ -299,6 +154,7 @@ export class ServerVideoCallService {
           console.log('PeerJS: Received remote stream from:', call.peer);
           const remoteStreams = this.remoteStreamsBs.value;
           remoteStreams.set(call.peer, remoteStream);
+          this.checkNetworkQuality(call.peerConnection)
           this.remoteStreamsBs.next(remoteStreams);
         });
 
@@ -314,6 +170,73 @@ export class ServerVideoCallService {
     }
 
 
+
+    async screenShare(){
+      try {
+        this.screenStream= await navigator.mediaDevices.getDisplayMedia({video:true})
+        const videoTrack = this.screenStream.getVideoTracks()[0]
+
+
+        this.connections.forEach(connection=>{
+          const sender = connection.peerConnection.getSenders().find(sender=> sender.track?.kind === 'video')
+          if (sender) {
+            sender.replaceTrack(videoTrack)
+          }
+        })
+
+
+        const newLocalStream = new MediaStream([
+          ...this.localStreamBs.value!.getAudioTracks(),
+          videoTrack
+        ])
+        this.localStreamBs.next(newLocalStream)
+
+        videoTrack.onended = ()=>{
+          this.stopScreenSharing()
+        }
+
+        return true; 
+      } catch (error) {
+        console.error('Error starting screen share:', error);
+        this.toaster.showError('Screen Share Error', 'Failed to start screen sharing');
+        return false
+      }
+    }
+
+
+    async stopScreenSharing() {
+      if (this.screenStream) {
+          this.screenStream.getTracks().forEach(track => track.stop());
+          this.screenStream = null;
+      }
+  
+      try {
+          // Get a new camera stream
+          const newStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+          const newVideoTrack = newStream.getVideoTracks()[0];
+  
+          // Replace the video track in all connections
+          this.connections.forEach(connection => {
+              const sender = connection.peerConnection.getSenders().find(sender => sender.track?.kind === 'video');
+              if (sender) {
+                  sender.replaceTrack(newVideoTrack);
+              }
+          });
+  
+          // Update the local stream
+          const newLocalStream = new MediaStream([
+              ...this.localStreamBs.value!.getAudioTracks(),
+              newVideoTrack
+          ]);
+  
+          this.localStreamBs.next(newLocalStream);
+      } catch (error) {
+          console.error('Error reverting to camera after screen sharing:', error);
+          this.toaster.showError('Camera Error', 'Failed to revert to camera after screen sharing');
+      }
+  }
+
+
     toggleAudio(mute: boolean) {
         this.localStreamBs.value?.getAudioTracks().forEach(track => track.enabled = !mute);
       }
@@ -323,24 +246,21 @@ export class ServerVideoCallService {
       }
 
 
-
-      checkNetworkQuality() {
-        this.peer.on('connection', (conn) => {
-          setInterval(() => {
-            conn.peerConnection.getStats(null).then(stats => {
-              stats.forEach(report => {
-                if (report.type === 'candidate-pair' && report.state === 'succeeded') {
-                  const rtt = report.currentRoundTripTime;
-                  if (rtt < 0.1) this.networkQuality = 'Excellent';
-                  else if (rtt < 0.3) this.networkQuality = 'Good';
-                  else if (rtt < 0.5) this.networkQuality = 'Fair';
-                  else this.networkQuality = 'Poor';
-                }
-              });
+      checkNetworkQuality(connection: RTCPeerConnection) {
+        setInterval(() => {
+            connection.getStats(null).then((stats: RTCStatsReport) => {
+                stats.forEach(report => {
+                    if (report.type === 'candidate-pair' && report.state === 'succeeded') {
+                        const rtt = report.currentRoundTripTime;
+                        if (rtt < 0.1) this.networkQualityBs.next('Excellent');
+                        else if (rtt < 0.3) this.networkQualityBs.next('Good');
+                        else if (rtt < 0.5) this.networkQualityBs.next('Fair');
+                        else this.networkQualityBs.next('Poor');
+                    }
+                });
             });
-          }, 5000); // Check every 5 seconds
-        });
-      }
+        }, 5000); // Check every 5 seconds
+    }
 
 
     
@@ -353,25 +273,44 @@ export class ServerVideoCallService {
         )
     }
 
-    getUserName(userId:string){
+    private extractUserId(peerId: string): string {
+      return peerId.split('-')[0];
+    }
+
+    getUserName(peerId:string){
+      const userId = this.extractUserId(peerId);
         if (this.userNames.has(userId)) {
             return of(this.userNames.get(userId)!);
         }else{
-            return this.getUserData(userId).pipe(
-                map(()=> this.userNames.get(userId)!)
-            )
+          return this.userService.getUserDataForFriend(userId).pipe(
+            tap(userData => {
+              this.userNames.set(userId, userData.username);
+            }),
+            map(userData => userData.username)
+          );
         }
     }
 
+
+
+    destroyPeerConnection(): void {
+      if (this.peer) {
+        this.peer.destroy();
+      }
+    }
+
     leaveRoom(): void {
-        this.localStreamBs.value?.getTracks().forEach(track => track.stop());
-        this.connections.forEach(connection => connection.close());
-        this.connections.clear();
-        this.remoteStreamsBs.next(new Map());
-        this.localStreamBs.next(null);
-        this.isCallStartedBs.next(false);
+      this.localStreamBs.value?.getTracks().forEach(track => track.stop());
+      this.connections.forEach(connection => connection.close());
+      this.connections.clear();
+      this.remoteStreamsBs.next(new Map());
+      this.localStreamBs.next(null);
+      this.isCallStartedBs.next(false);
+      if (this.peer && !this.peer.destroyed) {
         this.peer.disconnect();
-        this.socket.emit('leave-room', this.roomId, this.peer.id);
-        this.toaster.showSuccess('Call Ended', 'You have left the video call');
+        this.peer.destroy();
+      }
+      this.socket.emit('leave-room', this.roomId, this.peer?.id);
+      this.toaster.showInfo('Call Ended', 'You have left the video call');
     }
 }

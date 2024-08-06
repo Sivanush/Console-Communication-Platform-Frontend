@@ -17,6 +17,8 @@ import { UserProfileComponent } from '../components/user/user-profile/user-profi
 import { ServerDetailsComponent } from '../components/user/server-details/server-details.component';
 import { CommunityChatComponent } from '../components/user/shared/community-chat/community-chat.component';
 import { AcceptInviteComponent } from '../components/user/accept-invite/accept-invite.component';
+import { DirectVideoCallComponent } from '../components/user/direct-video-call/direct-video-call.component';
+
 
 export const userRoute: Routes = [
   {
@@ -76,6 +78,11 @@ export const userRoute: Routes = [
   {
     path: 'direct-chat/:userId/:friendId',
     component: DirectChatComponent,
+    canActivate: [directChatGuard,userAuthGuard]
+  },
+  {
+    path: 'direct-video-chat/:userId/:friendId',
+    component: DirectVideoCallComponent,
     canActivate: [directChatGuard,userAuthGuard]
   },
   {

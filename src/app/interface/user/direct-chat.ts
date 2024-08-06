@@ -28,6 +28,7 @@ export interface directChatI extends Document{
     createdAt: Date;
     updatedAt: Date;
     __v: number;
+    isNewGroup: boolean;
 }
 
 export interface UserStatus {

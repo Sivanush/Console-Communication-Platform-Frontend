@@ -1,113 +1,3 @@
-
-// import { AfterViewInit, Component, ElementRef, ViewChild, } from '@angular/core';
-// import { ToastService } from '../../../../service/toster/toster-service.service';
-// import { ServerVideoCallService } from '../../../../service/server-video-call/server-video-call.service';
-// import { filter, Observable, Subscription, switchMap } from 'rxjs';
-// import { ActivatedRoute } from '@angular/router';
-// import { UserService } from '../../../../service/user/user.service';
-
-// @Component({
-//   selector: 'app-community-video-chat',
-//   standalone: true,
-//   imports: [],
-//   templateUrl: './community-video-chat.component.html',
-//   styleUrl: './community-video-chat.component.scss'
-// })
-// export class CommunityVideoChatComponent implements AfterViewInit {
-//     public isCallStarted$: Observable<boolean>;
-//     private _paramSubscription!: Subscription;
-//     channelId!: string | null;
-
-//     @ViewChild('localVideo') localVideo!: ElementRef<HTMLVideoElement>;
-
-//     remoteVideoElements: HTMLVideoElement[] = [];
-
-//     constructor(
-//       private toaster: ToastService, 
-//       private serverVideoCallService: ServerVideoCallService, 
-//       private route: ActivatedRoute
-//     ) {
-//       this.isCallStarted$ = serverVideoCallService.isCallStarted$;
-//     }
-
-//     async ngOnInit() {
-//       this._paramSubscription = this.route.params.subscribe(async params => {
-//         this.channelId = params['channelId'];
-//         if (this.channelId) {
-//           try {
-//             await this.serverVideoCallService.initPeer(this.channelId);
-//             await this.serverVideoCallService.joinRoom();
-//           } catch (error) {
-//             console.error('Failed to initialize peer or join room:', error);
-//             this.toaster.showError('Connection Error', 'Failed to connect to the video call');
-//           }
-//         }
-//       });
-
-//       this.serverVideoCallService.localStreamBs.pipe(
-//         filter(stream => !!stream)
-//       ).subscribe(stream => {
-//         if (stream && this.localVideo && this.localVideo.nativeElement) {
-//           this.localVideo.nativeElement.srcObject = stream;
-//         }
-//       });
-
-//       this.serverVideoCallService.remoteStreamsBs.subscribe(streams => {
-//         this.updateRemoteVideos(streams);
-//       });
-//     }
-
-//     ngAfterViewInit(): void {
-//       // Ensure remote videos are added after the view initializes
-//       this.updateRemoteVideos(this.serverVideoCallService.remoteStreamsBs.value);
-//     }
-
-//     ngOnDestroy(): void {
-//       this.serverVideoCallService.destroyPeer();
-//       if (this._paramSubscription) {
-//         this._paramSubscription.unsubscribe();
-//       }
-//     }
-
-//     endCall(): void {
-//       this.serverVideoCallService.closeMediaCall();
-//     }
-
-//     private updateRemoteVideos(streams: MediaStream[]): void {
-//       const container = document.getElementById('remote-videos');
-//       if (!container) return;
-
-//       // Remove old video elements
-//       while (container.firstChild) {
-//         container.removeChild(container.firstChild);
-//       }
-
-//       streams.forEach(stream => {
-//         let video = document.createElement('video') as HTMLVideoElement;
-//         video.srcObject = stream;
-//         video.autoplay = true;
-//         video.style.width = '200px'
-//         video.playsInline = true;
-//         container.appendChild(video);
-//       });
-//     }
-//   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, } from '@angular/core';
 import { ServerVideoCallService } from '../../../../service/server-video-call/server-video-call.service';
 import { Subscription,  } from 'rxjs';
@@ -130,6 +20,9 @@ export class CommunityVideoChatComponent implements OnInit, AfterViewInit, OnDes
 
   isAudioMuted = false;
   isVideoOff = false;
+
+  isScreenSharing = false;
+  networkQuality = 'Unknown';
 
   private subscriptions: Subscription[] = [];
 
@@ -160,6 +53,10 @@ export class CommunityVideoChatComponent implements OnInit, AfterViewInit, OnDes
       this.serverVideoCallService.remoteStreamsBs.subscribe(streams => {
         this.remoteStreams = streams;
         this.updateRemoteVideos();
+      }),
+
+      this.serverVideoCallService.networkQualityBs.subscribe(quality=>{
+        this.networkQuality = quality
       })
     );
 
@@ -167,6 +64,17 @@ export class CommunityVideoChatComponent implements OnInit, AfterViewInit, OnDes
     window.addEventListener('beforeunload', this.handleTabClose.bind(this));
   }
 
+
+  toggleScreenShare(){
+    if (this.isScreenSharing) {
+      this.serverVideoCallService.stopScreenSharing()
+      this.isScreenSharing = false
+    }else{
+      this.serverVideoCallService.screenShare().then(()=>{
+        this.isScreenSharing = true
+      })
+    }
+  }
 
   handleTabClose() {
     this.leaveCall();
@@ -189,6 +97,7 @@ export class CommunityVideoChatComponent implements OnInit, AfterViewInit, OnDes
       console.log('Peer connection initialized, joining room');
       await this.serverVideoCallService.joinRoom();
       console.log('Joined room successfully');
+      this.isCallStarted = true;
     } catch (error) {
       console.error('Error setting up video call:', error);
     }
@@ -221,14 +130,13 @@ export class CommunityVideoChatComponent implements OnInit, AfterViewInit, OnDes
     const container = document.getElementById('video-grid');
     if (!container) return;
 
-    // Remove old video elements
+
     Array.from(container.children).forEach(child => {
       if (child.id.startsWith('remote-video-') && !this.remoteStreams.has(child.id.replace('remote-video-', ''))) {
         container.removeChild(child);
       }
     });
 
-    // Add or update video elements
     this.remoteStreams.forEach((stream, peerId) => {
       let videoWrapper = document.getElementById(`remote-video-${peerId}`);
       if (!videoWrapper) {
@@ -239,7 +147,7 @@ export class CommunityVideoChatComponent implements OnInit, AfterViewInit, OnDes
         const videoElement = document.createElement('video');
         videoElement.autoplay = true;
         videoElement.playsInline = true;
-        videoElement.className = 'w-full h-full object-cover';
+        videoElement.className = 'w-full h-full object-cover scale-x-[-1]';
         
         
         const usernameElement = document.createElement('div');
@@ -268,7 +176,7 @@ export class CommunityVideoChatComponent implements OnInit, AfterViewInit, OnDes
       }
     });
 
-    // Update grid layout
+
     this.updateGridLayout();
   }
 
@@ -293,7 +201,7 @@ export class CommunityVideoChatComponent implements OnInit, AfterViewInit, OnDes
 
     container.className = `${gridClass} gap-2 h-full w-full`;
   
-    // Adjust video sizes
+    
     const videos = container.querySelectorAll('.relative');
     videos.forEach((video: Element) => {
       const videoElement = video as HTMLElement;
@@ -322,8 +230,10 @@ export class CommunityVideoChatComponent implements OnInit, AfterViewInit, OnDes
   
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
+    // this.leaveCall()
+    this.serverVideoCallService.destroyPeerConnection();
     this.serverVideoCallService.leaveRoom();
+    this.subscriptions.forEach(sub => sub.unsubscribe());
     window.removeEventListener('beforeunload', this.handleTabClose.bind(this));
   }
 }

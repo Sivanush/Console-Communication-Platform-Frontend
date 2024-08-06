@@ -12,25 +12,24 @@ import { Observable, Subscription, filter } from 'rxjs';
 import { DirectChatHeaderComponent } from '../shared/direct-chat-header/direct-chat-header.component';
 import { User } from '../../../interface/user/user.model';
 import { UserService } from '../../../service/user/user.service';
-import { log } from 'util';
 import { UserProfileComponent } from "../user-profile/user-profile.component";
 import { CreateServerComponent } from "../shared/create-server/create-server.component";
 import { ToggleUserProfileService } from '../../../service/toggleUserProfile/toggle-user-profile.service';
 import { ToggleCreateServerService } from '../../../service/toggleCreateServer/toggle-create-server.service';
 
 @Component({
-    selector: 'app-direct-chat',
-    standalone: true,
-    templateUrl: './direct-chat.component.html',
-    styleUrl: './direct-chat.component.scss',
-    providers: [DatePipe],
-    imports: [FriendsSidebarComponent, FriendsHeaderComponent, FormsModule, CommonModule, DirectChatHeaderComponent, AsyncPipe, UserProfileComponent, CreateServerComponent]
+  selector: 'app-direct-chat',
+  standalone: true,
+  templateUrl: './direct-chat.component.html',
+  styleUrl: './direct-chat.component.scss',
+  providers: [DatePipe],
+  imports: [FriendsSidebarComponent, FriendsHeaderComponent, FormsModule, CommonModule, DirectChatHeaderComponent, AsyncPipe, UserProfileComponent, CreateServerComponent]
 })
 export class DirectChatComponent implements OnInit, AfterViewChecked, OnDestroy {
   @ViewChild('scrollContainer') private scrollContainer!: ElementRef;
 
-  profileVisible:boolean = false
-  createServerVisible:boolean = false
+  profileVisible: boolean = false
+  createServerVisible: boolean = false
   private subscription!: Subscription;
 
   friendUserData: User = {} as User;
@@ -39,6 +38,7 @@ export class DirectChatComponent implements OnInit, AfterViewChecked, OnDestroy 
   message!: string;
   messages: directChatI[] = [];
   isFriendOnline$: Observable<boolean> | undefined;
+  groupedMessages: directChatI[] = [];
 
   private paramSubscription!: Subscription;
   private messagesSubscription!: Subscription;
@@ -53,8 +53,8 @@ export class DirectChatComponent implements OnInit, AfterViewChecked, OnDestroy 
     private chatService: ChatServiceService,
     private toaster: ToastService,
     private userService: UserService,
-    private userProfileService:ToggleUserProfileService,
-    private toggleCreateServerService:ToggleCreateServerService
+    private userProfileService: ToggleUserProfileService,
+    private toggleCreateServerService: ToggleCreateServerService
   ) { }
 
   ngOnInit(): void {
@@ -66,19 +66,19 @@ export class DirectChatComponent implements OnInit, AfterViewChecked, OnDestroy 
 
       this.subscription = this.toggleCreateServerService.booleanValue$.subscribe({
         next: (value) => {
-          this.createServerVisible = value 
-          
+          this.createServerVisible = value
+
         },
-        error:(err)=> console.log(err)
+        error: (err) => console.log(err)
       })
-  
+
       this.subscription = this.userProfileService.booleanValue$.subscribe((data: boolean) => {
         this.profileVisible = data;
-        console.log('Data Updated ',this.profileVisible);
-        
+        console.log('Data Updated ', this.profileVisible);
+
       });
 
-      
+
     });
 
     if (this.userId && this.friendId) {
@@ -86,9 +86,9 @@ export class DirectChatComponent implements OnInit, AfterViewChecked, OnDestroy 
     }
 
 
-    
-   
-    
+
+
+
     this.routerSubscription = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
@@ -102,11 +102,8 @@ export class DirectChatComponent implements OnInit, AfterViewChecked, OnDestroy 
     this.chatService.setCurrentChatPartner(this.friendId)
   }
 
-  initializeChat(): void {
-    
+  initializeChat() {
     this.messages = [];
-
-  
     if (this.userId && this.friendId) {
       this.chatService.joinDirectChat(this.userId, this.friendId);
       this.isFriendOnline$ = this.chatService.isUserOnline(this.friendId);
@@ -123,10 +120,10 @@ export class DirectChatComponent implements OnInit, AfterViewChecked, OnDestroy 
         console.log(err);
       }
     });
-    
-    this.messagesSubscription =  this.chatService.getAllMessages().subscribe(msg => {
-      console.log(msg, "All messages");
+
+    this.messagesSubscription = this.chatService.getAllMessages().subscribe(msg => {
       this.messages = msg;
+      this.groupMessages()
       this.scrollToBottom();
     });
 
@@ -134,13 +131,25 @@ export class DirectChatComponent implements OnInit, AfterViewChecked, OnDestroy 
     this.lastMessageSubscription = this.chatService.getLastMessage().subscribe((msg) => {
       if (this.userId && this.friendId) {
         this.chatService.markMessagesAsRead(this.userId, this.friendId);
-        }
-      console.log("last message   ", msg);
+      }
       this.messages.push(msg);
-    
+      this.groupMessages()
       this.scrollToBottom();
 
     });
+  }
+
+
+  private groupMessages() {
+    this.groupedMessages = this.messages.map((msg, index, array) => {
+      const prevMsg = array[index - 1];
+      const isNewGroup = !prevMsg || prevMsg.senderId._id !== msg.senderId._id || this.isNewTimeGroup(prevMsg.createdAt,msg.createdAt)
+      return { ...msg, isNewGroup };
+    })
+  }
+
+  private isNewTimeGroup(prevDate: Date, currDate: Date): boolean {
+    return new Date(currDate).getTime() - new Date(prevDate).getTime() > 5 * 60 * 1000; // 5 minutes
   }
 
   ngOnDestroy(): void {
@@ -155,6 +164,11 @@ export class DirectChatComponent implements OnInit, AfterViewChecked, OnDestroy 
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+  }
+
+
+  formatFullTime(dateString: Date): string {
+    return this.datePipe.transform(dateString, 'MM/dd/yyyy HH:mm')!;
   }
 
   ngAfterViewChecked() {

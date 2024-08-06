@@ -1,8 +1,7 @@
-
-interface IChannel {
+export interface IChannel {
     _id: string;
     name: string;
-    type: 'text' | 'voice'; 
+    type: 'text' | 'voice' | 'video'; 
     server: string;
     category: string;
     createdAt: string;

@@ -1,5 +1,5 @@
 <div class="fixed inset-0 bg-[#000000] bg-opacity-80 flex items-center justify-center">
-    <div class="bg-gray-700 rounded-lg w-96 p-6">
+    <div class="bg-[#2F3136] rounded-lg w-96 p-6">
       <h2 class="text-white text-xl font-semibold mb-4">Create Channel</h2>
       
       <div class="mb-4">
@@ -7,13 +7,13 @@
           CHANNEL TYPE
         </label>
         <div class="flex space-x-2">
-          <button  [ngClass]="{'bg-blue-600': type === 'text', 'bg-gray-600': type !== 'text'}" (click)="type = 'text'" class="px-3 py-1 bg-gray-600 text-white rounded hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <button  [ngClass]="{'bg-blue-600': type === 'text', 'bg-gray-600': type !== 'text'}" (click)="type = 'text'" class="px-3 py-1 bg-gray-600 text-white rounded hover:bg-gray-500 focus:outline-0">
             Text
           </button>
-          <button  [ngClass]="{'bg-blue-600': type === 'voice', 'bg-gray-600': type !== 'voice'}"  (click)="type = 'voice'" class="px-3 py-1 bg-gray-600 text-white rounded hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <button  [ngClass]="{'bg-blue-600': type === 'voice', 'bg-gray-600': type !== 'voice'}"  (click)="type = 'voice'" class="px-3 py-1 bg-gray-600 text-white rounded hover:bg-gray-500 focus:outline-0">
             Voice
           </button>
-          <button  [ngClass]="{'bg-blue-600': type === 'video', 'bg-gray-600': type !== 'video'}"  (click)="type = 'video'" class="px-3 py-1 bg-gray-600 text-white rounded hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <button  [ngClass]="{'bg-blue-600': type === 'video', 'bg-gray-600': type !== 'video'}"  (click)="type = 'video'" class="px-3 py-1 bg-gray-600 text-white rounded hover:bg-gray-500 focus:outline-0">
             Video
           </button>
         </div>
@@ -30,16 +30,15 @@
         <label class="block text-gray-400 text-sm font-bold mb-2" for="channel-category">
           CATEGORY
         </label>
-        <select [(ngModel)]="categoryId"  id="channel-category" class="w-full bg-gray-600 text-white rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-          <option value="">Select a category</option>
-          @for (category of categories; track category) {
-            <option [value]="category._id">{{category.name}}</option>
-          }
+        <select [(ngModel)]="categoryId" id="channel-category" class="w-full bg-gray-600 text-white rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option  selected>Select a category</option>
+          <option *ngFor="let category of categories" [value]="category._id">{{category.name}}</option>
         </select>
-      </div>
+      </div>  
+
       
       <div class="flex justify-end space-x-2 mt-6">
-        <button class="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-500">Cancel</button>
+        <button class="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-500" (click)="close()">Cancel</button>
         <button class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-500" (click)="createChannel()" >Create Channel</button>
       </div>
     </div>

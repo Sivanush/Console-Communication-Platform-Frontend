@@ -1,15 +1,101 @@
+:host {
+  display: contents;
+}
+
+
+/* Message animations */
+@keyframes message-appear {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message-enter {
+  animation: message-appear 200ms ease-out;
+}
+
+/* Custom scrollbar for Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #202225 #2f3136;
+}
+
+/* Additional styles */
+.hover\:scale-110:hover {
+  transform: scale(1.1);
+}
+
+.transition-opacity {
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 200ms;
+}
+
+.group:hover .group-hover\:opacity-100 {
+  opacity: 1;
+}
+
+
+
+/* Message animations */
+@keyframes message-appear {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message-enter {
+  animation: message-appear 150ms ease-out;
+}
+
+/* Smooth scrolling */
+  
+
+/* Improved scrollbar styling */
+// #scrollContainer::-webkit-scrollbar {
+//   width: 8px;
+// }
+
+// #scrollContainer::-webkit-scrollbar {
+//   display: none; /* for Chrome, Safari, and Opera */
+// }
+
+// #scrollContainer::-webkit-scrollbar-track {
+//   background-color: transparent;
+// }
+
+// #scrollContainer::-webkit-scrollbar-thumb {
+//   background-color: rgba(32, 34, 37, 0.6);
+//   border-radius: 4px;
+// }
+
+// #scrollContainer::-webkit-scrollbar-thumb:hover {
+//   background-color: rgba(32, 34, 37, 0.8);
+// }
 
 #scrollContainer::-webkit-scrollbar-track {
-    scroll-behavior: smooth;
-    background-color: #36393f;
+  scroll-behavior: smooth;
+  background-color: #36393f;
 }
 
 #scrollContainer::-webkit-scrollbar {
-    width: 8px;
-    background-color: transparent;
+  width: 8px;
+  background-color: transparent;
 }
 
 #scrollContainer::-webkit-scrollbar-thumb {
-    border-radius: 5px;
-    background-color: #2F3136;
+  border-radius: 5px;
+ background-color: #2F3136;
 }
+
+
