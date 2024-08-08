@@ -1,0 +1,81 @@
+<main class="flex h-screen bg-[#36393f] overflow-hidden">
+    <app-server-sidebar (toggleChat)="isChatToggle($event)" (toggleVideo)="isVideoToggle($event)"></app-server-sidebar>
+  
+    <div class="flex-1 flex flex-col h-full w-full" id="main-content-wrapper">
+      <app-friends-header [name]="'Server Name'"></app-friends-header>
+  
+      <!-- Server Members -->
+      <div class="flex-1 overflow-y-auto">
+        <div class=" text-[#dcddde] p-6">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-semibold">Members</h2>
+            <div class="relative">
+              <button
+                class="text-[#b9bbbe] hover:text-[#dcddde] focus:outline-none"
+                (click)="toggleMemberOptions()"
+              >
+                <i class="fas fa-ellipsis-h"></i>
+              </button>
+              <div
+                class="absolute right-0 mt-2 w-48 bg-[#2f3136] rounded-md shadow-lg z-10 hidden"
+                [class.block]="showMemberOptions"
+              >
+                <div class="py-1">
+                  <a href="#" class="block px-4 py-2 text-[#dcddde] hover:bg-[#393c43] hover:text-white">
+                    Create Role
+                  </a>
+                  <a href="#" class="block px-4 py-2 text-[#dcddde] hover:bg-[#393c43] hover:text-white">
+                    Member Settings
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="flex flex-col space-y-4">
+            @for (member of members; track member) {
+                <div
+              class="bg-[#393c43] rounded-md p-4 flex items-center justify-between hover:bg-[#4f545c] cursor-pointer"
+  
+            >
+              <div class="flex items-center">
+                <img
+                  [src]="member.avatarUrl"
+                  [alt]="member.name"
+                  class="w-12 h-12 rounded-full mr-4"
+                />
+                <div>
+                  <h3 class="text-lg font-semibold">{{ member.name }}</h3>
+                  <p class="text-sm text-[#b9bbbe]">{{ member.status }}</p>
+                </div>
+              </div>
+              <div class="relative">
+                <button
+                  class="text-[#b9bbbe] hover:text-[#dcddde] focus:outline-none"
+                  (click)="toggleMemberOptions(member)"
+                >
+                  <i class="fas fa-ellipsis-h"></i>
+                </button>
+                <div
+                  class="absolute right-0 mt-2 w-48 bg-[#2f3136] rounded-md shadow-lg z-10 hidden"
+                  [class.block]="selectedMember === member"
+                >
+                  <div class="py-1">
+                    <a href="#" class="block px-4 py-2 text-[#dcddde] hover:bg-[#393c43] hover:text-white">
+                      Assign Role
+                    </a>
+                    <a href="#" class="block px-4 py-2 text-[#dcddde] hover:bg-[#393c43] hover:text-white">
+                      Kick Member
+                    </a>
+                    <a href="#" class="block px-4 py-2 text-[#dcddde] hover:bg-[#393c43] hover:text-white">
+                      Ban Member
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>

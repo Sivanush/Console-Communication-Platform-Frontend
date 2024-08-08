@@ -18,6 +18,7 @@ import { ServerDetailsComponent } from '../components/user/server-details/server
 import { CommunityChatComponent } from '../components/user/shared/community-chat/community-chat.component';
 import { AcceptInviteComponent } from '../components/user/accept-invite/accept-invite.component';
 import { DirectVideoCallComponent } from '../components/user/direct-video-call/direct-video-call.component';
+import { ViewMembersComponent } from '../components/user/view-members/view-members.component';
 
 
 export const userRoute: Routes = [
@@ -56,17 +57,17 @@ export const userRoute: Routes = [
       {
         path: 'add-friend',
         component: AddFriendComponent,
-        canActivate:[userAuthGuard]
+        canActivate: [userAuthGuard]
       },
       {
         path: 'pending-request',
         component: PendingRequestsComponent,
-        canActivate:[userAuthGuard]
+        canActivate: [userAuthGuard]
       },
       {
         path: 'all-friends',
         component: AllFriendsComponent,
-        canActivate:[userAuthGuard]
+        canActivate: [userAuthGuard]
       },
       {
         path: '',
@@ -78,12 +79,12 @@ export const userRoute: Routes = [
   {
     path: 'direct-chat/:userId/:friendId',
     component: DirectChatComponent,
-    canActivate: [directChatGuard,userAuthGuard]
+    canActivate: [directChatGuard, userAuthGuard]
   },
   {
     path: 'direct-video-chat/:userId/:friendId',
     component: DirectVideoCallComponent,
-    canActivate: [directChatGuard,userAuthGuard]
+    canActivate: [directChatGuard, userAuthGuard]
   },
   {
     path: 'server/:serverId/:channelId',
@@ -91,7 +92,11 @@ export const userRoute: Routes = [
     // canActivate:[userAuthGuard]
   },
   {
-    path:'invite/:inviteCode',
-    component:AcceptInviteComponent,
+    path: 'invite/:inviteCode',
+    component: AcceptInviteComponent,
+  },
+  {
+    path: 'server/:serverId',
+    component:ViewMembersComponent    
   }
 ];

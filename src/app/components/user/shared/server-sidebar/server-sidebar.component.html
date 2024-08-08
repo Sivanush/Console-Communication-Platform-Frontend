@@ -42,6 +42,12 @@
           <span>Create Category</span>
         </div>
       </button>
+      <button mat-menu-item class="common">
+        <div [routerLink]="['/server', serverId]" class="menu-item-content">
+          <mat-icon>people</mat-icon>
+          <span>Members</span>
+        </div>
+      </button>      
       <mat-divider></mat-divider>
       <button mat-menu-item class="leave-server">
         <mat-icon>exit_to_app</mat-icon>

@@ -24,170 +24,25 @@ import { AsyncPipe, CommonModule, KeyValuePipe, Location } from '@angular/common
   styleUrl: './direct-video-call.component.scss'
 })
 export class DirectVideoCallComponent {
-
-  // @ViewChild('localVideo') localVideo!: ElementRef<HTMLVideoElement>;
-  // remoteStreams: Map<string, MediaStream> = new Map();
-
-  //   @ViewChild('localVideo') localVideo!: ElementRef<HTMLVideoElement>;
-  //   @ViewChild('remoteVideo') remoteVideo!: ElementRef<HTMLVideoElement>;
-
-
-  //   isAudioMuted = false;
-  //   isVideoOff = false;
-  //   isScreenSharing = false;
-  //   networkQuality = 'Unknown';
-
-  //   profileVisible: boolean = false
-  //   createServerVisible: boolean = false
-  //   private _subscriptions: Subscription[] = []
-  //   private _paramSubscription!: Subscription;
-  //   userId: string | null = null;
-  //   friendId: string | null = null;
-  //   private _friendPeerId: string = '';
-  //   isCallInProgress: boolean = false;
-  //   isCallStarted = false;
-
-  //   isFriendOnline$: Observable<boolean> | undefined;
-  //   friendUserData: User = {} as User;
-
-  //   remoteStream: MediaStream | null = null;
-  //   isRemoteUserJoined = false;
-
-
-  //   constructor(
-  //     private userProfileService: ToggleUserProfileService,
-  //     private toggleCreateServerService: ToggleCreateServerService,
-  //     private dialog: MatDialog,
-  //     private userService: UserService,
-  //     private route: ActivatedRoute,
-  //     public friendVideoCallService: FriendVideoCallService,
-  //     private toaster: ToastService,
-  //     private router: Router,
-  //     private location:Location
-  //   ) {}
-
-  //   ngOnInit(): void {
-  //     this._subscriptions.push(
-  //       this.route.paramMap.subscribe(params => {
-  //         this.userId = params.get('userId');
-  //         this.friendId = params.get('friendId');
-  //         this.loadFriendData();
-  //       })
-  //     );
-
-  //     this._subscriptions.push(
-  //       this.friendVideoCallService.callEndedBS.subscribe(() => this.handleCallEnded())
-  //     );
-
-  //     this._subscriptions.push(
-  //       this.friendVideoCallService.localStreamBS.subscribe(stream => {
-  //         if (stream && this.localVideo) {
-  //           this.localVideo.nativeElement.srcObject = stream;
-  //         }
-  //       })
-  //     );
-
-
-
-  //     this._subscriptions.push(
-  //       this.friendVideoCallService.remoteStreamBS.subscribe(stream => {
-  //         this.remoteStream = stream;
-  //         this.isRemoteUserJoined = !!stream;
-  //         if (stream && this.remoteVideo) {
-  //           this.remoteVideo.nativeElement.srcObject = stream;
-  //         }
-  //       })
-  //     );
-
-
-  //     if (this.userId && this.friendId) {
-  //       this.initializeCall();
-  //     }
-  //   }
-
-  //   ngOnDestroy(): void {
-  //     this._subscriptions.forEach(sub => sub.unsubscribe());
-  //     this.friendVideoCallService.endCall();
-  //   }
-
-  //   private async initializeCall(): Promise<void> {
-  //     try {
-  //       await this.friendVideoCallService.startCall(this.friendId!);
-  //     } catch (error) {
-  //       console.error('Failed to initialize call:', error);
-  //       this.toaster.showError('Call Error', 'Failed to start the video call');
-  //       this.location.back()
-  //     }
-  //   }
-
-  //   private loadFriendData(): void {
-  //     if (this.friendId) {
-  //       this.userService.getUserDataForFriend(this.friendId).subscribe({
-  //         next: (data) => {
-  //           this.friendUserData = data;
-  //         },
-  //         error: (err) => {
-  //           console.error('Error fetching friend data:', err);
-  //           this.toaster.showError('Error', 'Failed to fetch friend data');
-  //         }
-  //       });
-  //     }
-  //   }
-
-  //   toggleAudio(): void {
-  //     this.isAudioMuted = !this.isAudioMuted;
-  //     this.friendVideoCallService.toggleAudio(this.isAudioMuted);
-  //   }
-
-  //   toggleVideo(): void {
-  //     this.isVideoOff = !this.isVideoOff;
-  //     this.friendVideoCallService.toggleVideo(this.isVideoOff);
-  //   }
-
-  //   endCall(): void {
-  //     this.friendVideoCallService.endCall();
-  //   }
-
-  //   private handleCallEnded(): void {
-  //     this.location.back()
-  //   }
-
-
-  // }
-
-
-
-
-
-
-
-
-
-
-
-
   @ViewChild('localVideo') localVideo!: ElementRef<HTMLVideoElement>;
   @ViewChild('remoteVideo') remoteVideo!: ElementRef<HTMLVideoElement>;
 
   private subscriptions: Subscription[] = [];
-  isRemoteUserJoined: boolean = true
-  // isFriendOnline$:boolean = false
-  userId!: string | null
-  friendId!: string | null
+  isRemoteUserJoined: boolean = true;
+  userId!: string | null;
+  friendId!: string | null;
   isAudioMuted = false;
   isVideoOff = false;
-  friendUserData!: User
+  friendUserData!: User;
 
   constructor(
     private friendVideoCallService: FriendVideoCallService,
     private route: ActivatedRoute,
     private userService: UserService,
-    private location:Location
-  ) { }
+    private location: Location
+  ) {}
 
   ngOnInit(): void {
-
-
     this.subscriptions.push(
       this.route.paramMap.subscribe(params => {
         this.userId = params.get('userId');
@@ -212,13 +67,10 @@ export class DirectVideoCallComponent {
         }
       }),
       this.friendVideoCallService.callEndedBS.subscribe(() => {
-        // Handle call ended (e.g., navigate back to previous page)
-        // this.location.back()
-        console.log('call kayingu');
+        this.location.back();
       })
     );
   }
-
 
   private loadFriendData(): void {
     if (this.friendId) {
@@ -228,7 +80,6 @@ export class DirectVideoCallComponent {
         },
         error: (err) => {
           console.error('Error fetching friend data:', err);
-          // this.toaster.showError('Error', 'Failed to fetch friend data');
         }
       });
     }
@@ -236,7 +87,6 @@ export class DirectVideoCallComponent {
 
   async initializeCall(userId: string, friendId: string): Promise<void> {
     try {
-      // await this.friendVideoCallService.initializePeer(userId);
       await this.friendVideoCallService.startCall(friendId);
     } catch (error) {
       console.error('Failed to initialize call:', error);
@@ -248,14 +98,14 @@ export class DirectVideoCallComponent {
     this.friendVideoCallService.toggleAudio(this.isAudioMuted);
   }
 
-  toggleVideo(): void {
+    toggleVideo(): void {
     this.isVideoOff = !this.isVideoOff;
     this.friendVideoCallService.toggleVideo(this.isVideoOff);
   }
 
   endCall(): void {
     this.friendVideoCallService.endCall();
-    this.location.back()
+    this.location.back();
   }
 
   ngOnDestroy(): void {

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MainSidebarComponent } from "../main-sidebar/main-sidebar.component";
-import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { ServerService } from '../../../../service/server/server.service';
 import { MenuItem } from 'primeng/api';
 import { TieredMenu, TieredMenuModule } from 'primeng/tieredmenu';
@@ -66,7 +66,7 @@ export class ServerSidebarComponent {
   expiresAt: Date | null = null;
   subscription!: Subscription;
 
-  constructor(private route: ActivatedRoute, private serverService: ServerService,private dialog: MatDialog) {
+  constructor(private route: ActivatedRoute, private serverService: ServerService,private dialog: MatDialog,private router:Router) {
 
   }
 
@@ -247,5 +247,8 @@ export class ServerSidebarComponent {
     category.expanded = !category.expanded;
   }
 
-  
+  // redirectToMembers(){
+  //   this.router.navigate([]);
+  // }
+
 }

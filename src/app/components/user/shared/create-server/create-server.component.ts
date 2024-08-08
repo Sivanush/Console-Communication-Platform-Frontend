@@ -79,6 +79,8 @@ export class CreateServerComponent {
         },
         error: (err) => {
           this.isLoading = false;
+          console.log(err);
+          
           this.toaster.showError('Error', err.error.error)
         }
       })
