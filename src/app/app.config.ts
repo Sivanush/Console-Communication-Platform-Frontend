@@ -1,6 +1,7 @@
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
+
 import { userRoute } from './routes/user.route';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
@@ -16,8 +17,8 @@ import { getDatabase } from '@angular/fire/database';
 import { provideDatabase } from '@angular/fire/database';
 import { adminRoute } from './routes/admin.route';
 import { UserAuthInterceptor } from './service/interceptor/userAuthInterceptor';
-import { StoreModule, provideStore } from '@ngrx/store';
-import { EffectsModule, provideEffects } from '@ngrx/effects';
+import { provideStore } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
 import { userReducer } from './store/user-listing/user.reducer';
 import { userEffects } from './store/user-listing/user.effects';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -56,7 +57,6 @@ export const appConfig: ApplicationConfig = {
     provideDatabase(() => getDatabase()),
     provideStore({user:userReducer}),
     provideEffects([userEffects]),
-    importProvidersFrom(SocketIoModule.forRoot(config)), provideAnimationsAsync(),
-    
-]
+    importProvidersFrom(SocketIoModule.forRoot(config)), provideAnimationsAsync()
+  ]
 };

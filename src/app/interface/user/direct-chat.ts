@@ -25,6 +25,7 @@ export interface directChatI extends Document{
       __v: number;
     };
     message: string;
+    imageUrl:string
     createdAt: Date;
     updatedAt: Date;
     __v: number;

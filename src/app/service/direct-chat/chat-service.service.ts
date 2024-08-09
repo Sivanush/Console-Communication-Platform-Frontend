@@ -1,8 +1,10 @@
-import { ChangeDetectorRef, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, from, Observable } from 'rxjs';
 import { directChatI } from '../../interface/user/direct-chat';
 import { User } from '../../interface/user/user.model';
+import { S3 } from 'aws-sdk';
+import { awsCredentials } from '../../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +15,17 @@ export class ChatServiceService {
   private unreadMessagesSubject = new BehaviorSubject<{[userId: string]: number}>({});
   private currentChatPartner: string | null = null;
   private friendsStatus = new BehaviorSubject<any>([]);
+
+
+  private s3: S3;
   
   constructor(private socket: Socket) {
     this.setupSocketListeners();
+    this.s3 = new S3({
+      accessKeyId: awsCredentials.Access_key,
+      secretAccessKey: awsCredentials.Secret_key,
+      region: 'ap-south-1',
+    });
   }
 
   private setupSocketListeners() {
@@ -55,6 +65,90 @@ export class ChatServiceService {
 
 
   }
+
+
+
+
+
+
+
+
+  // async uploadToCloudinary(file: File) {
+  //   return new Promise((res, rej) => {
+  //     const formData = new FormData();
+  //     formData.append('file', file);
+  //     formData.append('upload_preset', cloudinaryCredentials.uploadPreset);
+  //     formData.append('api_key', cloudinaryCredentials.apiKey);
+  
+  //     const xhr = new XMLHttpRequest();
+  //     xhr.open('POST', `https://api.cloudinary.com/v1_1/dgpcd5c0d/image/upload`, true);
+  
+  //     xhr.onload = function () {
+  //       if (this.status === 200) {
+  //         const response = JSON.parse(this.response);
+  //         res(response.secure_url);
+  //       } else {
+  //         rej(new Error('Upload failed'));
+  //       }
+  //     };
+  
+  //     xhr.send(formData);
+  //   });
+  // }
+
+  async uploadImage(file: File): Promise<string> {
+    return this.uploadFile(file);
+  }
+
+  async uploadVideo(file: File): Promise<string> {
+    return this.uploadFile(file);
+  }
+
+
+  // private async uploadFile(file: File, resourceType: 'image' | 'video'): Promise<string> {
+  //   const formData = new FormData();
+  //   formData.append('file', file);
+  //   formData.append('upload_preset', this.uploadPreset);
+  //   formData.append('api_key', this.apiKey);
+
+
+
+  //   const url = `https://api.cloudinary.com/v1_1/${this.cloudName}/${resourceType}/upload`;
+
+  //   try {
+  //     const response = await axios.post(url, formData, {
+  //       headers: { 'Content-Type': 'multipart/form-data' }
+  //     });
+  //     // return response.data.secure_url
+  //     const baseUrl = response.data.secure_url;
+  //     return `${baseUrl.replace('/upload/', `/upload/q_${1}/`)}`;
+  //   } catch (error) {
+  //     console.error('Upload failed:', error);
+  //     throw error;
+  //   }
+  // }
+
+
+  uploadFile(file: File): Promise<string>  {
+    // const fileName = folderPath ? `${folderPath}/${file.name}` : file.name;
+    const fileName = file.name;
+    const params = {
+      Bucket: 'discord-bucket-7',
+      Key: fileName,
+      Body: file,
+      // ACL: 'public-read',  // Optional: Set file permissions
+      ContentType: file.type,
+    };
+
+    // return this.s3.upload(params).promise();
+    return this.s3.upload(params).promise().then((data) => {
+      // Return the URL of the uploaded file
+      return data.Location;
+    });
+  }
+
+
+  
 
   setCurrentChatPartner(userId: string | null) {
     this.currentChatPartner = userId;
@@ -111,9 +205,13 @@ export class ChatServiceService {
   }
 
   sendDirectMessage(senderId: string, receiverId: string, message: string) {
-    console.log('Sending message:', { senderId, receiverId, message });
     this.socket.emit('sendMessage', { senderId, receiverId, message });
+  }
 
+  sendDirectImage(senderId: string, receiverId: string, fileUrl: string, fileType: string){
+    console.log('✅✅✅✅✅✅✅✅✅');
+    console.log(fileUrl,fileType);
+    this.socket.emit('sendMessage', { senderId, receiverId, fileUrl, fileType});
   }
 
   updateUnreadCount(senderId: string, count: number) {

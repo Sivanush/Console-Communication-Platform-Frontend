@@ -1,164 +1,159 @@
-<!-- <main class="flex h-screen bg-[#36393f] overflow-hidden">
-  <app-friends-sidebar/>
-
-  <div class="flex-1 flex flex-col h-full w-full" id="main-content-wrapper">
-    <div class="flex flex-col h-full">
-      <app-direct-chat-header [isFriendOnline]="isFriendOnline$" [userImage]="friendUserData.image" [name]="friendUserData.username"/>
-
-      <div class="flex-1 flex flex-col bg-[#36393f] overflow-hidden">
-        <div class="flex-1 overflow-y-auto px-4 py-6" id="scrollContainer" #scrollContainer>
-          @for (msg of messages; track msg) {
-
-            <div class="flex mb-4" [ngClass]="{'justify-end': msg.senderId._id === userId}">
-              <div class="flex items-start" [ngClass]="{'flex-row-reverse': msg.senderId._id === userId}">
-                <img [src]="msg.senderId.image"
-                     alt="User avatar" 
-                     class="w-10 h-10 rounded-full" [ngClass]="{'mr-3': msg.senderId._id !== userId, 'ml-3': msg.senderId._id === userId}">
-                <div>
-                  <div class="flex items-baseline mb-1" [ngClass]="{'justify-end': msg.senderId._id === userId}">
-                    <span class="text-[#ffffff] font-medium" [ngClass]="{'mr-2': msg.senderId._id !== userId, 'ml-2 order-2': msg.senderId._id === userId}">
-                      {{ msg.senderId.username }}
-                    </span>
-                    <span class="text-[#72767d] text-xs">{{ formatTime(msg.updatedAt) }}</span>
-                  </div>
-                  <div class="rounded-lg px-4 py-2 max-w-md" 
-                       [ngClass]="{'bg-[#40444b]': msg.senderId._id !== userId, 'bg-[#5865f2]': msg.senderId._id === userId}">
-                    <p class="text-white text-sm">{{ msg.message }}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          } @empty {
-            <div class="flex-grow flex flex-col items-center justify-center text-center">
-              <svg class="w-16 h-16 text-[#72767d] mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-              </svg>
-              <p class="text-[#ffffff] text-lg font-medium">No messages yet</p>
-              <p class="text-[#72767d] mt-1 text-sm">Start the conversation!</p>
-            </div>
-          }
-        </div>
-
-
-        <div class="px-2 py-2 bg-[#40444b] mb-3 mr-3 rounded-md text-">
-          <div class="relative">
-            <input 
-              type="text" 
-              [(ngModel)]="message" 
-              (keydown.enter)="sendMessage()"
-              class="w-full bg-[#40444b] text-[#dcddde] rounded-md pl-4 pr-12 py-2 focus:outline-0 focus:ring-0 transition-all"
-              placeholder="Type a message...">
-            <button 
-              (click)="sendMessage()" 
-              class="absolute right-2 top-1/2 transform -translate-y-1/2 text-[#b9bbbe] hover:text-[#dcddde] transition-all">
-              <svg data-slot="icon" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"></path>
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</main>
-
-@if (profileVisible) {
-  <app-user-profile />
-}
-
-@if (createServerVisible) {
-  <app-create-server />
-} -->
-
-
 <main class="flex h-screen bg-[#36393f] overflow-hidden font-sans text-[#dcddde]">
   <!-- Server list column -->
   <nav class="w-[72px] bg-[#202225] flex-shrink-0 overflow-y-auto py-3 space-y-2">
     <!-- Home button -->
-    <div class="h-12 w-12 rounded-[24px] bg-[#5865F2] text-white flex items-center justify-center mx-auto hover:rounded-[16px] transition-all duration-200 cursor-pointer">
-      <svg class="w-7 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+    <div
+      class="h-12 w-12 rounded-[24px] bg-[#5865F2] text-white flex items-center justify-center mx-auto hover:rounded-[16px] transition-all duration-200 cursor-pointer">
+      <svg class="w-7 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
+        </path>
+      </svg>
     </div>
     <!-- Server icons would go here -->
   </nav>
 
-  <app-friends-sidebar class="w-60 bg-[#2f3136] flex-shrink-0 border-r border-[#202225]"/>
+  <app-friends-sidebar class="w-60 bg-[#2f3136] flex-shrink-0 border-r border-[#202225]" />
 
   <div class="flex-1 flex flex-col h-full">
-    <app-direct-chat-header 
-      [isFriendOnline]="isFriendOnline$" 
-      [userImage]="friendUserData.image" 
-      [name]="friendUserData.username" 
-      [friendId]="friendUserData._id"
-      class="bg-[#36393f] shadow-sm   min-h-[48px] px-4 flex items-center"
-    />
+    <app-direct-chat-header [isFriendOnline]="isFriendOnline$" [userImage]="friendUserData.image"
+      [name]="friendUserData.username" [friendId]="friendUserData._id"
+      class="bg-[#36393f] shadow-sm   min-h-[48px] px-4 flex items-center" />
 
-    <div class="flex-1 flex flex-col overflow-hidden" >
-      <div class="flex-1 overflow-y-auto px-4 pt-4 scroll-smooth" id="scrollContainer" #scrollContainer>
+    <div class="flex-1 flex flex-col overflow-hidden">
+      <div class="flex-1 overflow-y-auto px-4 pt-4 " id="scrollContainer" #scrollContainer>
         @for (msg of groupedMessages; track msg; let i = $index) {
-          <div class="mb-0 last:mb-0 hover:bg-[#32353b]  mx-2 px-4 py-1 rounded-md group message-enter">
-            <div class="flex items-start relative">
-              @if (msg.isNewGroup) {  
-                <img [src]="msg.senderId.image" alt="User avatar" class="w-10 h-10 rounded-full mr-3 mt-0.5 transition-transform duration-200 ease-in-out transform hover:scale-110">
-                <div class="flex-1 min-w-0">
-                  <div class="flex items-baseline mb-1">
-                    <span class="text-white font-medium mr-2 cursor-pointer">{{ msg.senderId.username }}</span>
-                    <span class="text-[#a3a6aa] text-xs">{{ formatTime(msg.createdAt) }}</span>
-                  </div>
-                  <p class="text-[#dcddde] break-words leading-relaxed" style="margin-bottom: 0px;" >{{ msg.message }}</p>
-                </div>
-              } @else {
-                <div class="w-10 mr-3 flex-shrink-0"></div> 
-                <p class="text-[#dcddde] break-words leading-relaxed flex-1 min-w-0" style="margin-bottom: 0px;"  >{{ msg.message }}</p>
-              }
-              <div class="absolute right-0 top-0 hidden group-hover:flex items-center space-x-1 bg-[#36393f] p-1 rounded-md shadow-md transition-opacity duration-200 opacity-0 group-hover:opacity-100">
-                <button class="text-[#b9bbbe] hover:text-[#dcddde] p-1 rounded hover:bg-[#40444b] transition-colors">
-                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd"></path></svg>
-                </button>
-                <button class="text-[#b9bbbe] hover:text-[#dcddde] p-1 rounded hover:bg-[#40444b] transition-colors">
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path></svg>
-                </button>
-                <button class="text-[#b9bbbe] hover:text-[#dcddde] p-1 rounded hover:bg-[#40444b] transition-colors">
-                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"></path></svg>
-                </button>
+        <div class="mb-0 last:mb-0 hover:bg-[#32353b] mx-2 px-4 py-1 rounded-md group message-enter">
+          <div class="flex items-start relative">
+            @if (msg.isNewGroup) {
+            <img [src]="msg.senderId.image" alt="User avatar"
+              class="w-10 h-10 rounded-full mr-3 mt-0.5 transition-transform duration-200 ease-in-out transform hover:scale-110">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-baseline mb-1">
+                <span class="text-white font-medium mr-2 cursor-pointer">{{ msg.senderId.username }}</span>
+                <span class="text-[#a3a6aa] text-xs">{{ formatTime(msg.createdAt) }}</span>
               </div>
+              @if (msg.message.startsWith('[image]')) {
+              <div class="max-w-sm">
+                <img [src]="msg.message.slice(7)" alt="Shared image" class="rounded-md max-w-full h-auto">
+              </div>
+              } @else if (msg.message.startsWith('[video]')) {
+              <div class="max-w-sm">
+                <video controls class="rounded-md max-w-full h-auto">
+                  <source [src]="msg.message.slice(7)" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+              } @else {
+              <p class="text-[#dcddde] break-words leading-relaxed" style="margin-bottom: 0px;">{{ msg.message }}</p>
+              }
+            </div>
+            } @else {
+            <div class="w-10 mr-3 flex-shrink-0"></div>
+            @if (msg.message.startsWith('[image]')) {
+            <div class="max-w-sm">
+              <img [src]="msg.message.slice(7)" alt="Shared image" class="rounded-md max-w-full h-auto">
+            </div>
+            } @else if (msg.message.startsWith('[video]')) {
+            <div class="max-w-sm">
+              <video controls class="rounded-md max-w-full h-auto">
+                <source [src]="msg.message.slice(7)" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            } @else {
+            <p class="text-[#dcddde] break-words leading-relaxed flex-1 min-w-0" style="margin-bottom: 0px;">
+              {{ msg.message }}</p>
+            }
+            }
+            <div
+              class="absolute right-0 top-0 hidden group-hover:flex items-center space-x-1 bg-[#36393f] p-1 rounded-md shadow-md transition-opacity duration-200 opacity-0 group-hover:opacity-100">
+              <button class="text-[#b9bbbe] hover:text-[#dcddde] p-1 rounded hover:bg-[#40444b] transition-colors">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
+                    clip-rule="evenodd"></path>
+                </svg>
+              </button>
+              <button class="text-[#b9bbbe] hover:text-[#dcddde] p-1 rounded hover:bg-[#40444b] transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path>
+                </svg>
+              </button>
+              <button class="text-[#b9bbbe] hover:text-[#dcddde] p-1 rounded hover:bg-[#40444b] transition-colors">
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z">
+                  </path>
+                </svg>
+              </button>
             </div>
           </div>
+        </div>
         } @empty {
-          <div class="flex-grow flex flex-col items-center justify-center text-center">
-            <svg class="w-16 h-16 text-[#8e9297] mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
-            </svg>
-            <p class="text-[#ffffff] text-lg font-medium">No messages yet</p>
-            <p class="text-[#8e9297] mt-1 text-sm">Start the conversation!</p>
-          </div>
+        <div class="flex-grow flex flex-col items-center justify-center text-center">
+          <svg class="w-16 h-16 text-[#8e9297] mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+            </path>
+          </svg>
+          <p class="text-[#ffffff] text-lg font-medium">No messages yet</p>
+          <p class="text-[#8e9297] mt-1 text-sm">Start the conversation!</p>
+        </div>
         }
       </div>
 
       <div class="px-4 py-4 bg-[#36393f]">
-        <div class="relative">
-          <input 
-            type="text" 
-            [(ngModel)]="message" 
-            (keydown.enter)="sendMessage()"
+        <div class="relative flex gap-2 items-center">
+
+
+
+          <input type="file" (change)="onImageUpload($event)" accept="image/*,video/*" style="display: none;"
+            #fileInput>
+          <button (click)="fileInput.click()"
+            class="text-[#b9bbbe] hover:text-[#dcddde] p-1 rounded hover:bg-[#40444b] transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
+              </path>
+            </svg>
+          </button>
+
+
+          <input type="text" [(ngModel)]="message" (keydown.enter)="sendMessage()"
             class="w-full bg-[#40444b] text-[#dcddde] rounded-lg pl-4 pr-12 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#5865F2] placeholder-[#72767d] transition-all duration-200"
-            placeholder="Message @{{friendUserData.username}}"
-          >
-          <button 
-            (click)="sendMessage()" 
-            class="absolute right-2 top-1/2 transform -translate-y-1/2 text-[#b9bbbe] hover:text-[#dcddde] transition-all p-1 rounded-full hover:bg-[#4f545c]"
-          >
-            <svg  class="w-6 h-6 rotate-90" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path></svg>
+            placeholder="Message @{{friendUserData.username}}">
+
+          <button (click)="sendMessage()"
+            class="absolute right-2 top-1/2 transform -translate-y-1/2 text-[#b9bbbe] hover:text-[#dcddde] transition-all p-2 rounded-full hover:bg-[#4f545c]">
+            <svg class="w-6 h-6 rotate-90" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z">
+              </path>
+            </svg>
           </button>
         </div>
       </div>
+
     </div>
   </div>
 </main>
 
 @if (profileVisible) {
-  <app-user-profile />
+<app-user-profile />
 }
 
 @if (createServerVisible) {
-  <app-create-server />
+<app-create-server />
+}
+
+
+@if (isLoading) {
+  <div class="fullscreen-spinner custom-spinner">
+    <p-progressSpinner ariaLabel="loading" styleClass="w-4rem h-4rem" strokeWidth="2" fill="transparent"
+      animationDuration="1s"></p-progressSpinner>
+  </div>
 }
