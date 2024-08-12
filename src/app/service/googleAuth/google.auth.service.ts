@@ -31,7 +31,7 @@ export class GoogleAuthService {
             console.log('Login successful:', response);
             this.toster.showSuccess('Success', 'Logged in successfully with Google!')
 
-            this.router.navigate([''])
+            this.router.navigate(['/'])
           },
           error:(err)=>{
             console.log('Error', err?.error.message);            

@@ -16,7 +16,7 @@ import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { getDatabase } from '@angular/fire/database';
 import { provideDatabase } from '@angular/fire/database';
 import { adminRoute } from './routes/admin.route';
-import { UserAuthInterceptor } from './service/interceptor/userAuthInterceptor';
+import { UserAuthInterceptor } from './interceptor/userAuthInterceptor';
 import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { userReducer } from './store/user-listing/user.reducer';

@@ -53,11 +53,11 @@ export class LoginComponent {
           console.log(response);
           localStorage.setItem('token', response?.token)
            this.toster.showSuccess('Success', response?.message);
-          this.router.navigate([''])
+          this.router.navigate(['/'])
         },
         error:(err)=>{
-          console.error('Login error:', err.error.message); 
-          this.toster.showError('Error', err.error.message);
+          console.error('Login error:', err.error.error); 
+          this.toster.showError('Error', err.error.error);
         }
       })
     }else{
