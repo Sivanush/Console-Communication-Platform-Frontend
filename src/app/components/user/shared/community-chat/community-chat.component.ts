@@ -140,7 +140,6 @@ export class CommunityChatComponent implements OnInit, AfterViewInit, OnDestroy 
           this.isLoading = false;
           return;
         }
-        console.log('new Messages ', response);
 
         this.messages = [...response, ...this.messages].sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
         this.groupMessages();

@@ -12,8 +12,6 @@ export class ToggleCreateServerService {
   booleanValue$ = this.createServerVisibility.asObservable()
 
   toggleVisible(){
-    console.log(!this.createServerVisibility);
-    
     this.createServerVisibility.next(!this.createServerVisibility.getValue())
   }
 }

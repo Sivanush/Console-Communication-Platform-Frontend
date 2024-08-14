@@ -208,7 +208,6 @@ export class ServerSidebarComponent {
 
   onChannelClick(channel: ChannelNode) {
     if (channel.type === 'text') {
-      console.log(channel);
       this.toggleChat.emit(true);
       this.toggleVideo.emit(false);
       this.channelSelected.emit(channel._id);

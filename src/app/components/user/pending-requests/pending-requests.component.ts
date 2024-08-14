@@ -55,7 +55,7 @@ export class PendingRequestsComponent {
 
     this.subscription = this.userProfileService.booleanValue$.subscribe((data: boolean) => {
       this.profileVisible = data;
-      console.log('Data Updated ',this.profileVisible);
+
       
     });
   }
@@ -63,10 +63,7 @@ export class PendingRequestsComponent {
   getPendingRequests(){
     this.userService.listPendingFriendRequest().subscribe({
       next:(response)=>{
-        // console.log(response);
         this.users = response.requests
-        console.log(this.users);
-        
       },
       error:(err)=>{
         console.log(err.message);

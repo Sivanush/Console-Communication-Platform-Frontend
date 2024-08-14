@@ -47,13 +47,7 @@ export class MainSidebarComponent {
     this.serverService.getAllServers().subscribe({
 
       next:(response)=>{
-        console.log(response);
-        // this.servers = response
         this.servers = response
-        console.log('❌❌❌❌❌❌❌❌');
-        console.log(this.servers);
-        
-        // console.log('all servers',this.servers);
         this.cdr.detectChanges();
         
       },

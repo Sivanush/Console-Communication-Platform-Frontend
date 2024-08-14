@@ -54,7 +54,7 @@ export class HomeComponent {
 
     this.subscription = this.userProfileService.booleanValue$.subscribe((data: boolean) => {
       this.profileVisible = data;
-      console.log('Data Updated ',this.profileVisible);
+
       
     });
 
