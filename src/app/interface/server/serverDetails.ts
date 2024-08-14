@@ -29,5 +29,7 @@ export interface IServer {
     createdAt: string;
     updatedAt: string;
     __v: number;
+    role: string[];
+    channelId: string;
     categories: ICategory[];
 }

@@ -1,0 +1,11 @@
+<div mat-dialog-content>
+    @if(data.type === 'image'){
+            <img [src]="data.src" alt="Full Image" class="max-w-full h-auto">           
+    }@else if(data.type === 'video'){
+        <video controls class="max-w-full h-auto">
+            <source [src]="data.src" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+    } 
+  </div>
+  

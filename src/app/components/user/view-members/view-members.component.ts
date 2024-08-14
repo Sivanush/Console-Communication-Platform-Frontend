@@ -13,23 +13,25 @@ export class ViewMembersComponent {
   isChat!: boolean;
   isVideo!: boolean;
 
-  members: any[] = [
-    { name: 'Member 1', avatarUrl: 'member-avatar.png', status: 'Online' },
-    { name: 'Member 2', avatarUrl: 'member-avatar.png', status: 'Online' },
-    { name: 'Member 3', avatarUrl: 'member-avatar.png', status: 'Offline' },
-    // Add more members here
-  ];
+  // members: anything[] = [
+  //   { name: 'Member 1', avatarUrl: 'member-avatar.png', status: 'Online' },
+  //   { name: 'Member 2', avatarUrl: 'member-avatar.png', status: 'Online' },
+  //   { name: 'Member 3', avatarUrl: 'member-avatar.png', status: 'Offline' },
+  //   // Add more members here
+  // ];
 
-  selectedMember: any = null;
+  selectedMember: { name: string; avatarUrl: string; status: string } | null = null;
   showMemberOptions: boolean = false;
 
   constructor(private cdr: ChangeDetectorRef) {}
 
-  toggleMemberOptions(member?: any): void {
+  toggleMemberOptions(member?: { name: string; avatarUrl: string; status: string }): void {
     alert(member)
     
+   if (member) {
     this.selectedMember = member;
     this.showMemberOptions = !this.showMemberOptions;
+   }
   }
 
   isChatToggle(value: boolean) {

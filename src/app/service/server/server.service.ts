@@ -30,7 +30,7 @@ export class ServerService {
   }
 
   getAllServers(){
-    return this.http.get<IAllServer[]>(`${this.apiLink}/servers`)
+    return this.http.get<IServer[]>(`${this.apiLink}/servers`)
   }
 
 

@@ -7,6 +7,7 @@ import { DialogModule } from 'primeng/dialog';
 import { ToggleCreateServerService } from '../../../../service/toggleCreateServer/toggle-create-server.service';
 import { ServerService } from '../../../../service/server/server.service';
 import { Subscription } from 'rxjs';
+import { IAllServer, IServer } from '../../../../interface/server/getAllServer';
 
 @Component({
   selector: 'app-main-sidebar',
@@ -19,7 +20,7 @@ export class MainSidebarComponent {
   userProfile:boolean = false
   userImage:string = ''
   createServerVisible:boolean = false
-  servers!: any[];
+  servers: IServer[] = []
 
   constructor(
     private userProfileService:ToggleUserProfileService,
@@ -47,7 +48,11 @@ export class MainSidebarComponent {
 
       next:(response)=>{
         console.log(response);
+        // this.servers = response
         this.servers = response
+        console.log('❌❌❌❌❌❌❌❌');
+        console.log(this.servers);
+        
         // console.log('all servers',this.servers);
         this.cdr.detectChanges();
         

@@ -11,17 +11,20 @@ import { Subscription } from 'rxjs';
 import { CommunityVideoChatComponent } from "../shared/community-video-chat/community-video-chat.component";
 import { ActivatedRoute } from '@angular/router';
 import { ServerService } from '../../../service/server/server.service';
+import { CommunityAudioChatComponent } from "../shared/community-audio-chat/community-audio-chat.component";
+
 
 @Component({
   selector: 'app-server-details',
   standalone: true,
   templateUrl: './server-details.component.html',
   styleUrl: './server-details.component.scss',
-  imports: [FriendsSidebarComponent, FriendsHeaderComponent, ServerSidebarComponent, CommunityChatComponent, UserProfileComponent, CreateServerComponent, CommunityVideoChatComponent]
+  imports: [FriendsSidebarComponent, FriendsHeaderComponent, ServerSidebarComponent, CommunityChatComponent, UserProfileComponent, CreateServerComponent, CommunityVideoChatComponent, CommunityAudioChatComponent]
 })
 export class ServerDetailsComponent {
   isChat!: boolean
   isVideo!: boolean
+  isAudio!: boolean
   profileVisible: boolean = false
   createServerVisible: boolean = false
   private subscription!: Subscription;
@@ -33,7 +36,7 @@ export class ServerDetailsComponent {
     private toggleCreateServerService: ToggleCreateServerService,
     private route: ActivatedRoute,
     private serverService:ServerService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
   ) {
 
 
@@ -48,6 +51,11 @@ export class ServerDetailsComponent {
   isVideoToggle(value: boolean) {
     this.isVideo = value
     this.cdr.detectChanges(); 
+  }
+
+  isAudioToggle(value:boolean){
+    this.isAudio = value
+    this.cdr.detectChanges();
   }
 
   ngOnInit(): void {
@@ -96,6 +104,5 @@ export class ServerDetailsComponent {
         this.isVideo = false;
       }
     });
-    this.cdr.detectChanges(); 
   }
 }

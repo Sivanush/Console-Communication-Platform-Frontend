@@ -1,5 +1,5 @@
 <main class="flex h-screen bg-[#36393f] overflow-hidden">
-  <app-server-sidebar (toggleChat)="isChatToggle($event)" (toggleVideo)="isVideoToggle($event)" />
+  <app-server-sidebar (toggleChat)="isChatToggle($event)" (toggleVideo)="isVideoToggle($event)" (toggleAudio)="isAudioToggle($event)"/>
   
   <div class="flex-1 flex flex-col h-full w-full" id="main-content-wrapper">
 
@@ -12,6 +12,9 @@
       }
       @if(isVideo){
         <app-community-video-chat class="h-full flex flex-col" />
+      }
+      @if (isAudio) {
+        <app-community-audio-chat class="h-full flex flex-col" />
       }
     </div>
   </div>

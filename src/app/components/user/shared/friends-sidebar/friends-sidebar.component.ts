@@ -113,29 +113,35 @@ export class FriendsSidebarComponent {
   }
 
 
-  setupStatusPolling() {
+  private setupStatusPolling() {
     if (this.userId) {
       setTimeout(() => {
-        this.statusPollingSubscription = interval(3000).pipe(
-          switchMap(() => this.chatService.getFriendsStatus(this.userId as string))
-        ).subscribe({
-          next: (updatedFriends) => {
-            console.log(updatedFriends.friends);
-            this.usersSubject.next(updatedFriends.friends);
-            updatedFriends.friends.forEach(user=>{
-              this.chatService.getUnreadMessageCount(this.userId as string,user._id)
-            })
-            this.cdr.detectChanges();
-            console.log('------');
-  
-          },
-          error: (error) => {
-            console.error('Error polling friends status:', error);
-          }
-        });
+        this.statusPollingSubscription = interval(3000)
+          .pipe(
+            switchMap(() => this.chatService.getFriendsStatus(this.userId as string))
+          )
+          .subscribe({
+            next: (updatedFriends) => {
+              // Assuming updatedFriends is an array of FriendsStatus
+              const allFriends = updatedFriends.map(friendStatus => friendStatus);
+              // Flatten the array if each FriendsStatus has an array of friends
+              const flattenedFriends = allFriends.flat();
+
+              this.usersSubject.next(flattenedFriends);
+
+              flattenedFriends.forEach(user => {
+                this.chatService.getUnreadMessageCount(this.userId as string, user._id);
+              });
+              this.cdr.detectChanges();
+            },
+            error: (error) => {
+              console.error('Error polling friends status:', error);
+            }
+          });
       }, 3000);
     }
   }
+
 }
 
 

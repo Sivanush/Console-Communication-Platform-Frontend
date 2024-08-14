@@ -5,17 +5,23 @@ import { directChatI } from '../../interface/user/direct-chat';
 import { User } from '../../interface/user/user.model';
 import { S3 } from 'aws-sdk';
 import { awsCredentials } from '../../../environments/environment.prod';
+import { UserI } from '../../interface/server/channelChat';
+
+export interface FriendsStatus extends User{
+  _id: string;
+  status: string;
+}
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatServiceService {
   private onlineUsersSubject = new BehaviorSubject<string[]>([]);
-  private heartbeatInterval: any;
+  private heartbeatInterval: ReturnType<typeof setInterval> | null = null;
   private unreadMessagesSubject = new BehaviorSubject<{[userId: string]: number}>({});
   private currentChatPartner: string | null = null;
-  private friendsStatus = new BehaviorSubject<any>([]);
-
+  private friendsStatus = new BehaviorSubject<FriendsStatus[]>([]);
 
   private s3: S3;
   
@@ -51,13 +57,13 @@ export class ChatServiceService {
 
 
 
-    this.socket.on('friendsStatus',(friends:directChatI[])=>{
+    this.socket.on('friendsStatus',(friends:FriendsStatus[])=>{
       this.friendsStatus.next(friends);
     })
 
     this.socket.on('userStatusUpdate', ({ userId, status }:{userId:string,status:string}) => {
       const currentFriends = this.friendsStatus.value;
-      const updatedFriends = currentFriends.map((friend: { _id: string; }) => 
+      const updatedFriends = currentFriends.map((friend: FriendsStatus) => 
           friend._id === userId ? { ...friend, status } : friend
       );
       this.friendsStatus.next(updatedFriends);
@@ -164,7 +170,7 @@ export class ChatServiceService {
     this.startHeartbeat(userId);
   }
 
-  getFriendsStatus(userId: string): Observable<{  friends: User[] }> {
+  getFriendsStatus(userId: string): Observable<FriendsStatus[]> {
     this.socket.emit('getFriendsStatus', userId);
     return this.friendsStatus.asObservable();
 }

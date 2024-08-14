@@ -21,7 +21,7 @@ import { Subscription } from 'rxjs';
 import { ICategory } from '../../../../interface/server/categories';
 
 interface TreeNode {
-  _id:string
+  _id: string
   label: string;
   children: ChannelNode[];
   expanded: boolean;
@@ -35,16 +35,17 @@ interface ChannelNode {
 
 
 @Component({
-    selector: 'app-server-sidebar',
-    standalone: true,
-    templateUrl: './server-sidebar.component.html',
-    styleUrl: './server-sidebar.component.scss',
-    imports: [MainSidebarComponent, TreeModule, FormsModule, CommonModule, AsyncPipe, RouterLink, MatMenuModule, MatButtonModule, MatIconModule, MatDividerModule, InviteUserModalComponent,RouterLinkActive],
-    providers:[ {provide: MatDialogRef, useValue:{}},{ provide: MAT_DIALOG_DATA, useValue: {} },]
+  selector: 'app-server-sidebar',
+  standalone: true,
+  templateUrl: './server-sidebar.component.html',
+  styleUrl: './server-sidebar.component.scss',
+  imports: [MainSidebarComponent, TreeModule, FormsModule, CommonModule, AsyncPipe, RouterLink, MatMenuModule, MatButtonModule, MatIconModule, MatDividerModule, InviteUserModalComponent, RouterLinkActive],
+  providers: [{ provide: MatDialogRef, useValue: {} }, { provide: MAT_DIALOG_DATA, useValue: {} },]
 })
 export class ServerSidebarComponent {
   @Output() toggleChat = new EventEmitter<boolean>(false)
   @Output() toggleVideo = new EventEmitter<boolean>(false)
+  @Output() toggleAudio = new EventEmitter<boolean>(false)
   @Output() channelSelected = new EventEmitter<string>();
 
   server: IServer = {
@@ -56,17 +57,19 @@ export class ServerSidebarComponent {
     createdAt: '',
     updatedAt: '',
     __v: 0,
-    categories: []
+    categories: [],
+    role: [],
+    channelId: ''
   }
   treeData: TreeNode[] = [];
   items: MenuItem[] | undefined;
-  serverId!:string
+  serverId!: string
   showModal = false;
-  inviteLink = environment.domain+'/invite/';
+  inviteLink = environment.domain + '/invite/';
   expiresAt: Date | null = null;
   subscription!: Subscription;
 
-  constructor(private route: ActivatedRoute, private serverService: ServerService,private dialog: MatDialog,private router:Router) {
+  constructor(private route: ActivatedRoute, private serverService: ServerService, private dialog: MatDialog, private router: Router) {
 
   }
 
@@ -84,7 +87,7 @@ export class ServerSidebarComponent {
       this.loadServerDetails(this.serverId);
     })
 
-    this.subscription = this.route.params.subscribe(params=>{
+    this.subscription = this.route.params.subscribe(params => {
       const channelId = params['channelId']
       if (channelId) {
         this.loadChannelDetails(channelId);
@@ -95,47 +98,51 @@ export class ServerSidebarComponent {
 
 
   loadChannelDetails(channelId: string) {
-
-    
     this.serverService.getChannelDetail(channelId).subscribe(channelDetails => {
       if (channelDetails.channelDetail.type === 'text') {
         this.toggleChat.emit(true);
+        this.toggleAudio.emit(false);
         this.toggleVideo.emit(false);
       } else if (channelDetails.channelDetail.type === 'video') {
         this.toggleChat.emit(false);
+        this.toggleAudio.emit(false);
         this.toggleVideo.emit(true);
+      } else if (channelDetails.channelDetail.type === 'voice') {
+        this.toggleChat.emit(false);
+        this.toggleAudio.emit(true);
+        this.toggleVideo.emit(false);
       } else {
         this.toggleChat.emit(false);
+        this.toggleAudio.emit(false);
         this.toggleVideo.emit(false);
       }
-    });
-    // this.cdr.detectChanges(); 
+    }); 
   }
 
 
-  generateInviteCode(){
+  generateInviteCode() {
     this.serverService.generateInviteLink(this.serverId).subscribe({
       next: (response) => {
         console.log(response);
         this.inviteLink = this.inviteLink + response.inviteCode
         this.expiresAt = new Date(response.expireDate);
-          this.dialog.open(InviteUserModalComponent, {
-            width: '400px',
-            data: {
-              inviteLink: this.inviteLink,
-              expiresAt: this.expiresAt
-            },
-            panelClass: 'invite-dialog'
-          });
+        this.dialog.open(InviteUserModalComponent, {
+          width: '400px',
+          data: {
+            inviteLink: this.inviteLink,
+            expiresAt: this.expiresAt
+          },
+          panelClass: 'invite-dialog'
+        });
       },
-      error:(err)=>{
+      error: (err) => {
         console.log(err);
-        
+
       }
     })
   }
 
-  createCategory(){
+  createCategory() {
     const Dialog = this.dialog.open(CreateCategoryComponent, {
       width: '400px',
       data: {
@@ -144,25 +151,25 @@ export class ServerSidebarComponent {
       panelClass: 'invite-dialog'
     });
 
-    Dialog.componentInstance.categoryCreated.subscribe((newCategory:ICategory)=>{
+    Dialog.componentInstance.categoryCreated.subscribe((newCategory: ICategory) => {
       this.addNewCategory(newCategory)
     })
   }
 
 
-  addNewCategory(newCategory: ICategory){
+  addNewCategory(newCategory: ICategory) {
     const newTreeNode = {
-      _id:newCategory._id,
+      _id: newCategory._id,
       label: newCategory.name,
       expanded: true,
-      children:[]
+      children: []
     }
-    this.treeData = [...this.treeData,newTreeNode]
+    this.treeData = [...this.treeData, newTreeNode]
   }
 
 
-  
-  createChannel(categoryId?:string){
+
+  createChannel(categoryId?: string) {
     const Dialog = this.dialog.open(CreateChannelComponent, {
       width: '400px',
       data: {
@@ -172,17 +179,17 @@ export class ServerSidebarComponent {
       panelClass: 'invite-dialog'
     });
 
-    Dialog.componentInstance.channelCreated.subscribe((newChannel:IChannel)=>{
+    Dialog.componentInstance.channelCreated.subscribe((newChannel: IChannel) => {
       this.addNewChannel(newChannel)
     })
   }
 
 
-  addNewChannel(newChannel:IChannel){
+  addNewChannel(newChannel: IChannel) {
     console.log('❌❌❌');
-    
+
     console.log(newChannel);
-    
+
     const categoryIndex = this.treeData.findIndex(category => category._id == newChannel.category)
     if (categoryIndex > -1) {
       this.treeData[categoryIndex].children.push({
@@ -205,7 +212,7 @@ export class ServerSidebarComponent {
       this.toggleChat.emit(true);
       this.toggleVideo.emit(false);
       this.channelSelected.emit(channel._id);
-    }else if(channel.type === 'video'){
+    } else if (channel.type === 'video') {
       this.toggleVideo.emit(true);
       this.toggleChat.emit(false);
       this.channelSelected.emit(channel._id);
@@ -236,7 +243,7 @@ export class ServerSidebarComponent {
       expanded: true,
       children: category.channels.map(channel => ({
         label: channel.name,
-        type: channel.type, 
+        type: channel.type,
         _id: channel._id
       }))
     }));

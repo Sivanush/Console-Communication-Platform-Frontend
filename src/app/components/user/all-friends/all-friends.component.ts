@@ -15,6 +15,7 @@ import { ChatServiceService } from '../../../service/direct-chat/chat-service.se
 import { CommonModule, DatePipe } from '@angular/common';
 import { TabViewModule } from 'primeng/tabview';
 import { SidebarModule } from 'primeng/sidebar';
+import { LoadingService } from '../../../service/loading/loading.service';
 
 @Component({
     selector: 'app-all-friends',
@@ -40,7 +41,8 @@ export class AllFriendsComponent {
     private chatService: ChatServiceService,
     private datePipe: DatePipe,
     private toggleCreateServerService:ToggleCreateServerService,
-    private userProfileService:ToggleUserProfileService
+    private userProfileService:ToggleUserProfileService,
+    // private loadingService:LoadingService
   ) {}
 
   async ngOnInit() {
@@ -66,6 +68,7 @@ export class AllFriendsComponent {
     this.userService.getAllFriends().subscribe({
       next: (friends) => {
         this.users = friends.friends
+        // this.loadingService.hide()
       },
       error: (error) => {
         console.error('Error loading friends:', error);

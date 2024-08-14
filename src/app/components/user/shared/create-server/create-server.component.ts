@@ -21,11 +21,13 @@ export class CreateServerComponent {
 
   isLoading: boolean = false
   serverName: string | null = null
-  imagePreview!: any;
+  imagePreview: string | ArrayBuffer | null | undefined = null; // Updated type
   serverImage: File | null = null;
 
-  onFileSelected(event: any) {
-    const file = event?.target.files[0] as File
+  onFileSelected(event: Event) {
+    // const file = event?.target.files[0] as File
+    const input = event.target as HTMLInputElement;
+    const file = input?.files?.[0] ?? null;
     if (file) {
       this.serverImage = file
       const reader = new FileReader()

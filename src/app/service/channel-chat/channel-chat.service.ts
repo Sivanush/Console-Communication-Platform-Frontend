@@ -19,11 +19,11 @@ export class ChannelChatService {
    }
 
    private setupSocketListeners(){
-    this.socket.on('allMessages',(messages:any[])=>{
+    this.socket.on('allMessages',(messages:MessageI[])=>{
       this.channelMessages.next(messages)
     })
 
-    this.socket.on('channelMessage',(message:any)=>{
+    this.socket.on('channelMessage',(message:MessageI)=>{
       this.channelMessages.next([...this.channelMessages.value,message])
     })
    }

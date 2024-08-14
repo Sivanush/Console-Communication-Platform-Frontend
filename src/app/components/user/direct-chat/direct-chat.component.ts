@@ -17,6 +17,8 @@ import { CreateServerComponent } from "../shared/create-server/create-server.com
 import { ToggleUserProfileService } from '../../../service/toggleUserProfile/toggle-user-profile.service';
 import { ToggleCreateServerService } from '../../../service/toggleCreateServer/toggle-create-server.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { MatDialog } from '@angular/material/dialog';
+import { MediaDialogComponent } from '../shared/media-dialog/media-dialog.component';
 
 
 @Component({
@@ -58,7 +60,8 @@ export class DirectChatComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private userProfileService: ToggleUserProfileService,
     private toggleCreateServerService: ToggleCreateServerService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -281,6 +284,18 @@ export class DirectChatComponent implements OnInit, OnDestroy {
     }
   }
 
+
+
+
+
+
+  openMediaDialog(src: string, type: string) {
+    console.log('asdewsaxxxxxxxx');
+    
+    this.dialog.open(MediaDialogComponent, {
+      data: { src, type }
+    });
+  }
 
 
 

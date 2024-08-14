@@ -18,7 +18,6 @@ export class userEffects{
             mergeMap(()=>{
                 return this.adminService.getUser().pipe(
                     // delay(),
-                    // tap((data:any)=>console.log(data)),
                     map(users => loadUserSuccess({user:users.result})),
                     catchError(error => of(loadUserFailed({ error })))
                 );

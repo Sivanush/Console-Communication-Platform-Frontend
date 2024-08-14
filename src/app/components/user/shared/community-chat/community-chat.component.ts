@@ -3,7 +3,7 @@
 
 
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked, OnDestroy, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ChannelChatService } from '../../../../service/channel-chat/channel-chat.service';
 import { Subscription } from 'rxjs';
@@ -13,6 +13,7 @@ import { ToastService } from '../../../../service/toster/toster-service.service'
 import { currentGroupI, MessageGroupI, MessageI } from '../../../../interface/server/channelChat';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { LoadingService } from '../../../../service/loading/loading.service';
 
 
 @Component({
@@ -46,10 +47,18 @@ export class CommunityChatComponent implements OnInit, AfterViewInit, OnDestroy 
     private route: ActivatedRoute,
     private userService: UserService,
     private datePipe: DatePipe,
-    private toastService: ToastService
-  ) { }
+    private toastService: ToastService,
+    private loadingService: LoadingService,
+    private cdr: ChangeDetectorRef
+  ) {
+    this.loadingService.show()
+    // this.cdr.detectChanges();
+   }
 
   async ngOnInit(): Promise<void> {
+
+  
+
     this.userId = await this.userService.getUserId();
     this.routeSubscription = this.route.params.subscribe(params => {
       if (this.channelId) {
@@ -59,12 +68,15 @@ export class CommunityChatComponent implements OnInit, AfterViewInit, OnDestroy 
       this.loadChannelMessages();
       this.scrollToBottom()
      
-      
+    //    setTimeout(() => {
+    //   this.loadingService.hide();
+    // }, 1000);
       
     });
   }
 
   ngAfterViewInit() { 
+    
     setTimeout(() => {
       this.setUpObserver();
       this.scrollContainer.nativeElement.addEventListener('scroll', this.onScroll.bind(this))
@@ -105,6 +117,9 @@ export class CommunityChatComponent implements OnInit, AfterViewInit, OnDestroy 
         this.messages = messages.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
         this.groupMessages();
         this.scrollToBottom();
+        setTimeout(() => {
+        this.loadingService.hide()
+        }, 1000);
       });
     } else {
       this.toastService.showWarn('Warning', 'Something Went Wrong Please Try Again');

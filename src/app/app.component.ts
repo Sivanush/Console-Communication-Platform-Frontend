@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
@@ -7,10 +7,11 @@ import { UserService } from './service/user/user.service';
 import { ChatServiceService } from './service/direct-chat/chat-service.service';
 import { FriendVideoCallService } from './service/friend-video-call/friend-video-call.service';
 import { MatDialog } from '@angular/material/dialog';
-import { filter, Subscription, take } from 'rxjs';
+import { filter, Observable, Subscription, take } from 'rxjs';
 import { AcceptVideoCallComponent } from './components/user/shared/accept-video-call/accept-video-call.component';
 import { ToastService } from './service/toster/toster-service.service';
-import { Location } from '@angular/common';
+import { AsyncPipe, Location } from '@angular/common';
+import { LoadingService } from './service/loading/loading.service';
 
 
 
@@ -20,12 +21,13 @@ import { Location } from '@angular/common';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   providers: [],
-  imports: [RouterOutlet, ToastModule, ConfirmDialogModule, DirectChatComponent]
+  imports: [RouterOutlet, ToastModule, ConfirmDialogModule, DirectChatComponent,AsyncPipe]
 })
 export class AppComponent {
 
   userId!: string | null
   private _subscriptions: Subscription[] = [];
+  isLoading$: boolean = true
 
   constructor(
     private userService: UserService,
@@ -34,9 +36,21 @@ export class AppComponent {
     private friendVideoCallService: FriendVideoCallService,
     private toaster: ToastService,
     private router: Router,
-    private location:Location
-  ) { }
+    private loadingService: LoadingService,
+    private cdr: ChangeDetectorRef
+  ) {
+    
+   }
   async ngOnInit(): Promise<void> {
+
+    this.loadingService.loading$.subscribe((loading) => {
+      this.isLoading$ = loading;
+      this.cdr.detectChanges();
+    });
+
+
+    this.loadingService.show();
+
     this.userId = await this.userService.getUserId();
     if (this.userId) {
       this.chatService.connectUser(this.userId);
@@ -57,8 +71,21 @@ export class AppComponent {
         this.toaster.showError('Initialization Error', 'Failed to initialize video call service');
       } 
     } 
+
+
+    // setTimeout(() => {
+    //   // this.isLoading = false
+    //   const loadingOverlay = document.getElementById('loading-overlay') as HTMLElement;
+    //   loadingOverlay.classList.add('hidden');
+    // }, 500);
+
+    setTimeout(() => {
+      this.loadingService.hide(); // Hide loading after a delay
+      this.cdr.detectChanges();
+    }, 500);
   }
 
+  
   ngOnDestroy() {
     this._subscriptions.forEach(sub => sub.unsubscribe());
     this.friendVideoCallService.destroyPeer();

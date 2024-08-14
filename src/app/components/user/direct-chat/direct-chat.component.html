@@ -35,11 +35,11 @@
               </div>
               @if (msg.message.startsWith('[image]')) {
               <div class="max-w-sm">
-                <img [src]="msg.message.slice(7)" alt="Shared image" class="rounded-md max-w-full h-auto">
+                <img [src]="msg.message.slice(7)" alt="Shared image" class="rounded-md max-w-full h-auto" (click)="openMediaDialog(msg.message.slice(7), 'image')">
               </div>
               } @else if (msg.message.startsWith('[video]')) {
               <div class="max-w-sm">
-                <video controls class="rounded-md max-w-full h-auto">
+                <video controls class="rounded-md max-w-full h-auto" (click)="openMediaDialog(msg.message.slice(7), 'video')">
                   <source [src]="msg.message.slice(7)" type="video/mp4">
                   Your browser does not support the video tag.
                 </video>
@@ -52,11 +52,11 @@
             <div class="w-10 mr-3 flex-shrink-0"></div>
             @if (msg.message.startsWith('[image]')) {
             <div class="max-w-sm">
-              <img [src]="msg.message.slice(7)" alt="Shared image" class="rounded-md max-w-full h-auto">
+              <img [src]="msg.message.slice(7)" alt="Shared image"  class="rounded-md max-w-full h-auto" (click)="openMediaDialog(msg.message.slice(7), 'image')">
             </div>
             } @else if (msg.message.startsWith('[video]')) {
             <div class="max-w-sm">
-              <video controls class="rounded-md max-w-full h-auto">
+              <video controls class="rounded-md max-w-full h-auto"  (click)="openMediaDialog(msg.message.slice(7), 'video')">
                 <source [src]="msg.message.slice(7)" type="video/mp4">
                 Your browser does not support the video tag.
               </video>
