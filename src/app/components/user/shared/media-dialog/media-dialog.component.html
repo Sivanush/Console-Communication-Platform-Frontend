@@ -1,11 +1,23 @@
-<div mat-dialog-content>
-    @if(data.type === 'image'){
-            <img [src]="data.src" alt="Full Image" class="max-w-full h-auto">           
-    }@else if(data.type === 'video'){
-        <video controls class="max-w-full h-auto">
-            <source [src]="data.src" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-    } 
+<div mat-dialog-content class="dialog-wrapper" (click)="closeDialog()">
+  <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+    <div class="bg-black rounded-lg overflow-hidden shadow-lg max-w-md w-full mx-auto" (click)="stopPropagation($event)">
+      @if (data.type === 'image') {
+        <img 
+          [src]="data.src" 
+          alt="Full size image" 
+          class="w-full h-auto object-contain"
+        >
+      } @else if (data.type === 'video') {
+        <div>
+          <video 
+          controls 
+          class="w-full h-auto max-h-[80vh]"
+        >
+          <source [src]="data.src" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+        </div>
+      }
+    </div>
   </div>
-  
+</div>

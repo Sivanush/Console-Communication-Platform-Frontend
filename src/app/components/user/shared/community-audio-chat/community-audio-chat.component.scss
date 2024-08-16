@@ -5,3 +5,25 @@
     margin: 10px;
     display: inline-block;
   }
+
+
+
+  /* Assuming you have a separate CSS file or style block */
+.audio-indicator-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-element {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 8px; /* Add some space between the avatar and username */
+}
+
+.username-element {
+  text-align: center;
+  font-size: 14px;
+}

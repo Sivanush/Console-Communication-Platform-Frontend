@@ -38,11 +38,19 @@
                 <img [src]="msg.message.slice(7)" alt="Shared image" class="rounded-md max-w-full h-auto" (click)="openMediaDialog(msg.message.slice(7), 'image')">
               </div>
               } @else if (msg.message.startsWith('[video]')) {
-              <div class="max-w-sm">
+              <!-- <div class="max-w-sm">
                 <video controls class="rounded-md max-w-full h-auto" (click)="openMediaDialog(msg.message.slice(7), 'video')">
                   <source [src]="msg.message.slice(7)" type="video/mp4">
                   Your browser does not support the video tag.
                 </video>
+              </div> -->
+              <div class="max-w-sm relative cursor-pointer" (click)="openMediaDialog(msg.message.slice(7), 'video')">
+                <img src="https://discord-bucket-7.s3.ap-south-1.amazonaws.com/360_F_480129384_xkBXyTdVt1R5F7KBwTD2kDURi7hV97Ad.jpg" alt="Video thumbnail" class="rounded-md max-w-full h-auto">
+                <!-- <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-4xl text-white">▶️</div> -->
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"class="size-10 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-4xl text-white">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
+                </svg>
+                
               </div>
               } @else {
               <p class="text-[#dcddde] break-words leading-relaxed" style="margin-bottom: 0px;">{{ msg.message }}</p>
@@ -55,11 +63,19 @@
               <img [src]="msg.message.slice(7)" alt="Shared image"  class="rounded-md max-w-full h-auto" (click)="openMediaDialog(msg.message.slice(7), 'image')">
             </div>
             } @else if (msg.message.startsWith('[video]')) {
-            <div class="max-w-sm">
+            <!-- <div class="max-w-sm">
               <video controls class="rounded-md max-w-full h-auto"  (click)="openMediaDialog(msg.message.slice(7), 'video')">
                 <source [src]="msg.message.slice(7)" type="video/mp4">
                 Your browser does not support the video tag.
               </video>
+            </div> -->
+            <div class="max-w-sm relative cursor-pointer" (click)="openMediaDialog(msg.message.slice(7), 'video')">
+              <img src="https://discord-bucket-7.s3.ap-south-1.amazonaws.com/360_F_480129384_xkBXyTdVt1R5F7KBwTD2kDURi7hV97Ad.jpg" alt="Video thumbnail" class="rounded-md max-w-full h-auto">
+              <!-- <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-4xl text-white">▶️</div> -->
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-10 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-4xl text-white">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
+              </svg>
+              
             </div>
             } @else {
             <p class="text-[#dcddde] break-words leading-relaxed flex-1 min-w-0" style="margin-bottom: 0px;">

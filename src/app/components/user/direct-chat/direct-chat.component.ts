@@ -43,6 +43,7 @@ export class DirectChatComponent implements OnInit, OnDestroy {
   messages: directChatI[] = [];
   isFriendOnline$: Observable<boolean> | undefined;
   groupedMessages: directChatI[] = [];
+  private videoThumbnails: { [url: string]: string } = {};
 
   isLoading:boolean = false
   private paramSubscription!: Subscription;
@@ -216,34 +217,6 @@ export class DirectChatComponent implements OnInit, OnDestroy {
     }, 300); // Small delay to ensure DOM updates
   }
 
-  // async onImageUpload(event: Event) {
-  //   const files = (event.target as HTMLInputElement).files;
-  //   if (files && files.length > 0) {
-  //     const file = files[0];
-  //     try {
-  //       const base64Image = await this.fileToBase64(file);
-  //       const fileType = file.type.split('/')[0];
-  //       const fileUrl = await this.chatService.uploadToCloudinary(file);
-  //       this.chatService.sendDirectImage(this.userId!, this.friendId!, fileUrl as string,fileType)
-  //     } catch (error) {
-  //       console.error('Error converting file to base64:', error);
-  //       this.toaster.showError('Failed to upload image. Please try again.');
-  //     }
-  //   } else {
-  //     this.toaster.showInfo('Please select an image to upload.');
-  //   }
-  // }
-
-
-  // private fileToBase64(file: File): Promise<string> {
-  //   return new Promise((resolve, reject) => {
-  //     const reader = new FileReader();
-  //     reader.readAsDataURL(file);
-  //     reader.onload = () => resolve(reader.result as string);
-  //     reader.onerror = error => reject(error);
-  //   });
-  // }
-
 
 
   async onImageUpload(event: Event) {
@@ -290,11 +263,40 @@ export class DirectChatComponent implements OnInit, OnDestroy {
 
 
   openMediaDialog(src: string, type: string) {
-    console.log('asdewsaxxxxxxxx');
-    
     this.dialog.open(MediaDialogComponent, {
+      width: 'auto',
       data: { src, type }
     });
+  }
+
+
+
+  getVideoThumbnail(videoUrl: string): string {
+    if (this.videoThumbnails[videoUrl]) {
+      return this.videoThumbnails[videoUrl];
+    }
+
+    const video = document.createElement('video');
+    video.src = videoUrl;
+    video.crossOrigin = 'anonymous'; // If your video is hosted on a different domain
+    video.muted = true;
+    video.preload = 'metadata';
+
+    video.onloadedmetadata = () => {
+      video.currentTime = 1; // Seek to 1 second
+    };
+
+    video.onseeked = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      canvas.getContext('2d')?.drawImage(video, 0, 0, canvas.width, canvas.height);
+      
+      this.videoThumbnails[videoUrl] = canvas.toDataURL();
+      this.cdr.detectChanges(); // Trigger change detection
+    };
+
+    return ''; // Return empty string initially
   }
 
 
