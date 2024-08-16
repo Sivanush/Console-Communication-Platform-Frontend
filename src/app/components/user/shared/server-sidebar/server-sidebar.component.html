@@ -6,7 +6,7 @@
     class="h-full w-60 bg-[#2f3136] text-[#dcddde] overflow-y-auto">
     
     <!-- Server name -->
-    <div class="px-4 py-[10px] flex justify-between items-center border-b border-[#202225] cursor-pointer hover:bg-[#34373c] transition duration-300" mat-button [matMenuTriggerFor]="serverMenu">
+    <div class="px-4 py-[10px] flex justify-between items-center border-b border-[#202225] cursor-pointer hover:bg-[#34373c] transition duration-300" (click)="toggleServerOptions()">
       @if (server.name) {
         <h2 style="margin-bottom: 0px;" class="font-semibold text-white">{{ server.name }}</h2>
       } @else {
@@ -17,43 +17,43 @@
       <span class="text-[#b9bbbe]">▼</span>
     </div>
 
-    <div class="relative">
-    <mat-menu #serverMenu="matMenu" class="discord-menu">
-      <button mat-menu-item class="invite-people">
-        <div (click)="generateInviteCode()" class="menu-item-content">
-        <mat-icon>person_add</mat-icon>
-        <span>Invite People</span>
+    <div class="relative" [class.hidden]="!serverOptions">
+      <div #serverMenu class="absolute right-2 mt-2 w-56 bg-[#18191c] rounded-md shadow-lg z-10">
+        <div class="py-1">
+          <a  (click)="generateInviteCode()" class="block px-4 py-2 text-[#2b95ff] hover:bg-[#4f545c] hover:text-white transition-colors duration-200 cursor-pointer">
+            <span class="flex items-center">
+              <span class="material-icons mr-2">person_add</span>
+              Invite People
+            </span>
+          </a>
+          <div class="border-t border-[#2f3136] my-1"></div>
+          <a  (click)="createChannel()" class="block px-4 py-2 text-[#dcddde] hover:bg-[#4f545c] hover:text-white transition-colors duration-200 cursor-pointer">
+            <span class="flex items-center">
+              <span class="material-icons mr-2">add</span>
+              Create Channel
+            </span>
+          </a>
+          <a  (click)="createCategory()" class="block px-4 py-2 text-[#dcddde] hover:bg-[#4f545c] hover:text-white transition-colors duration-200 cursor-pointer">
+            <span class="flex items-center">
+              <span class="material-icons mr-2">create_new_folder</span>
+              Create Category
+            </span>
+          </a>
+          <a [routerLink]="['/server', serverId]" class="block px-4 py-2 text-[#dcddde] hover:bg-[#4f545c] hover:text-white transition-colors duration-200 cursor-pointer">
+            <span class="flex items-center">
+              <span class="material-icons mr-2">people</span>
+              Members
+            </span>
+          </a>
+          <div class="border-t border-[#2f3136] my-1"></div>
+          <a  class="block px-4 py-2 text-red-500 hover:bg-[#4f545c] hover:text-red-400 transition-colors duration-200 cursor-pointer">
+            <span class="flex items-center">
+              <span class="material-icons mr-2">exit_to_app</span>
+              Leave Server
+            </span>
+          </a>
+        </div>
       </div>
-      </button>
-      <mat-divider></mat-divider>
-      <!-- <button mat-menu-item class="common">
-        <mat-icon>settings</mat-icon>
-        <span>Server Settings</span>
-      </button> -->
-      <button mat-menu-item  class="common">
-        <div (click)="createChannel()" class="menu-item-content">
-        <mat-icon>add</mat-icon>
-        <span>Create Channel</span>
-        </div>
-      </button>
-      <button mat-menu-item  class="common">
-        <div (click)="createCategory()" class="menu-item-content">
-          <mat-icon>create_new_folder</mat-icon>
-          <span>Create Category</span>
-        </div>
-      </button>
-      <button mat-menu-item class="common">
-        <div [routerLink]="['/server', serverId]" class="menu-item-content">
-          <mat-icon>people</mat-icon>
-          <span>Members</span>
-        </div>
-      </button>      
-      <mat-divider></mat-divider>
-      <button mat-menu-item class="leave-server">
-        <mat-icon>exit_to_app</mat-icon>
-        <span>Leave Server</span>
-      </button>
-    </mat-menu>
     </div>
 
     <!-- Channels and categories -->

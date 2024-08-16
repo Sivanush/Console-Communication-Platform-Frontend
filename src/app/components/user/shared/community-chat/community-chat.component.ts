@@ -14,6 +14,8 @@ import { currentGroupI, MessageGroupI, MessageI } from '../../../../interface/se
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { LoadingService } from '../../../../service/loading/loading.service';
+import { MediaDialogComponent } from '../media-dialog/media-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
@@ -49,7 +51,8 @@ export class CommunityChatComponent implements OnInit, AfterViewInit, OnDestroy 
     private datePipe: DatePipe,
     private toastService: ToastService,
     private loadingService: LoadingService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private dialog: MatDialog
   ) {
     this.loadingService.show()
     // this.cdr.detectChanges();
@@ -66,7 +69,9 @@ export class CommunityChatComponent implements OnInit, AfterViewInit, OnDestroy 
       }
       this.channelId = params['channelId'];
       this.loadChannelMessages();
-      this.scrollToBottom()
+      setTimeout(() => {
+        this.scrollToBottom()
+      }, 400);
      
     //    setTimeout(() => {
     //   this.loadingService.hide();
@@ -213,13 +218,70 @@ export class CommunityChatComponent implements OnInit, AfterViewInit, OnDestroy 
 
   scrollToBottom(): void {
     try {
-      setTimeout(() => {
         this.scrollContainer.nativeElement.scrollTop = this.scrollContainer.nativeElement.scrollHeight;
-      }, 200);
     } catch (err) {
       console.log(err);
     }
   }
+
+
+
+
+
+
+
+
+
+
+
+  async onFileUpload(event: Event) {
+    const files = (event.target as HTMLInputElement).files;
+    if (files && files.length > 0) {
+      const file = files[0];
+      try {
+        const fileType = file.type.split('/')[0];
+        let fileUrl = '';
+
+        this.loadingService.show();
+
+        if (fileType === 'image') {
+          fileUrl = await this.chatService.uploadImage(file);
+        } else if (fileType === 'video') {
+          fileUrl = await this.chatService.uploadVideo(file);
+        }
+
+        if (fileUrl && this.userId && this.channelId) {
+          this.chatService.sendFileMessage(this.userId, this.channelId, fileUrl, fileType);
+          setTimeout(() => {
+            this.scrollToBottom()
+          }, 700);
+          this.toastService.showSuccess('File uploaded and sent successfully.');
+        } else {
+          throw new Error('File upload failed');
+        }
+      } catch (error) {
+        console.error('Error uploading file:', error);
+        this.toastService.showError('Failed to upload file. Please try again.');
+      } finally {
+        this.loadingService.hide();
+      }
+    } else {
+      this.toastService.showInfo('Please select a file to upload.');
+    }
+  }
+
+
+
+  openMediaDialog(src: string, type: string) {
+    this.dialog.open(MediaDialogComponent, {
+      width: 'auto',
+      data: { src, type }
+    });
+  }
+
+
+
+
 
   ngOnDestroy(): void {
     if (this.routeSubscription) {

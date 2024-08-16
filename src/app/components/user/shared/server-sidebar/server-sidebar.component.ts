@@ -68,6 +68,7 @@ export class ServerSidebarComponent {
   inviteLink = environment.domain + '/invite/';
   expiresAt: Date | null = null;
   subscription!: Subscription;
+  serverOptions:boolean = false
 
   constructor(private route: ActivatedRoute, private serverService: ServerService, private dialog: MatDialog, private router: Router) {
 
@@ -94,6 +95,10 @@ export class ServerSidebarComponent {
       }
     })
 
+  }
+
+  toggleServerOptions(){
+    this.serverOptions = !this.serverOptions
   }
 
 

@@ -39,7 +39,35 @@
         </div>
         }
         <div class="text-[#dcddde] text-sm">
-          {{ msg.message }}
+          <!-- @if (msg.fileType === 'image') {
+            <img [src]="msg.message" alt="Shared image" class="max-w-sm rounded-md cursor-pointer" >
+          } @else if (msg.fileType === 'video') {
+            <div class="max-w-sm relative cursor-pointer" >
+              <img src="path_to_video_thumbnail" alt="Video thumbnail" class="rounded-md max-w-full h-auto">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-10 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-4xl text-white">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
+              </svg>
+            </div>
+          } @else {
+            {{ msg.message }}
+          } -->
+          @if (msg.message.startsWith('[image]')) {
+            <div class="max-w-sm">
+              <img [src]="msg.message.slice(7)" alt="Shared image" class="rounded-md max-w-full h-auto" (click)="openMediaDialog(msg.message.slice(7), 'image')">
+            </div>
+            } @else if (msg.message.startsWith('[video]')) {
+
+            <div class="max-w-sm relative cursor-pointer" (click)="openMediaDialog(msg.message.slice(7), 'video')">
+              <img src="https://discord-bucket-7.s3.ap-south-1.amazonaws.com/360_F_480129384_xkBXyTdVt1R5F7KBwTD2kDURi7hV97Ad.jpg" alt="Video thumbnail" class="rounded-md max-w-full h-auto">
+              <!-- <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-4xl text-white">▶️</div> -->
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"class="size-10 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-4xl text-white">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
+              </svg>
+              
+            </div>
+            } @else {
+            <p class="text-[#dcddde] break-words leading-relaxed" style="margin-bottom: 0px;">{{ msg.message }}</p>
+            }
         </div>
       </div>
     </div>
@@ -64,13 +92,26 @@
 
 <!-- Input area -->
 <div class="px-2 py-2 bg-[#40444b] mb-3 mr-3 rounded-md text-">
-  <div class="relative">
+  <div class="relative flex items-center">
+    <!-- File input for image and video upload -->
+    <input type="file" (change)="onFileUpload($event)" accept="image/*,video/*" style="display: none;" #fileInput>
+    <button (click)="fileInput.click()"
+      class="text-[#b9bbbe] hover:text-[#dcddde] p-1 rounded hover:bg-[#4f545c] transition-colors mr-2">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+      </svg>
+    </button>
+
+    <!-- Text input for messages -->
     <input type="text" [(ngModel)]="message" (keydown.enter)="sendMessage()"
       class="w-full bg-[#40444b] text-[#dcddde] rounded-md pl-4 pr-12 py-2 focus:outline-0 focus:ring-0 transition-all"
       placeholder="Type a message...">
+
+    <!-- Send button -->
     <button (click)="sendMessage()"
       class="absolute right-2 top-1/2 transform -translate-y-1/2 text-[#b9bbbe] hover:text-[#dcddde] transition-all">
-      <img width="24" height="24" src="https://img.icons8.com/fluency-systems-regular/48/sent--v1.png" alt="sent--v1"/>    </button>
+      <img width="24" height="24" src="https://img.icons8.com/fluency-systems-regular/48/sent--v1.png" alt="sent--v1"/>
+    </button>
   </div>
 </div>
 
