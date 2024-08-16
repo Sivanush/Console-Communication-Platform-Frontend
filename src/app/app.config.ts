@@ -24,7 +24,7 @@ import { userEffects } from './store/user-listing/user.effects';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { firebaseConfig, socketUrl } from '../environments/environment.prod';
-
+import { provideHotToastConfig } from '@ngneat/hot-toast';
 
 const config: SocketIoConfig = { url: socketUrl, options: {} };
 
@@ -48,6 +48,7 @@ export const appConfig: ApplicationConfig = {
     provideDatabase(() => getDatabase()),
     provideStore({user:userReducer}),
     provideEffects([userEffects]),
-    importProvidersFrom(SocketIoModule.forRoot(config)), provideAnimationsAsync()
+    importProvidersFrom(SocketIoModule.forRoot(config)), provideAnimationsAsync(),
+    provideHotToastConfig()
   ]
 };

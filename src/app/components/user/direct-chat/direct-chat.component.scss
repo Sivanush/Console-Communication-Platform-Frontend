@@ -99,6 +99,15 @@
 }
 
 
+  @media (max-width: 640px) {
+    #scroll-container {
+        padding-left: 100px; /* Padding for small screens */
+        padding-right: 100px;
+    }
+}
+
+
+
 .max-w-sm {
   position: relative;
   

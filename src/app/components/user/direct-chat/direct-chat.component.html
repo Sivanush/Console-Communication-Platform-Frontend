@@ -1,27 +1,15 @@
 <main class="flex h-screen bg-[#36393f] overflow-hidden font-sans text-[#dcddde]">
   <!-- Server list column -->
-  <nav class="w-[72px] bg-[#202225] flex-shrink-0 overflow-y-auto py-3 space-y-2">
-    <!-- Home button -->
-    <div
-      class="h-12 w-12 rounded-[24px] bg-[#5865F2] text-white flex items-center justify-center mx-auto hover:rounded-[16px] transition-all duration-200 cursor-pointer">
-      <svg class="w-7 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
-        </path>
-      </svg>
-    </div>
-    <!-- Server icons would go here -->
-  </nav>
 
-  <app-friends-sidebar class="w-60 bg-[#2f3136] flex-shrink-0 border-r border-[#202225]" />
+  <app-friends-sidebar class="sm:w-80 bg-[#2f3136] flex-shrink-0" />
 
-  <div class="flex-1 flex flex-col h-full">
+  <div class=" flex-1 flex flex-col h-full ">
     <app-direct-chat-header [isFriendOnline]="isFriendOnline$" [userImage]="friendUserData.image"
       [name]="friendUserData.username" [friendId]="friendUserData._id"
       class="bg-[#36393f] shadow-sm   min-h-[48px] px-4 flex items-center" />
 
     <div class="flex-1 flex flex-col overflow-hidden">
-      <div class="flex-1 overflow-y-auto px-4 pt-4 " id="scrollContainer" #scrollContainer>
+      <div class="flex-1 overflow-y-auto  px-40 pt-4 sm:px-0" id="scrollContainer" #scrollContainer>
         @for (msg of groupedMessages; track msg; let i = $index) {
         <div class="mb-0 last:mb-0 hover:bg-[#32353b] mx-2 px-4 py-1 rounded-md group message-enter">
           <div class="flex items-start relative">
