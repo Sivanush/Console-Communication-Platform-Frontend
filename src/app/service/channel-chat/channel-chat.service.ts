@@ -18,8 +18,8 @@ export class ChannelChatService {
   constructor(private socket: Socket) {
     this.setupSocketListeners()
     this.s3 = new S3({
-      accessKeyId: awsCredentials.Access_key,
-      secretAccessKey: awsCredentials.Secret_key,
+      accessKeyId: awsCredentials.accessKey,
+      secretAccessKey: awsCredentials.secretKey,
       region: 'ap-south-1',
     });
   }
