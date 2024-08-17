@@ -1,0 +1,68 @@
+<main class="flex h-screen bg-[#36393f] overflow-hidden">
+    <app-friends-sidebar />
+  
+    <div class="flex-1 flex flex-col h-full w-full" id="main-content-wrapper">
+      <div class="flex flex-col h-full">
+        <app-friends-header [name]="'User Profile'" />
+  
+        <div class="flex-1 flex flex-col bg-[#36393f] overflow-hidden">
+          <!-- Profile Area -->
+          <div class="flex-1 overflow-y-auto px-4 py-6" id="profileContainer">
+            <div class="bg-[#18191c] rounded-lg overflow-hidden">
+              <!-- Banner -->
+              <div class="h-32 bg-[#7289da]"></div>
+              
+              <!-- User Info -->
+              <div class="px-4 py-4">
+                <div class="flex items-end -mt-16">
+                  <img src="https://img-cdn.pixlr.com/image-generator/history/65bb506dcb310754719cf81f/ede935de-1138-4f66-8ed7-44bd16efc709/medium.webp" alt="User avatar" 
+                       class="w-24 h-24 rounded-full border-4 border-[#18191c]">
+                  <div class="ml-4 mb-1">
+                    <h2 class="text-[#ffffff] text-2xl font-bold">John</h2>
+                    <p class="text-[#b9bbbe]">#324243242</p>
+                  </div>
+                </div>
+                
+                <!-- User Details -->
+                <div class="mt-4">
+                  <h3 class="text-[#ffffff] font-semibold mb-2">About Me</h3>
+                  <p class="text-[#dcddde]">This user has not added a bio yet.</p>
+                </div>
+                
+                <!-- Member Since -->
+                <div class="mt-4">
+                  <h3 class="text-[#ffffff] font-semibold mb-2">Member Since</h3>
+                  <p class="text-[#dcddde]">1-1-2024</p>
+                </div>
+                
+                <!-- Roles -->
+                <div class="mt-4">
+                  <h3 class="text-[#ffffff] font-semibold mb-2">Roles</h3>
+                  <div class="flex flex-wrap gap-2">
+                  
+                      <span class="px-2 py-1 rounded-full text-xs font-medium" 
+                            [ngStyle]="{'background-color': role.color, 'color': getContrastColor(role.color)}">
+                        admin
+                      </span>
+  
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Action Buttons -->
+          <div class="px-4 py-4 bg-[#2f3136]">
+            <div class="flex gap-4">
+              <button class="bg-[#5865f2] hover:bg-[#4752c4] text-white font-medium py-2 px-4 rounded transition-colors">
+                Send Message
+              </button>
+              <button class="bg-[#4f545c] hover:bg-[#686d73] text-white font-medium py-2 px-4 rounded transition-colors">
+                Add Friend
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
