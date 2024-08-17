@@ -3,7 +3,7 @@
 
 
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked, OnDestroy, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked, OnDestroy, AfterViewInit, ChangeDetectorRef, TemplateRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ChannelChatService } from '../../../../service/channel-chat/channel-chat.service';
 import { Subscription } from 'rxjs';
@@ -16,6 +16,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { LoadingService } from '../../../../service/loading/loading.service';
 import { MediaDialogComponent } from '../media-dialog/media-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { HotToastService } from '@ngneat/hot-toast';
 
 
 @Component({
@@ -30,6 +31,11 @@ export class CommunityChatComponent implements OnInit, AfterViewInit, OnDestroy 
   @ViewChild('scrollContainer') private scrollContainer!: ElementRef;
   @ViewChild('scrollSentinel') private scrollSentinel!: ElementRef;
   
+
+  @ViewChild('successTemplate') successTemplate!: TemplateRef<HTMLDivElement>;
+  @ViewChild('errorTemplate') errorTemplate!: TemplateRef<HTMLDivElement>;
+
+
   private loadTriggerOffset = 400;
   allMessagesLoaded = false;
 
@@ -52,7 +58,8 @@ export class CommunityChatComponent implements OnInit, AfterViewInit, OnDestroy 
     private toastService: ToastService,
     private loadingService: LoadingService,
     private cdr: ChangeDetectorRef,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private hotToastService:HotToastService
   ) {
     this.loadingService.show()
     // this.cdr.detectChanges();
@@ -235,10 +242,17 @@ export class CommunityChatComponent implements OnInit, AfterViewInit, OnDestroy 
 
 
   async onFileUpload(event: Event) {
+    this.isLoading = false
     const files = (event.target as HTMLInputElement).files;
     if (files && files.length > 0) {
       const file = files[0];
       try {
+        // this.hotToastService.observe({
+        //   loading: 'Uploading...',
+        //   success: this.successTemplate,
+        //   error: this.errorTemplate,
+        // })
+
         const fileType = file.type.split('/')[0];
         let fileUrl = '';
 
@@ -255,6 +269,7 @@ export class CommunityChatComponent implements OnInit, AfterViewInit, OnDestroy 
           setTimeout(() => {
             this.scrollToBottom()
           }, 700);
+         
           this.toastService.showSuccess('File uploaded and sent successfully.');
         } else {
           throw new Error('File upload failed');

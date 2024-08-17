@@ -5,13 +5,13 @@ import { ToastModule } from 'primeng/toast';
 import { DirectChatComponent } from "./components/user/direct-chat/direct-chat.component";
 import { UserService } from './service/user/user.service';
 import { ChatServiceService } from './service/direct-chat/chat-service.service';
-import { FriendVideoCallService } from './service/friend-video-call/friend-video-call.service';
 import { MatDialog } from '@angular/material/dialog';
 import { filter, Observable, Subscription, take } from 'rxjs';
 import { AcceptVideoCallComponent } from './components/user/shared/accept-video-call/accept-video-call.component';
 import { ToastService } from './service/toster/toster-service.service';
 import { AsyncPipe, Location } from '@angular/common';
 import { LoadingService } from './service/loading/loading.service';
+import { DirectCallService } from './service/direct-call/direct-call.service';
 
 
 
@@ -33,7 +33,7 @@ export class AppComponent {
     private userService: UserService,
     private chatService: ChatServiceService,
     private dialog: MatDialog,
-    private friendVideoCallService: FriendVideoCallService,
+    private directCallService: DirectCallService,
     private toaster: ToastService,
     private router: Router,
     private loadingService: LoadingService,
@@ -56,15 +56,7 @@ export class AppComponent {
       this.chatService.connectUser(this.userId);
 
       try {
-        await this.friendVideoCallService.initializePeer(this.userId);
-        this._subscriptions.push(
-          this.friendVideoCallService.incomingCallBS.subscribe(callerId => {
-            this.handleIncomingCall(callerId)
-          }),
-          this.friendVideoCallService.callEndedBS.subscribe(() => {
-            this.router.navigate(['/']); // Navigate to home or previous page
-          })
-        );
+        await this.initializePeer();
         console.log('Peer initialized successfully');
       } catch (error) {
         console.error('Failed to initialize peer:', error);
@@ -85,37 +77,51 @@ export class AppComponent {
     }, 500);
   }
 
+
+  private async   initializePeer() {
+    await this.directCallService.initializePeer(this.userId!);
+    this._subscriptions.push(
+      this.directCallService.incomingCallBS.subscribe(({ callerId, isVideo }) => {
+        this.handleIncomingCall(callerId, isVideo);
+      }),
+      this.directCallService.callEndedBS.subscribe(() => {
+        this.router.navigate(['/']);
+        this.initializePeer().catch(error => {
+          console.error('Failed to reinitialize peer after call ended:', error);
+        });
+      })
+    );
+  }
+
+
+
   
   ngOnDestroy() {
     this._subscriptions.forEach(sub => sub.unsubscribe());
-    this.friendVideoCallService.destroyPeer();
+    this.directCallService.destroyPeer();
   }
 
-  private handleIncomingCall(callerId: string) {
-    
-    if(!this.friendVideoCallService.isInCallBS.getValue()){
+  private handleIncomingCall(callerId: string, isVideo: boolean) {
+    if (!this.directCallService.isInCallBS.getValue()) {
       const dialogRef = this.dialog.open(AcceptVideoCallComponent, {
         width: '400px',
-        data: { callerId: callerId },
+        data: { callerId: callerId, isVideo: isVideo },
         disableClose: true
       });
-  
+
       dialogRef.afterClosed().subscribe(async (result) => {
         if (result === true) {
-          this.friendVideoCallService.isInCallBS.next(true);
-          await this.friendVideoCallService.answerCall();
+          this.directCallService.isInCallBS.next(true);
+          await this.directCallService.answerCall(isVideo);
           
-          
-          this.router.navigate([`/direct-video-chat/${this.userId}/${callerId}`]);
-          console.log('❌❌❌❌❌❌❌❌❌❌❌❌❌❌');
+          const route = isVideo ? 'direct-video-chat' : 'direct-voice-chat';
+          this.router.navigate([`/${route}/${this.userId}/${callerId}`]);
         } else {
-          this.friendVideoCallService.endCall();
+          this.directCallService.endCall();
         }
       });
-    }else{
-      console.log('⚽⚽⚽⚽⚽⚽⚽⚽⚽⚽⚽⚽⚽⚽⚽');
-      
+    } else {
+      console.log('Already in a call');
     }
-
   }
 }

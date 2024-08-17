@@ -15,6 +15,7 @@ import { FriendVideoCallService } from '../../../service/friend-video-call/frien
 import { AcceptVideoCallComponent } from '../shared/accept-video-call/accept-video-call.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AsyncPipe, CommonModule, KeyValuePipe, Location } from '@angular/common';
+import { DirectCallService } from '../../../service/direct-call/direct-call.service';
 
 @Component({
   selector: 'app-direct-video-call',
@@ -36,7 +37,7 @@ export class DirectVideoCallComponent {
   friendUserData!: User;
 
   constructor(
-    private friendVideoCallService: FriendVideoCallService,
+    private friendVideoCallService: DirectCallService,
     private route: ActivatedRoute,
     private userService: UserService,
     private location: Location
@@ -87,7 +88,7 @@ export class DirectVideoCallComponent {
 
   async initializeCall(userId: string, friendId: string): Promise<void> {
     try {
-      await this.friendVideoCallService.startCall(friendId);
+      await this.friendVideoCallService.startCall(friendId,true);
     } catch (error) {
       console.error('Failed to initialize call:', error);
     }

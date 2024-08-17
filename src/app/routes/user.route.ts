@@ -19,6 +19,7 @@ import { CommunityChatComponent } from '../components/user/shared/community-chat
 import { AcceptInviteComponent } from '../components/user/accept-invite/accept-invite.component';
 import { DirectVideoCallComponent } from '../components/user/direct-video-call/direct-video-call.component';
 import { ViewMembersComponent } from '../components/user/view-members/view-members.component';
+import { DirectVoiceCallComponent } from '../components/user/direct-voice-call/direct-voice-call.component';
 
 
 export const userRoute: Routes = [
@@ -84,6 +85,11 @@ export const userRoute: Routes = [
   {
     path: 'direct-video-chat/:userId/:friendId',
     component: DirectVideoCallComponent,
+    canActivate: [directChatGuard, userAuthGuard]
+  },
+  {
+    path: 'direct-voice-chat/:userId/:friendId',
+    component: DirectVoiceCallComponent,
     canActivate: [directChatGuard, userAuthGuard]
   },
   {

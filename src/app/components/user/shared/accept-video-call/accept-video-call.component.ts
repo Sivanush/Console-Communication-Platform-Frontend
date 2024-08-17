@@ -18,7 +18,7 @@ export class AcceptVideoCallComponent implements OnInit, OnDestroy {
   constructor(
     private userService: UserService,
     public dialogRef: MatDialogRef<AcceptVideoCallComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { callerId: string }
+    @Inject(MAT_DIALOG_DATA) public data: { callerId: string, isVideo: boolean }
   ) {}
 
   ngOnInit(): void {
