@@ -3,10 +3,9 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { environment } from '../../../environments/environment.prod';
 import { User, UserRequestI } from '../../interface/user/user.model';
 import { Socket } from 'ngx-socket-io';
-// import { User } from '../../interface/user/user.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'

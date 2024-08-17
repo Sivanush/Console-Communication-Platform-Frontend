@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment.prod';
 import { HttpClient } from '@angular/common/http';
 import { IAllServer } from '../../interface/server/getAllServer';
 import { Observable, Subject } from 'rxjs';
 import { IChannel, IServer } from '../../interface/server/serverDetails';
 import { ICategory } from '../../interface/server/categories';
 import { User } from '../../interface/user/user.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'

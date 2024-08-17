@@ -23,8 +23,8 @@ import { userReducer } from './store/user-listing/user.reducer';
 import { userEffects } from './store/user-listing/user.effects';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
-import { firebaseConfig, socketUrl } from '../environments/environment.prod';
 import { provideHotToastConfig } from '@ngneat/hot-toast';
+import { firebaseConfig, socketUrl } from '../environments/environment';
 
 const config: SocketIoConfig = { url: socketUrl, options: {} };
 

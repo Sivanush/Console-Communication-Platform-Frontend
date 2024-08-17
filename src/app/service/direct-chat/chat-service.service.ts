@@ -4,8 +4,8 @@ import { BehaviorSubject, from, Observable } from 'rxjs';
 import { directChatI } from '../../interface/user/direct-chat';
 import { User } from '../../interface/user/user.model';
 import { S3 } from 'aws-sdk';
-import { awsCredentials } from '../../../environments/environment.prod';
 import { UserI } from '../../interface/server/channelChat';
+import { awsCredentials } from '../../../environments/environment';
 
 export interface FriendsStatus extends User{
   _id: string;

@@ -3,7 +3,7 @@ import { Socket } from 'ngx-socket-io';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { MessageI } from '../../interface/server/channelChat';
 import { S3 } from 'aws-sdk';
-import { awsCredentials } from '../../../environments/environment.prod';
+import { awsCredentials } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
