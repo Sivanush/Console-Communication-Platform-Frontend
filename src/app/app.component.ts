@@ -12,6 +12,7 @@ import { ToastService } from './service/toster/toster-service.service';
 import { AsyncPipe, Location } from '@angular/common';
 import { LoadingService } from './service/loading/loading.service';
 import { DirectCallService } from './service/direct-call/direct-call.service';
+import { awsCredentials, environment, firebaseConfig, socketUrl } from '../environments/environment';
 
 
 
@@ -42,6 +43,31 @@ export class AppComponent {
     
    }
   async ngOnInit(): Promise<void> {
+
+
+    console.log('Environment Configuration:');
+    console.log('Production:', environment.production);
+    console.log('API URL:', environment.apiUrl);
+    console.log('Domain:', environment.domain);
+    console.log('Google Client ID:', environment.googleClientId);
+
+    console.log('Firebase Configuration:');
+    console.log('API Key:', firebaseConfig.apiKey);
+    console.log('Auth Domain:', firebaseConfig.authDomain);
+    console.log('Database URL:', firebaseConfig.databaseURL);
+    console.log('Project ID:', firebaseConfig.projectId);
+    console.log('Storage Bucket:', firebaseConfig.storageBucket);
+    console.log('Messaging Sender ID:', firebaseConfig.messagingSenderId);
+    console.log('App ID:', firebaseConfig.appId);
+    console.log('Measurement ID:', firebaseConfig.measurementId);
+
+    console.log('Socket URL:', socketUrl);
+
+    console.log('AWS Credentials:');
+    console.log('Access Key:', awsCredentials.accessKey);
+    console.log('Secret Key:', awsCredentials.secretKey);
+
+
 
     this.loadingService.loading$.subscribe((loading) => {
       this.isLoading$ = loading;
