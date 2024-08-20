@@ -25,7 +25,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { provideHotToastConfig } from '@ngneat/hot-toast';
 import { firebaseConfig, socketUrl } from '../environments/environment';
-
+import { NgxLoadingService } from "ngx-loading";
 const config: SocketIoConfig = { url: socketUrl as string, options: {} };
 
 export const appConfig: ApplicationConfig = {
@@ -34,6 +34,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideRouter(userRoute),
     provideRouter(adminRoute),
+    NgxLoadingService,
     provideHttpClient(),
     provideAnimations(),
     provideHttpClient(withInterceptors([UserAuthInterceptor])),

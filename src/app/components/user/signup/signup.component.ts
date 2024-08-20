@@ -6,8 +6,8 @@ import { Router, RouterLink } from '@angular/router';
 import { ToastModule } from 'primeng/toast';
 import { ToastService } from '../../../service/toster/toster-service.service';
 import { GoogleAuthService } from '../../../service/googleAuth/google.auth.service';
-import { FloatLabelModule } from 'primeng/floatlabel';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { NgxLoadingModule } from "ngx-loading";
 
 
 @Component({
@@ -15,7 +15,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
   templateUrl: './signup.component.html',
   standalone: true,
   styleUrls: ['./signup.component.scss'],
-  imports: [CommonModule, FormsModule, RouterLink, ReactiveFormsModule, ToastModule,ProgressSpinnerModule],
+  imports: [CommonModule, FormsModule, RouterLink, ReactiveFormsModule, ToastModule,ProgressSpinnerModule,NgxLoadingModule],
 })
 export class SignupComponent implements OnInit {
   loading:boolean = false
