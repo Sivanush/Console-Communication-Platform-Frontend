@@ -26,7 +26,7 @@ import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { provideHotToastConfig } from '@ngneat/hot-toast';
 import { firebaseConfig, socketUrl } from '../environments/environment';
 
-const config: SocketIoConfig = { url: socketUrl, options: {} };
+const config: SocketIoConfig = { url: socketUrl as string, options: {} };
 
 export const appConfig: ApplicationConfig = {
   providers: [
