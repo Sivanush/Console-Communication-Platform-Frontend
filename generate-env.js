@@ -1,4 +1,13 @@
 const fs = require('fs');
+const path = require('path');
+
+// Define the path to the environments directory
+const environmentsDir = path.join(__dirname, 'src', 'environments');
+
+// Check if the environments directory exists, and create it if it doesn't
+if (!fs.existsSync(environmentsDir)) {
+  fs.mkdirSync(environmentsDir, { recursive: true });
+}
 
 const environmentFile = `
 export const environment = {
@@ -27,7 +36,8 @@ export const awsCredentials = {
 };
 `;
 
-fs.writeFileSync('./src/environments/environment.ts', environmentFile);
-fs.writeFileSync('./src/environments/environment.prod.ts', environmentFile);
+// Write the environment.ts and environment.prod.ts files
+fs.writeFileSync(path.join(environmentsDir, 'environment.ts'), environmentFile);
+fs.writeFileSync(path.join(environmentsDir, 'environment.prod.ts'), environmentFile);
 
 console.log('Environment files generated successfully.');
