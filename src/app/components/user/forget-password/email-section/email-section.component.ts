@@ -6,12 +6,13 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { UserService } from '../../../../service/user/user.service';
 import { ToastService } from '../../../../service/toster/toster-service.service';
+import { NgxLoadingModule } from 'ngx-loading';
 
 
 @Component({
   selector: 'app-email-section',
   standalone: true,
-  imports: [RouterLink, ReactiveFormsModule,ProgressSpinnerModule,CommonModule],
+  imports: [RouterLink, ReactiveFormsModule,ProgressSpinnerModule,CommonModule,NgxLoadingModule],
   templateUrl: './email-section.component.html',
   styleUrl: './email-section.component.scss'
 })
@@ -42,6 +43,7 @@ export class EmailSectionComponent {
       },
       error: (err) => {
         console.log('Error', err)
+        this.loading = false
         this.toaster.showError('Error', err.error.error)
       }
     })

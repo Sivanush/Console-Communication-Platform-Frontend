@@ -1,8 +1,9 @@
-<nav id="heading" class="w-full bg-[#36393f] border-b border-[#2f3136]">
-  <div class="px-4 py-3">
+
+<nav id="heading" class="w-full bg-[#36393f] border-b border-[#2f3136]" >
+  <div class="ps-4 pr-1 py-3">
     <div class="flex items-center justify-between">
-      <div class="flex items-center">
-        <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar"
+      <div class="flex items-center" id="toggle-icon">
+        <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" (click)="setupSidebarToggles()"
           id="toggle-sidebar" type="button"
           class="inline-flex items-center p-2 text-sm text-[#b9bbbe] rounded-md sm:hidden hover:bg-[#2f3136] focus:outline-none focus:ring-2 focus:ring-[#5865f2]">
           <span class="sr-only">Open sidebar</span>
@@ -13,23 +14,19 @@
             </path>
           </svg>
         </button>
-        <div [routerLink]="['']" routerLinkActive="router-link-active" class="flex items-center ml-2 sm:ml-0">
-          <span class="self-center text-xl font-semibold whitespace-nowrap text-white cursor-pointer">{{name}}</span>
+        <div [routerLink]="['']" routerLinkActive="router-link-active" class="name-header flex items-center ml-2 sm:ml-0">
+          <span class="self-center text-lg sm:text-xl font-semibold whitespace-nowrap text-white cursor-pointer">{{name}}</span>
         </div>
       </div>
 
       <div class="flex-grow overflow-x-auto mx-4 gap-9">
-        <div class="flex gap-2 w-max">
+        <div class="flex gap-1 w-max">
           <button [routerLink]="['/friend/all-friends']" routerLinkActive="bg-[#2f3136] text" 
             class="flex-shrink-0 px-3 py-1 hover:bg-[#2f3136]  text-white rounded-md whitespace-nowrap transition-all">
             All
           </button>
-          <!-- <button 
-          class="flex-shrink-0 px-3 py-1 hover:bg-[#2f3136]  text-white rounded-md whitespace-nowrap transition-all">
-          Online
-        </button> -->
         <button [routerLink]="['/friend/pending-request']" routerLinkActive="bg-[#2f3136]" 
-                class="flex-shrink-0 px-3 py-1 hover:bg-[#2f3136] text-white rounded-md whitespace-nowrap transition-all relative">
+                class="flex-shrink-0 px-3 py-1 hover:bg-[#2f3136] text-white rounded-md whitespace-nowrap transition-all">
        <div class="flex justify-center items-center gap-2">
         <span>Pending</span>
         @if (hasPendingRequests) {

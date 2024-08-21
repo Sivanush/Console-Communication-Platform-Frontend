@@ -11,13 +11,13 @@
             </div>
             <form (ngSubmit)="login()" class="space-y-4" [formGroup]="userForm">
               <div class="space-y-2">
-                <label class="text-xs font-bold uppercase text-[#b9bbbe]" for="email">
+                <label class="text-xs sm:text-sm font-bold uppercase text-[#b9bbbe]" for="email">
                   Email
                 </label>
                 <input
                   formControlName="email"
                   name="email"
-                  class="bg-[#202225] text-white w-full px-3 py-2 rounded-sm text-sm focus:outline-none focus:ring-0 "
+                  class="bg-[#202225] text-white w-full  px-3 py-2 rounded-sm text-xs sm:text-sm focus:outline-none focus:ring-0 "
                   id="email"
                   placeholder="Enter your email"
                   required=""
@@ -25,19 +25,20 @@
                 />
         
                   @if (userForm.get('email')?.errors?.['required'] && userForm.get('email')?.['touched']) {
-                    <p class="ps-1 mt-1 sm:text-xs text-[10px] text-red-600 dark:text-red-500">Please fill in this field.</p>
-                  }@else if (userForm.get('email')?.errors?.['email'] && userForm.get('email')?.['touched']) {
-                    <p class="ps-1 mt-1 sm:text-xs text-[10px] text-red-600 dark:text-red-500">Please enter a valid email address.</p>
+                    <p style="margin-top: 0;" class="ps-1 sm:text-xs text-[10px] text-red-600 dark:text-red-500">Please fill in this field.</p>
                   }
+                  <!-- @else if (userForm.get('email')?.errors?.['email'] && userForm.get('email')?.['touched']) {
+                    <p class="ps-1 mt-1 sm:text-xs text-[10px] text-red-600 dark:text-red-500">Please enter a valid email address.</p>
+                  } -->
               </div>
               <div class="space-y-2 ">
-                <label class="text-xs font-bold uppercase text-[#b9bbbe]" for="password">
+                <label class="text-xs sm:text-sm font-bold uppercase text-[#b9bbbe]" for="password">
                   Password
                 </label>
                 <input
                   formControlName="password"
                   name="password"
-                  class="bg-[#202225] text-white w-full px-3 py-2 rounded-sm text-sm focus:outline-none focus:ring-0 "
+                  class="bg-[#202225] text-white w-full px-3 py-2 rounded-sm text-xs sm:text-sm focus:outline-none focus:ring-0 "
                   id="password"
                   placeholder="Enter your password"
                   required=""
@@ -45,12 +46,13 @@
                 />
                
                   @if (userForm.get('password')?.errors?.['required'] && userForm.get('password')?.['touched']) {
-                    <p class="ps-1  mt-1 sm:text-xs text-[10px] text-red-600 dark:text-red-500">Please fill in this field.</p>
-                  }@else if (userForm.get('password')?.errors?.['minlength'] && userForm.get('password')?.['touched']) {
+                    <p style="margin-top: 0;" class="ps-1  mt-1 sm:text-xs text-[10px] text-red-600 dark:text-red-500">Please fill in this field.</p>
+                  }
+                  <!-- @else if (userForm.get('password')?.errors?.['minlength'] && userForm.get('password')?.['touched']) {
                     <p class="ps-1 mt-1 sm:text-xs text-[10px] text-red-600 dark:text-red-500">  Password must contain at least 8 characters.</p>
                   }@else if (userForm.get('password')?.errors?.['pattern'] && userForm.get('password')?.['touched']) {
                     <p class="ps-1 mt-1 sm:text-xs text-[10px] text-red-600 dark:text-red-500">  Password must meet the required format.</p>
-                  }
+                  } -->
                 <div class="text-end">
                   <small  [routerLink]="['/forget-password']" class="cursor-pointer text-[#00b0f4] hover:underline sm:text-xs text-[10px]">
                     Forgot your password?
@@ -70,7 +72,7 @@
             <button
               id="google-signin-button"
               (click)="signInWithGoogle()"
-              class="flex justify-center items-center w-full py-2  space-x-2 bg-[#202225] text-white rounded-sm hover:bg-gray-300 transition duration-200"
+              class="flex justify-center items-center w-full py-2  space-x-2 bg-[#202225] text-white rounded-sm hover:bg-[#292b2f]  transition duration-200"
             >
               <img src="assets/images/google.png" alt="Google logo" class="w-5 h-5">
               <span class="sm:text-sm text-xs text-white">Continue with Google</span>

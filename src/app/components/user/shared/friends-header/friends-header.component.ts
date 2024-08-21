@@ -2,13 +2,14 @@ import { Component, Input } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { UserRequestI } from '../../../../interface/user/user.model';
 import { UserService } from '../../../../service/user/user.service';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
+import { FriendSidebarToggleService } from '../../../../service/friend-sidebar-toggle/friend-sidebar-toggle.service';
 
 @Component({
   selector: 'app-friends-header',
   standalone: true,
-  imports: [RouterLink,RouterLinkActive,AsyncPipe],
+  imports: [RouterLink,RouterLinkActive,AsyncPipe,CommonModule],
   templateUrl: './friends-header.component.html',
   styleUrl: './friends-header.component.scss'
 })
@@ -20,22 +21,30 @@ export class FriendsHeaderComponent {
   users:UserRequestI[] = []
   private subscription!: Subscription;
   hasPendingRequests: boolean = false;
+  sidebarOpen:boolean = false
 
-  constructor(private userService:UserService) {
+  constructor(private userService:UserService,private sidebarToggleService: FriendSidebarToggleService) {
   
   }
 
   setupSidebarToggles() {
-    throw new Error('Method not implemented.');
+    this.sidebarToggleService.toggleSidebar();
   }
   
 
   showDialog() {
-      this.visible = true;
+    this.visible = true;
   }
 
 
   ngOnInit(): void {
+
+    
+    this.subscription = this.sidebarToggleService.sidebarState$.subscribe((state) => {
+      this.sidebarOpen = state;
+    });
+
+    
     this.getPendingRequests()
     
     this.subscription = this.userService.getPendingRequestsStatus()

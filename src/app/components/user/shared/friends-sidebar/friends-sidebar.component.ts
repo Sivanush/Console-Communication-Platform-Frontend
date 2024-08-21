@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostListener } from '@angular/core';
 import { MainSidebarComponent } from '../main-sidebar/main-sidebar.component';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -9,12 +9,13 @@ import { BadgeModule } from 'primeng/badge';
 import { ChatServiceService } from '../../../../service/direct-chat/chat-service.service';
 import { BehaviorSubject, filter, interval, map, Observable, Subscription, switchMap } from 'rxjs';
 import { AsyncPipe, CommonModule } from '@angular/common';
+import { FriendSidebarToggleService } from '../../../../service/friend-sidebar-toggle/friend-sidebar-toggle.service';
 @Component({
   selector: 'app-friends-sidebar',
   standalone: true,
   imports: [MainSidebarComponent,RouterLink,RouterLinkActive,FormsModule,ProgressSpinnerModule,BadgeModule,CommonModule, AsyncPipe],
   templateUrl: './friends-sidebar.component.html',
-  styleUrl: './friends-sidebar.component.scss'
+  styleUrl: './friends-sidebar.component.scss',
 })
 export class FriendsSidebarComponent {
   unreadCounts: {[userId: string]: number} = {};
@@ -25,14 +26,22 @@ export class FriendsSidebarComponent {
   private statusPollingSubscription!: Subscription;
   private usersSubject = new BehaviorSubject<User[]>([]);
   users$ = this.usersSubject.asObservable();
+  sidebarOpen = false;
 
+  constructor(
+    private router: Router,
+    private userService:UserService,
+    private chatService: ChatServiceService,
+    private cdr: ChangeDetectorRef,
+    private sidebarToggleService: FriendSidebarToggleService,
+    private eRef: ElementRef
+  ) {
 
-  constructor(private router: Router,private userService:UserService,private chatService: ChatServiceService,  private cdr: ChangeDetectorRef) {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event)=>{
       const navEnd = event as NavigationEnd;
-  const match = navEnd.url.match(/\/direct-chat\/(.+)\/(.+)/);
+      const match = navEnd.url.match(/\/direct-chat\/(.+)\/(.+)/);
        if (match && match[1] === this.userId) {
         const friendId = match[2];
         this.chatService.markMessagesAsRead(this.userId as string, friendId);
@@ -40,7 +49,30 @@ export class FriendsSidebarComponent {
     })
    }
 
+   @HostListener('document:click', ['$event'])
+   onClickOutside(event: MouseEvent) {
+     const clickedInside = (event.target as HTMLElement).closest('.sidebar, #toggle-icon');
+     if (!clickedInside && this.sidebarOpen) {
+       this.sidebarOpen = false; // Close sidebar if open and clicked outside
+       this.sidebarToggleService.closeSidebar()
+     }
+   }
+
+  @HostListener('window:popstate', ['$event'])
+  onBackButtonEvent() {
+    if (this.sidebarOpen) {
+      this.closeSidebar();
+    }
+  }
+
+
+
   async ngOnInit() {
+
+    this.subscriptions = this.sidebarToggleService.sidebarState$.subscribe((state) => {
+      this.sidebarOpen = state;
+    });
+
     this.userId = await this.userService.getUserId()
     if (this.userId) {
       this.getallFriendsInSidebar()
@@ -50,6 +82,11 @@ export class FriendsSidebarComponent {
     }
 
    
+  }
+
+
+  closeSidebar() {
+    this.sidebarToggleService.closeSidebar();
   }
 
   getStatusClass(status:string): string {
