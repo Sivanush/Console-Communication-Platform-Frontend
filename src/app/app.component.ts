@@ -43,6 +43,9 @@ export class AppComponent {
     
    }
   async ngOnInit(): Promise<void> {
+
+
+
     this.loadingService.loading$.subscribe((loading) => {
       this.isLoading$ = loading;
       this.cdr.detectChanges();

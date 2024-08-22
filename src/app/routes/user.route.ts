@@ -20,6 +20,7 @@ import { AcceptInviteComponent } from '../components/user/accept-invite/accept-i
 import { DirectVideoCallComponent } from '../components/user/direct-video-call/direct-video-call.component';
 import { ViewMembersComponent } from '../components/user/view-members/view-members.component';
 import { DirectVoiceCallComponent } from '../components/user/direct-voice-call/direct-voice-call.component';
+import { ProfileComponent } from '../components/user/profile/profile.component';
 
 
 export const userRoute: Routes = [
@@ -50,6 +51,11 @@ export const userRoute: Routes = [
     path: 'login',
     component: LoginComponent,
     canActivate: [userNotAuthGuard]
+  },
+  {
+    path: 'profile',
+    component: ProfileComponent,
+    canActivate:[userAuthGuard]
   },
   {
     path: 'friend',

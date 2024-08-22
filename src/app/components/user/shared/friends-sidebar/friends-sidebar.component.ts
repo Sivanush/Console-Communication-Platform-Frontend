@@ -53,7 +53,7 @@ export class FriendsSidebarComponent {
    onClickOutside(event: MouseEvent) {
      const clickedInside = (event.target as HTMLElement).closest('.sidebar, #toggle-icon');
      if (!clickedInside && this.sidebarOpen) {
-       this.sidebarOpen = false; // Close sidebar if open and clicked outside
+       this.sidebarOpen = false; 
        this.sidebarToggleService.closeSidebar()
      }
    }
