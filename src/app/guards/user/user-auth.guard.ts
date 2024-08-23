@@ -9,12 +9,6 @@ export const userAuthGuard: CanActivateFn = (route, state) => {
   const userService = inject(UserService)
   const router = inject(Router)
 
-  loadingService.show()
-
-  setTimeout(() => {
-    loadingService.hide()
-  }, 700);
-
   if (userService.isAuthenticated()) {    
     return true; 
     

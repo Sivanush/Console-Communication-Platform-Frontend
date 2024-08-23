@@ -8,6 +8,7 @@ import { ToggleCreateServerService } from '../../../../service/toggleCreateServe
 import { ServerService } from '../../../../service/server/server.service';
 import { Subscription } from 'rxjs';
 import { IAllServer, IServer } from '../../../../interface/server/getAllServer';
+import { LoadingService } from '../../../../service/loading/loading.service';
 
 @Component({
   selector: 'app-main-sidebar',
@@ -27,7 +28,8 @@ export class MainSidebarComponent {
     private toggleCreateServerService:ToggleCreateServerService,
     private userService:UserService,
     private serverService:ServerService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private loadingService:LoadingService
   ) {}
   private serverUpdateSubscription!: Subscription;
 
@@ -35,6 +37,7 @@ export class MainSidebarComponent {
 
 
   ngOnInit(): void {
+    this.loadingService.show()
     this.getUserProfile()
     this.loadAllServers()
     this.serverUpdateSubscription = this.serverService.serverUpdate$.subscribe({
@@ -48,6 +51,7 @@ export class MainSidebarComponent {
 
       next:(response)=>{
         this.servers = response
+        this.loadingService.hide()
         this.cdr.detectChanges();
         
       },
@@ -75,9 +79,9 @@ export class MainSidebarComponent {
     this.toggleCreateServerService.toggleVisible()
   }
 
-  ngOnDestroy(): void {
-    if (this.serverUpdateSubscription) {
-      this.serverUpdateSubscription.unsubscribe();
-    }
-  }
+  // ngOnDestroy(): void {
+  //   if (this.serverUpdateSubscription) {
+  //     this.serverUpdateSubscription.unsubscribe();
+  //   }
+  // }
 }

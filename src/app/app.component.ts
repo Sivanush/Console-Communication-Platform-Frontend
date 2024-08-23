@@ -54,8 +54,6 @@ export class AppComponent {
     });
 
 
-    this.loadingService.show();
-
     this.userId = await this.userService.getUserId();
     if (this.userId) {
       this.chatService.connectUser(this.userId);
@@ -69,17 +67,6 @@ export class AppComponent {
       } 
     } 
 
-
-    // setTimeout(() => {
-    //   // this.isLoading = false
-    //   const loadingOverlay = document.getElementById('loading-overlay') as HTMLElement;
-    //   loadingOverlay.classList.add('hidden');
-    // }, 500);
-
-    // setTimeout(() => {
-    //   this.loadingService.hide(); // Hide loading after a delay
-    //   this.cdr.detectChanges();
-    // }, 500);
   }
 
 

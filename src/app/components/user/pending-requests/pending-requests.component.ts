@@ -13,6 +13,7 @@ import { UserProfileComponent } from "../user-profile/user-profile.component";
 import { Subscription } from 'rxjs';
 import { ToggleCreateServerService } from '../../../service/toggleCreateServer/toggle-create-server.service';
 import { ToggleUserProfileService } from '../../../service/toggleUserProfile/toggle-user-profile.service';
+import { LoadingService } from '../../../service/loading/loading.service';
 
 @Component({
     selector: 'app-pending-requests',
@@ -34,13 +35,14 @@ export class PendingRequestsComponent {
     private userService:UserService,
     private toaster:ToastService,
     private userProfileService:ToggleUserProfileService,
-    private toggleCreateServerService:ToggleCreateServerService
+    private toggleCreateServerService:ToggleCreateServerService,
+    private loadingService:LoadingService
   ) {
     
   }
 
   ngOnInit(): void {
-
+    this.loadingService.show()
     this.getPendingRequests()
 
 
@@ -64,6 +66,7 @@ export class PendingRequestsComponent {
     this.userService.listPendingFriendRequest().subscribe({
       next:(response)=>{
         this.users = response.requests
+        this.loadingService.hide()
       },
       error:(err)=>{
         console.log(err.message);
