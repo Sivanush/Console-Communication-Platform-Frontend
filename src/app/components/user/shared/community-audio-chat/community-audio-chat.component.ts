@@ -23,7 +23,7 @@ export class CommunityAudioChatComponent implements OnInit, OnDestroy {
   userImage: string = 'https://via.placeholder.com/50'
   othersImage: string = 'https://via.placeholder.com/50'
   private subscriptions: Subscription[] = [];
-
+ connectionStatus: string = 'disconnected';
   constructor(
     private serverVoiceCallService: ServerVoiceCallService,
     private route: ActivatedRoute,
@@ -38,6 +38,12 @@ export class CommunityAudioChatComponent implements OnInit, OnDestroy {
         if (this.channelId) {
           this.initializeAudioCall(this.channelId);
         }
+      }),
+
+   
+      this.serverVoiceCallService.connectionStatusBs.subscribe(status => {
+        this.connectionStatus = status;
+        // Update UI based on connection status
       }),
 
       this.serverVoiceCallService.isCallStartedBs.subscribe(isStarted => {
@@ -61,6 +67,8 @@ export class CommunityAudioChatComponent implements OnInit, OnDestroy {
       this.serverVoiceCallService.localPeerIdBs.subscribe(peerId => {
         this.localPeerId = peerId;
       })
+
+      
     );
 
     window.addEventListener('beforeunload', this.handleTabClose.bind(this));
