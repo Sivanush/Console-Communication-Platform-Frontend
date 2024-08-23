@@ -12,7 +12,8 @@ import { ToastService } from './service/toster/toster-service.service';
 import { AsyncPipe, Location } from '@angular/common';
 import { LoadingService } from './service/loading/loading.service';
 import { DirectCallService } from './service/direct-call/direct-call.service';
-import { awsCredentials, environment, firebaseConfig, socketUrl } from '../environments/environment';
+import { TabGuardService } from './service/tab-guard/tab-guard.service';
+
 
 
 
@@ -38,7 +39,8 @@ export class AppComponent {
     private toaster: ToastService,
     private router: Router,
     private loadingService: LoadingService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private tabGuardService: TabGuardService
   ) {
     
    }
@@ -74,10 +76,10 @@ export class AppComponent {
     //   loadingOverlay.classList.add('hidden');
     // }, 500);
 
-    setTimeout(() => {
-      this.loadingService.hide(); // Hide loading after a delay
-      this.cdr.detectChanges();
-    }, 500);
+    // setTimeout(() => {
+    //   this.loadingService.hide(); // Hide loading after a delay
+    //   this.cdr.detectChanges();
+    // }, 500);
   }
 
 
