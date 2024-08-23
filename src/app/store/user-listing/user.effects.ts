@@ -17,7 +17,6 @@ export class userEffects{
             ofType(loadUser),
             mergeMap(()=>{
                 return this.adminService.getUser().pipe(
-                    // delay(),
                     map(users => loadUserSuccess({user:users.result})),
                     catchError(error => of(loadUserFailed({ error })))
                 );
