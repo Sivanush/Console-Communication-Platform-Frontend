@@ -85,7 +85,7 @@ export class ServerDetailsComponent {
   ngOnDestroy() {
     if (this.subscription) {
       this.subscription.unsubscribe();
-    }
+    } 
     if (this.routeSubscription) {
       this.routeSubscription.unsubscribe();
     }

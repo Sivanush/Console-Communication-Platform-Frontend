@@ -6,11 +6,14 @@ import { UserI } from '../../../interface/server/channelChat';
 import { User } from '../../../interface/user/user.model';
 import { RouterModule } from '@angular/router';
 import { ServerService } from '../../../service/server/server.service';
+import { PostService } from '../../../service/post-service/post.service';
+import { PostI } from '../../../models/post/post.model';
+import { AutoPlayPostDirective } from '../../../directive/auto-play-post/auto-play-post.directive';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule,FormsModule,RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule,AutoPlayPostDirective],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
@@ -18,13 +21,17 @@ export class ProfileComponent {
   user!: User;
   isOwnProfile: boolean = true;
   activeTab: string = 'posts';
-  newPost: string = '';
-  posts: any[] = [];
+  content: string = '';
+  posts: PostI[] = [];
   friends: any[] = [];
   servers: any[] = [];
-  userId!:string|null
+  userId!: string | null
+  previewUrl: string | null = null;
+  fileType: 'image' | 'video' | null = null;
+  selectedFile: File | null = null;
+  private observer: IntersectionObserver | null = null;
 
-  constructor(private userService:UserService,private serverService:ServerService) { }
+  constructor(private userService: UserService, private serverService: ServerService, private postService: PostService) { }
 
 
 
@@ -34,18 +41,18 @@ export class ProfileComponent {
         this.user = data
       }
     })
-  
+
 
     this.userService.getAllFriends().subscribe({
       next: (data) => {
         this.friends = data.friends
         console.log(this.friends);
-        
+
       }
     })
 
     this.userId = await this.userService.getUserId()
-    
+
 
     this.serverService.getAllServers().subscribe({
       next: (data) => {
@@ -53,26 +60,9 @@ export class ProfileComponent {
       }
     })
 
-  //   this.posts = [
-  //     {
-  //       authorName: 'John Doe',
-  //       authorHandle: 'johndoe',
-  //       authorAvatar: 'https://placehold.co/1000x1000/000000/FFF',
-  //       content: 'This is a sample post!',
-  //       timestamp: '2h ago',
-  //       comments: 5,
-  //       reposts: 2,
-  //       likes: 10
-  //     }
-  //     // Add more sample posts here
-  //   ];
-
-
-
-
-
-  //   // Initialize sample friends
+    this.getUserPost()
     
+
 
     // Initialize sample servers
     this.servers = [
@@ -82,24 +72,77 @@ export class ProfileComponent {
     ];
   }
 
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      this.selectedFile = input.files[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.previewUrl = reader.result as string;
+        this.fileType = this.selectedFile!.type.startsWith('image/') ? 'image' : 'video';
+      };
+      reader.readAsDataURL(this.selectedFile);
+    }
+  }
+
+
+  clearPreview(): void {
+    this.previewUrl = null;
+    this.fileType = null;
+    this.selectedFile = null;
+  }
+
+  getFileSize(bytes: number | undefined): string {
+    if (!bytes) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  }
+
+
   setActiveTab(tab: string): void {
     this.activeTab = tab;
   }
 
-  submitPost(): void {
-    if (this.newPost.trim()) {
-      const post = {
-        authorName: this.user.username,
-        // authorHandle: this.user.handle,
-        // authorAvatar: this.user.avatarUrl,
-        content: this.newPost,
-        timestamp: 'Just now',
-        comments: 0,
-        reposts: 0,
-        likes: 0
-      };
-      this.posts.unshift(post);
-      this.newPost = '';
+  async submitPost(): Promise<void> {
+    if (this.content.trim() || this.selectedFile) {
+      let mediaUrl: string | null;
+
+      if (this.selectedFile) {
+        try {
+          mediaUrl = await this.postService.uploadToAWS(this.selectedFile);
+        } catch (error) {
+          console.error('Error uploading to S3:', error);
+          return;
+        }
+      }
+
+      const type = this.fileType || 'text';
+
+      this.postService.createPost(this.content,type,mediaUrl!).subscribe({
+        next: (data) => {
+          console.log(data);
+          this.content = ''
+          this.previewUrl = null;
+          this.fileType = null;
+          this.selectedFile = null;
+          this.getUserPost()
+        },
+        error: (err) => {
+          console.log(err);
+        }
+      })
     }
+  }
+  
+
+  getUserPost(){
+    this.postService.getUserPost().subscribe({
+      next: (data) => {
+        this.posts = data
+      }
+    })
   }
 }
