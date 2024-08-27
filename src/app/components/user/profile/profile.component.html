@@ -1,115 +1,134 @@
 <!-- user-profile.component.html -->
-<div class="flex h-screen bg-[#2f3136] text-[#dcddde] font-sans"  >
-    <!-- Left sidebar (placeholder) -->
-
-   
+<div class="flex h-screen bg-[#2f3136] text-[#dcddde] font-sans">
+  <!-- Left sidebar (placeholder) -->
 
 
-    <div class="relative lg:w-60 bg-[#2f3136] flex-shrink-0"></div>
-    <div class="absolute right-20 top-8">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="#42454a" class="w-14 h-14 cursor-pointer">
-            <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-        </svg>
-    </div>
-    <!-- Main content area -->
-    <div class=" flex-1 flex flex-col" >
-      <!-- Header -->
-      
-      <!-- Content -->
-      <div #scrollContainer id="scrollContainer"  class="flex-1 overflow-y-auto" >
-        <div class=" max-w-3xl mx-auto py-6 px-4" >
 
 
-          
-
-
-          <!-- User Info -->
-          <!-- User Info -->
-<div class="bg-[#2f3136] rounded-lg overflow-hidden">
-    <!-- Banner -->
-    <div class="h-32 bg-gradient-to-r from-blue-500 to-purple-600"></div>
-    
-    <div class="p-6 relative">  
-      <!-- Profile image overlapping the banner -->
-      <img [src]="user.image" alt="User Avatar" class="w-24 h-24 rounded-full border-4 border-[#2f3136] absolute -top-12 left-6">
-      
-      <div class="flex justify-end ">
-        <button class="bg-[#5865F2] hover:bg-[#4752C4] text-white px-4 py-2 rounded-md transition duration-200">
-          Edit Profile
-        </button>
-      </div>
-      
-      <div class="">
-        <h2 style="margin-bottom: 0px;" class="text-2xl font-bold text-white">{{user.username}}</h2>
-        <!-- <p class="text-[#b9bbbe] mb-2">Member since {{ '2024-08-18T11:21:18.434Z' | date: 'MMMM y' }}</p> -->
-        <p class="text-[#b9bbbe] mb-4">{{user.bio}}</p>
-      </div>
-    </div>
+  <div class="relative lg:w-60 bg-[#2f3136] flex-shrink-0"></div>
+  <div class="absolute right-20 top-8">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="#42454a"
+      class="w-14 h-14 cursor-pointer">
+      <path stroke-linecap="round" stroke-linejoin="round"
+        d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+    </svg>
   </div>
-  
-          <!-- Tabs -->
-          <div class="border-b border-[#4f545c] mb-6">
-            <nav class="flex">
-              <a [class.text-[#5865F2]]="activeTab === 'posts'" (click)="setActiveTab('posts')"
-                 class="px-4 py-2 font-medium hover:text-[#5865F2] cursor-pointer transition duration-200">Posts</a>
-              <a [class.text-[#5865F2]]="activeTab === 'friends'" (click)="setActiveTab('friends')"
-                 class="px-4 py-2 font-medium hover:text-[#5865F2] cursor-pointer transition duration-200">Friends</a>
-              <a [class.text-[#5865F2]]="activeTab === 'servers'" (click)="setActiveTab('servers')"
-                 class="px-4 py-2 font-medium hover:text-[#5865F2] cursor-pointer transition duration-200">Servers</a>
-            </nav>
+  <!-- Main content area -->
+  <div class=" flex-1 flex flex-col">
+    <!-- Header -->
+
+    <!-- Content -->
+    <div #scrollContainer id="scrollContainer" class="flex-1 overflow-y-auto">
+      <div class=" max-w-3xl mx-auto py-6 px-4">
+
+
+
+
+
+        <!-- User Info -->
+        <!-- User Info -->
+        <div class="bg-[#2f3136] rounded-lg overflow-hidden">
+          <!-- Banner -->
+          <div class="h-32 bg-gradient-to-r from-blue-500 to-purple-600"></div>
+
+          <div class="p-6 relative">
+            <!-- Profile image overlapping the banner -->
+            <img [src]="user.image" alt="User Avatar"
+              class="w-24 h-24 rounded-full border-4 border-[#2f3136] absolute -top-12 left-6">
+
+            <div class="flex justify-end ">
+              <button data-modal-target="edit-profile-modal" data-modal-toggle="edit-profile-modal"
+                class="bg-[#5865F2] hover:bg-[#4752C4] text-white px-4 py-2 rounded-md transition duration-200">
+                Edit Profile
+              </button>
+            </div>
+
+            <div class="">
+              <h2 style="margin-bottom: 0px;" class="text-2xl font-bold text-white">{{user.username}}</h2>
+              <!-- <p class="text-[#b9bbbe] mb-2">Member since {{ '2024-08-18T11:21:18.434Z' | date: 'MMMM y' }}</p> -->
+              <p class="text-[#b9bbbe] mb-4">{{user.bio}}</p>
+            </div>
           </div>
-  
-          <!-- Content Area -->
-          <div [ngSwitch]="activeTab">
-            <!-- Posts Tab -->
-            <div *ngSwitchCase="'posts'">
-              <!-- New Post Form -->
-              <div class="mb-6">
-                <textarea [(ngModel)]="content" rows="3" 
-                          class="w-full bg-[#40444b] text-[#dcddde] rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#5865F2] placeholder-[#72767d]"
-                          placeholder="What's on your mind?"></textarea>
-                          <div class="mt-2 flex flex-wrap justify-between items-center gap-2">
-                            <div class="flex flex-wrap gap-2">
-                              <input #fileInputImage type="file" (change)="onFileSelected($event)" accept="image/*" id="file-input-image" class="hidden">
-                              <button (click)="fileInputImage.click()" class="bg-[#40444b] text-[#b9bbbe] hover:text-[#dcddde] px-3 py-2 rounded-md hover:bg-[#4f545c] transition-colors flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                </svg>
-                                <span class="hidden sm:inline">Image</span>
-                              </button>
-                              <input #fileInputVideo type="file" (change)="onFileSelected($event)" accept="video/*" id="file-input-video" class="hidden">
-                              <button (click)="fileInputVideo.click()" class="bg-[#40444b] text-[#b9bbbe] hover:text-[#dcddde] px-3 py-2 rounded-md hover:bg-[#4f545c] transition-colors flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                                <span class="hidden sm:inline">Video</span>
-                              </button>
-                            </div>
-                            <button (click)="submitPost()" class="bg-[#5865F2] hover:bg-[#4752C4] text-white px-4 py-2 rounded-md transition duration-200">
-                              
-                              {{ isLoading ? 'Posting...' : 'Post' }}
-                            </button>
-                          </div>
-                        <div *ngIf="previewUrl" class="mt-4 bg-[#36393f] rounded-lg overflow-hidden shadow-lg">
-                          <div class="relative w-full" style="padding-top: 56.25%;">
-                            <img *ngIf="fileType === 'image'" [src]="previewUrl" alt="Preview" class="absolute inset-0 w-full h-full object-contain">
-                            <video *ngIf="fileType === 'video'" [src]="previewUrl" controls class="absolute inset-0 w-full h-full object-contain"></video>
-                            <button (click)="clearPreview()" class="absolute top-2 right-2 bg-[#2f3136] text-white rounded-full p-1 hover:bg-[#40444b] transition-colors">
-                              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-                              </svg>
-                            </button>
-                          </div>
-                          <div class="p-3 bg-[#2f3136]">
-                            <p class="text-sm text-[#b9bbbe] truncate">{{selectedFile?.name}}</p>
-                            <p class="text-xs text-[#72767d] mt-1">{{getFileSize(selectedFile?.size)}}</p>
-                          </div>
-                        </div>
-                      </div>
-  
-              <!-- Posts List -->
-              <!-- <div *ngFor="let post of posts.slice().reverse()" class="mb-6 bg-[#2f3136] rounded-lg p-4">
+        </div>
+
+        <!-- Tabs -->
+        <div class="border-b border-[#4f545c] mb-6">
+          <nav class="flex">
+            <a [class.text-[#5865F2]]="activeTab === 'posts'" (click)="setActiveTab('posts')"
+              class="px-4 py-2 font-medium hover:text-[#5865F2] cursor-pointer transition duration-200">Posts</a>
+            <a [class.text-[#5865F2]]="activeTab === 'friends'" (click)="setActiveTab('friends')"
+              class="px-4 py-2 font-medium hover:text-[#5865F2] cursor-pointer transition duration-200">Friends</a>
+            <a [class.text-[#5865F2]]="activeTab === 'servers'" (click)="setActiveTab('servers')"
+              class="px-4 py-2 font-medium hover:text-[#5865F2] cursor-pointer transition duration-200">Servers</a>
+          </nav>
+        </div>
+
+        <!-- Content Area -->
+        <div [ngSwitch]="activeTab">
+          <!-- Posts Tab -->
+          <div *ngSwitchCase="'posts'">
+            <!-- New Post Form -->
+            <div class="mb-6">
+              <textarea [(ngModel)]="content" rows="3"
+                class="w-full bg-[#40444b] text-[#dcddde] rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#5865F2] placeholder-[#72767d]"
+                placeholder="What's on your mind?"></textarea>
+              <div class="mt-2 flex flex-wrap justify-between items-center gap-2">
+                <div class="flex flex-wrap gap-2">
+                  <input #fileInputImage type="file" (change)="onFileSelected($event)" accept="image/*"
+                    id="file-input-image" class="hidden">
+                  <button (click)="fileInputImage.click()"
+                    class="bg-[#40444b] text-[#b9bbbe] hover:text-[#dcddde] px-3 py-2 rounded-md hover:bg-[#4f545c] transition-colors flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24"
+                      stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <span class="hidden sm:inline">Image</span>
+                  </button>
+                  <input #fileInputVideo type="file" (change)="onFileSelected($event)" accept="video/*"
+                    id="file-input-video" class="hidden">
+                  <button (click)="fileInputVideo.click()"
+                    class="bg-[#40444b] text-[#b9bbbe] hover:text-[#dcddde] px-3 py-2 rounded-md hover:bg-[#4f545c] transition-colors flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24"
+                      stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span class="hidden sm:inline">Video</span>
+                  </button>
+                </div>
+                <button (click)="submitPost()"
+                  class="bg-[#5865F2] hover:bg-[#4752C4] text-white px-4 py-2 rounded-md transition duration-200">
+
+                  {{ isLoading ? 'Posting...' : 'Post' }}
+                </button>
+              </div>
+              <div *ngIf="previewUrl" class="mt-4 bg-[#36393f] rounded-lg overflow-hidden shadow-lg">
+                <div class="relative w-full" style="padding-top: 56.25%;">
+                  <img *ngIf="fileType === 'image'" [src]="previewUrl" alt="Preview"
+                    class="absolute inset-0 w-full h-full object-contain">
+                  <video *ngIf="fileType === 'video'" [src]="previewUrl" controls
+                    class="absolute inset-0 w-full h-full object-contain"></video>
+                  <button (click)="clearPreview()"
+                    class="absolute top-2 right-2 bg-[#2f3136] text-white rounded-full p-1 hover:bg-[#40444b] transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd"
+                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                        clip-rule="evenodd" />
+                    </svg>
+                  </button>
+                </div>
+                <div class="p-3 bg-[#2f3136]">
+                  <p class="text-sm text-[#b9bbbe] truncate">{{selectedFile?.name}}</p>
+                  <p class="text-xs text-[#72767d] mt-1">{{getFileSize(selectedFile?.size)}}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Posts List -->
+            <!-- <div *ngFor="let post of posts.slice().reverse()" class="mb-6 bg-[#2f3136] rounded-lg p-4">
                 <div class="flex items-start space-x-3">
                   <img [src]="post.author.image" alt="Author Avatar" class="w-10 h-10 rounded-full">
                   <div class="flex-1 min-w-0">
@@ -142,104 +161,194 @@
                   </div>
                 </div>
               </div> -->
-              
 
-              <!-- Posts List -->
-<!-- Posts List -->
-<div class="space-y-6">
-  <div *ngFor="let post of posts.slice().reverse()" class="bg-[#2f3136] rounded-lg overflow-hidden shadow-2xl ">
-    <!-- Post Header -->
-    <div class="p-4 flex items-start space-x-3">
-      <img [src]="post.author.image" alt="Author Avatar" class="w-10 h-10 rounded-full">
-      <div class="flex-1 min-w-0">
-        <div class="flex items-center flex-wrap">
-          <span class="font-semibold text-white mr-2">{{post.author.username}}</span>
-          <!-- <span class="text-[#b9bbbe] text-sm">at{{post.author.username.toLowerCase()}}</span> -->
-          <span class="text-[#b9bbbe] mx-2">·</span>
-          <span class="text-[#b9bbbe] text-sm">{{ post.timestamp | date:'MMM d, yyyy' }}</span>
-        </div>
-        
-        <!-- Post Content -->
-        <p *ngIf="post.content" class="mt-2 text-[#dcddde] whitespace-pre-wrap">{{post.content}}</p>
-      </div>
-    </div>
-    
-    <!-- Media Content -->
-    <div *ngIf="post.mediaUrl" class="mt-2">
-      <!-- Image -->
-      <img *ngIf="post.mediaType === 'image'" [src]="post.mediaUrl" alt="Post media" class="w-full h-auto max-h-[500px] object-cover">
-      <!-- Video -->
-      <video *ngIf="post.mediaType === 'video'" [src]="post.mediaUrl" controls class="w-full max-h-[500px] bg-black" appAutoPlayPost></video>
-    </div>
-    
-    <!-- Post Actions -->
-    <div class="px-4 py-3 flex items-center justify-between text-[#b9bbbe] border-t border-[#40444b]">
-      <button class="flex items-center space-x-2 hover:text-blue-400 transition-colors duration-200">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-        </svg>
-        <span class="text-sm">{{post.comments}}</span>
-      </button>
-      <button class="flex items-center space-x-2 hover:text-green-400 transition-colors duration-200">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-        </svg>
-        <span class="text-sm">Repost</span>
-      </button>
-      <button class="flex items-center space-x-2 hover:text-red-400 transition-colors duration-200">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-        </svg>
-        <span class="text-sm">{{post.likes}}</span>
-      </button>
-      <button class="flex items-center space-x-2 hover:text-blue-400 transition-colors duration-200">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-        </svg>
-        <span class="text-sm">Share</span>
-      </button>
-    </div>
-  </div>
-</div>
 
-            
-            </div>
+            <!-- Posts List -->
+            <!-- Posts List -->
+            <div class="space-y-6">
+              <div *ngFor="let post of posts.slice().reverse()"
+                class="bg-[#2f3136] rounded-lg overflow-hidden shadow-2xl ">
+                <!-- Post Header -->
+                <div class="p-4 flex items-start space-x-3">
+                  <img [src]="post.author.image" alt="Author Avatar" class="w-10 h-10 rounded-full">
+                  <div class="flex-1 min-w-0">
+                    <div class="flex items-center flex-wrap">
+                      <span class="font-semibold text-white mr-2">{{post.author.username}}</span>
+                      <!-- <span class="text-[#b9bbbe] text-sm">at{{post.author.username.toLowerCase()}}</span> -->
+                      <span class="text-[#b9bbbe] mx-2">·</span>
+                      <span class="text-[#b9bbbe] text-sm">{{ post.timestamp | date:'MMM d, yyyy' }}</span>
+                    </div>
 
-  
-            <!-- Friends Tab -->
-            <div *ngSwitchCase="'friends'" class="space-y-4">
-                <div *ngFor="let friend of friends" class="bg-[#36393f] cursor-pointer rounded-lg p-3 flex items-center space-x-3 justify-between">
-                 
-                  <div class="flex flex-row gap-3">
-                    <img [src]="friend.image" alt="Friend Avatar" class="w-12 h-12 rounded-full">
-                    <h3 style="margin-bottom: 0px;" class="font-medium pt-2 text-white">{{friend.username}}</h3>
-                    <!-- <p class="text-sm text-[#b9bbbe]">{{friend.status}}</p> -->
+                    <!-- Post Content -->
+                    <p *ngIf="post.content" class="mt-2 text-[#dcddde] whitespace-pre-wrap">{{post.content}}</p>
                   </div>
-                  <svg [routerLink]="['/direct-chat',userId,friend._id ]"   xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
-                  </svg>
-                  
+                </div>
+
+                <!-- Media Content -->
+                <div *ngIf="post.mediaUrl" class="mt-2">
+                  <!-- Image -->
+                  <img *ngIf="post.mediaType === 'image'" [src]="post.mediaUrl" alt="Post media"
+                    class="w-full h-auto max-h-[500px] object-cover">
+                  <!-- Video -->
+                  <video *ngIf="post.mediaType === 'video'" [src]="post.mediaUrl" controls
+                    class="w-full max-h-[500px] bg-black" appAutoPlayPost></video>
+                </div>
+
+                <!-- Post Actions -->
+                <div class="px-4 py-3 flex items-center justify-between text-[#b9bbbe] border-t border-[#40444b]">
+                  <button class="flex items-center space-x-2 hover:text-blue-400 transition-colors duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                      stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    </svg>
+                    <span class="text-sm">{{post.comments}}</span>
+                  </button>
+                  <button class="flex items-center space-x-2 hover:text-green-400 transition-colors duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                      stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    <span class="text-sm">Repost</span>
+                  </button>
+                  <button class="flex items-center space-x-2 hover:text-red-400 transition-colors duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                      stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                    </svg>
+                    <span class="text-sm">{{post.likes}}</span>
+                  </button>
+                  <button class="flex items-center space-x-2 hover:text-blue-400 transition-colors duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                      stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                    </svg>
+                    <span class="text-sm">Share</span>
+                  </button>
                 </div>
               </div>
-              
-  
-            <!-- Servers Tab -->
-            <div *ngSwitchCase="'servers'" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-              <div *ngFor="let server of servers" class="bg-[#2f3136] rounded-lg p-4 object-cover">
-                <img 
-                [src]="server.image" 
-                alt="Server Icon" 
-                class="w-14 h-14 max-w-full max-h-full object-cover rounded-full mx-auto mb-2 shadow-lg"
-              />
-                              <h3 class="text-center font-medium text-white">{{server.name}}</h3>
-                <p class="text-center text-sm text-[#b9bbbe]">{{server.memberCount}} members</p>
+            </div>
+
+
+          </div>
+
+
+          <!-- Friends Tab -->
+          <div *ngSwitchCase="'friends'" class="space-y-4">
+            <div *ngFor="let friend of friends"
+              class="bg-[#36393f] cursor-pointer rounded-lg p-3 flex items-center space-x-3 justify-between">
+
+              <div class="flex flex-row gap-3">
+                <img [src]="friend.image" alt="Friend Avatar" class="w-12 h-12 rounded-full">
+                <h3 style="margin-bottom: 0px;" class="font-medium pt-2 text-white">{{friend.username}}</h3>
+                <!-- <p class="text-sm text-[#b9bbbe]">{{friend.status}}</p> -->
               </div>
+              <svg [routerLink]="['/direct-chat',userId,friend._id ]" xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
+              </svg>
+
+            </div>
+          </div>
+
+
+          <!-- Servers Tab -->
+          <div *ngSwitchCase="'servers'" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <div *ngFor="let server of servers" class="bg-[#2f3136] rounded-lg p-4 object-cover">
+              <img [src]="server.image" alt="Server Icon"
+                class="w-14 h-14 max-w-full max-h-full object-cover rounded-full mx-auto mb-2 shadow-lg" />
+              <h3 class="text-center font-medium text-white">{{server.name}}</h3>
+              <p class="text-center text-sm text-[#b9bbbe]">{{server.memberCount}} members</p>
             </div>
           </div>
         </div>
       </div>
     </div>
-  
-    <!-- Right sidebar (placeholder) -->
-    <div class="w-60 bg-[#2f3136] flex-shrink-0"></div>
   </div>
+
+  <!-- Right sidebar (placeholder) -->
+  <div class="w-60 bg-[#2f3136] flex-shrink-0"></div>
+</div>
+
+
+
+
+
+
+
+
+<!-- Edit Profile Modal -->
+<div id="edit-profile-modal"  tabindex="-1" aria-hidden="true" class="hidden fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex items-center justify-center transition ease-out duration-300" >
+  <div class="bg-[#2f3136] dark:bg-gray-800 w-full max-w-2xl rounded-lg shadow-xl transform transition-all overflow-hidden">
+    <!-- Modal Header -->
+    <div class="relative bg-[#2f3136] px-6 py-4 flex justify-between items-center">
+      <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Edit Profile</h3>
+      <button  class="text-gray-400 hover:text-gray-500 focus:outline-none" data-modal-hide="edit-profile-modal">
+        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="p-6">
+      <form (ngSubmit)="onSubmit()" #editProfileForm="ngForm">
+        <!-- Profile Picture and Banner -->
+        <div class="mb-6">
+          <div class="relative">
+            <img [src]="user.image || 'default-banner.jpg'" alt="Profile Banner" class="w-full h-32 object-cover rounded-t-lg">
+            <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2">
+              <img [src]="user.image" alt="Profile Picture" class="w-24 h-24 rounded-full border-4 border-white dark:border-gray-800">
+              <button type="button" class="absolute bottom-0 right-0 bg-blue-500 text-white rounded-full p-2 hover:bg-blue-600 focus:outline-none">
+                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Username -->
+        <div class="mb-4">
+          <label for="username" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Username</label>
+          <input type="text" id="username" name="username" [(ngModel)]="user.username" required
+                 class="w-full px-3 py-2 text-gray-700 dark:text-gray-300 border rounded-lg focus:outline-none focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600">
+        </div>
+
+        <!-- Bio -->
+        <div class="mb-4">
+          <label for="bio" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Bio</label>
+          <textarea id="bio" name="bio" rows="3" [(ngModel)]="user.bio"
+                    class="w-full px-3 py-2 text-gray-700 dark:text-gray-300 border rounded-lg focus:outline-none focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600"></textarea>
+        </div>
+
+        <!-- Status -->
+        <div class="mb-4">
+          <label for="status" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
+          <select id="status" name="status" [(ngModel)]="user.status"
+                  class="w-full px-3 py-2 text-gray-700 dark:text-gray-300 border rounded-lg focus:outline-none focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600">
+            <option value="online">Online</option>
+            <option value="idle">Idle</option>
+            <option value="dnd">Do Not Disturb</option>
+            <option value="invisible">Invisible</option>
+          </select>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="flex justify-end mt-6">
+          <button data-modal-hide="edit-profile-modal" type="button"  class="px-4 py-2 text-gray-500 hover:text-gray-700 font-medium rounded-md hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700 mr-2">
+            Cancel
+          </button>
+          <button type="submit" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+            Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

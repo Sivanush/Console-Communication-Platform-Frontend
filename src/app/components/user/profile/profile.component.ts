@@ -19,6 +19,9 @@ import { ToastService } from '../../../service/toster/toster-service.service';
   styleUrl: './profile.component.scss',
 })
 export class ProfileComponent {
+onSubmit() {
+throw new Error('Method not implemented.');
+}
   user!: User;
   isOwnProfile: boolean = true;
   activeTab: string = 'posts';

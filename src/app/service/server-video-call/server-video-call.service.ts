@@ -456,7 +456,7 @@ export class ServerVideoCallService {
   async joinRoom(): Promise<void> {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-      this.localStreamBs.next(stream);
+      this.localStreamBs.next(stream);  
 
       this.peer.on('call', (call) => {
         call.answer(stream);

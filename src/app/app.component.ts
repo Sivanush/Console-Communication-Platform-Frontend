@@ -13,7 +13,7 @@ import { AsyncPipe, Location } from '@angular/common';
 import { LoadingService } from './service/loading/loading.service';
 import { DirectCallService } from './service/direct-call/direct-call.service';
 import { TabGuardService } from './service/tab-guard/tab-guard.service';
-
+import { initFlowbite } from 'flowbite';
 
 
 
@@ -46,7 +46,7 @@ export class AppComponent {
    }
   async ngOnInit(): Promise<void> {
 
-
+    initFlowbite();
 
     this.loadingService.loading$.subscribe((loading) => {
       this.isLoading$ = loading;

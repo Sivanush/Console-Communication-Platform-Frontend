@@ -45,7 +45,7 @@ export class CommunityVideoChatComponent implements OnInit, AfterViewInit, OnDes
       }),
 
       this.serverVideoCallService.localStreamBs.subscribe(stream => {
-        if (stream && this.localVideo) {
+        if (stream && this.localVideo) {  
           this.localVideo.nativeElement.srcObject = stream;
         }
       }),
@@ -104,6 +104,9 @@ export class CommunityVideoChatComponent implements OnInit, AfterViewInit, OnDes
   }
 
   ngAfterViewInit(): void {
+    if (this.localVideo && this.localVideo.nativeElement) {
+      this.localVideo.nativeElement.muted = true;
+    }
     this.updateRemoteVideos();
   }
 
