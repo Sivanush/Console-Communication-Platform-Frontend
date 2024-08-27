@@ -1,5 +1,5 @@
 <!-- user-profile.component.html -->
-<div class="flex h-screen bg-[#2f3136] text-[#dcddde] font-sans">
+<div class="flex h-screen bg-[#2f3136] text-[#dcddde] font-sans"  >
     <!-- Left sidebar (placeholder) -->
 
    
@@ -12,12 +12,12 @@
         </svg>
     </div>
     <!-- Main content area -->
-    <div class=" flex-1 flex flex-col">
+    <div class=" flex-1 flex flex-col" >
       <!-- Header -->
       
       <!-- Content -->
-      <div class="flex-1 overflow-y-auto">
-        <div class=" max-w-3xl mx-auto py-6 px-4">
+      <div #scrollContainer id="scrollContainer"  class="flex-1 overflow-y-auto" >
+        <div class=" max-w-3xl mx-auto py-6 px-4" >
 
 
           
@@ -87,7 +87,8 @@
                               </button>
                             </div>
                             <button (click)="submitPost()" class="bg-[#5865F2] hover:bg-[#4752C4] text-white px-4 py-2 rounded-md transition duration-200">
-                              Post
+                              
+                              {{ isLoading ? 'Posting...' : 'Post' }}
                             </button>
                           </div>
                         <div *ngIf="previewUrl" class="mt-4 bg-[#36393f] rounded-lg overflow-hidden shadow-lg">

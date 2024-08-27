@@ -9,6 +9,7 @@ import { ServerService } from '../../../service/server/server.service';
 import { PostService } from '../../../service/post-service/post.service';
 import { PostI } from '../../../models/post/post.model';
 import { AutoPlayPostDirective } from '../../../directive/auto-play-post/auto-play-post.directive';
+import { ToastService } from '../../../service/toster/toster-service.service';
 
 @Component({
   selector: 'app-profile',
@@ -26,12 +27,18 @@ export class ProfileComponent {
   friends: any[] = [];
   servers: any[] = [];
   userId!: string | null
+  isLoading:boolean = false
   previewUrl: string | null = null;
   fileType: 'image' | 'video' | null = null;
   selectedFile: File | null = null;
   private observer: IntersectionObserver | null = null;
 
-  constructor(private userService: UserService, private serverService: ServerService, private postService: PostService) { }
+  constructor(
+    private userService: UserService, 
+    private serverService: ServerService, 
+    private postService: PostService,
+    private toaster:ToastService
+  ) { }
 
 
 
@@ -108,6 +115,7 @@ export class ProfileComponent {
 
   async submitPost(): Promise<void> {
     if (this.content.trim() || this.selectedFile) {
+      this.isLoading = true
       let mediaUrl: string | null;
 
       if (this.selectedFile) {
@@ -129,9 +137,13 @@ export class ProfileComponent {
           this.fileType = null;
           this.selectedFile = null;
           this.getUserPost()
+          this.isLoading = false
+          this.toaster.showSuccess('Successfully Posted')
         },
         error: (err) => {
           console.log(err);
+          this.isLoading = false
+          this.toaster.showError('Something Went Wrong, Try Again')
         }
       })
     }

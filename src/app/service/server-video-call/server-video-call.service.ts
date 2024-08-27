@@ -421,9 +421,14 @@ export class ServerVideoCallService {
       debug: 3,
       config: {
         iceServers: [
-          { urls: 'stun:stun.l.google.com:19302' },
-          { urls: 'stun:stun1.l.google.com:19302' },
-          // Add TURN server configuration here
+          // { urls: 'stun:stun.l.google.com:19302' },
+          // { urls: 'stun:stun1.l.google.com:19302' },
+          // Add TURN server configuration here,
+          {
+            urls: 'turn:turn.assiststore.online:3478',
+            username: 'user',
+            credential: 'pass'
+        }
         ]
       }
     });
