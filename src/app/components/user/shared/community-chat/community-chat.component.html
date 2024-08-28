@@ -29,7 +29,7 @@
     @for (msg of group.messages; track msg._id) {
     <div class="flex mb-1" [ngClass]="{'mt-4': !msg.grouped}">
       @if (!msg.grouped) {
-      <img [src]="msg.sender.image" alt="User avatar" class="w-10 h-10 rounded-full mr-3 mt-1">
+      <img [src]="msg.sender.image" alt="User avatar" class="w-10 h-10 object-cover rounded-full mr-3 mt-1">
       }
       <div class="flex-1" [ngClass]="{'pl-[50px]': msg.grouped}">
         @if (!msg.grouped) {
@@ -91,7 +91,7 @@
 </div>
 
 <!-- Input area -->
-<div class="px-2 py-2 bg-[#40444b] mb-3 mr-3 rounded-md text-">
+<div class="px-2 py-2 bg-[#40444b] mb-3 mr-2 rounded-md ms-2">
   <div class="relative flex items-center">
     <!-- File input for image and video upload -->
     <input type="file" (change)="onFileUpload($event)" accept="image/*,video/*" style="display: none;" #fileInput>
@@ -104,13 +104,16 @@
 
     <!-- Text input for messages -->
     <input type="text" [(ngModel)]="message" (keydown.enter)="sendMessage()"
-      class="w-full bg-[#40444b] text-[#dcddde] rounded-md pl-4 pr-12 py-2 focus:outline-0 focus:ring-0 transition-all"
+      class="w-full bg-[#40444b] text-[#dcddde] border-0 rounded-md pl-4 pr-12 py-2 transition-all focus:outline-none"
       placeholder="Type a message...">
 
     <!-- Send button -->
     <button (click)="sendMessage()"
       class="absolute right-2 top-1/2 transform -translate-y-1/2 text-[#b9bbbe] hover:text-[#dcddde] transition-all">
-      <img width="24" height="24" src="https://img.icons8.com/fluency-systems-regular/48/sent--v1.png" alt="sent--v1"/>
+      <!-- <img width="24" height="24" src="https://img.icons8.com/fluency-systems-regular/48/sent--v1.png" alt="sent--v1"/> -->
+      <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+        <path fill-rule="evenodd" d="M3 4a1 1 0 0 0-.822 1.57L6.632 12l-4.454 6.43A1 1 0 0 0 3 20h13.153a1 1 0 0 0 .822-.43l4.847-7a1 1 0 0 0 0-1.14l-4.847-7a1 1 0 0 0-.822-.43H3Z" clip-rule="evenodd"/>
+      </svg>      
     </button>
   </div>
 </div>

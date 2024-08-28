@@ -30,8 +30,9 @@ export class GoogleAuthService {
             localStorage.setItem('token', response?.token)
             console.log('Login successful:', response);
             this.toster.showSuccess('Success', 'Logged in successfully with Google!')
-
-            this.router.navigate(['/friend/all-friends'])
+            setTimeout(() => {
+              this.router.navigate(['/friend/all-friends'])
+            }, 100);
           },
           error:(err)=>{
             console.log('Error', err?.error.message);            

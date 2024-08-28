@@ -23,7 +23,7 @@
           @for (user of users; track $index) {
             <div class="flex w-full bg-[#2f3136] rounded-md p-3 justify-between items-center hover:bg-[#292b2f] transition-all">
               <div class="flex items-center space-x-3">
-                <img src="{{user._doc.image}}" alt="user-profile" class="w-10 h-10 rounded-full">
+                <img src="{{user._doc.image}}" alt="user-profile" class="w-10 h-10 rounded-full object-cover">
                 <p class="text-[#ffffff] text-base font-medium">{{user._doc.username}}</p>
               </div>
               @if (user.friendshipStatus === "Friends") {

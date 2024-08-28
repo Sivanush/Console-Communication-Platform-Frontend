@@ -9,13 +9,13 @@
       class="bg-[#36393f] shadow-sm   min-h-[48px] px-4 flex items-center" />
 
     <div class="flex-1 flex flex-col overflow-hidden">
-      <div class="flex-1 overflow-y-auto  px-40 pt-4 sm:px-0" id="scrollContainer" #scrollContainer>
+      <div class="flex-1 overflow-y-auto  px-40 pt-4 sm:px-0" id="scrollContainer" #scrollContainer >
         @for (msg of groupedMessages; track msg; let i = $index) {
         <div class="mb-0 last:mb-0 hover:bg-[#32353b] mx-2 px-4 py-1 rounded-md group message-enter">
           <div class="flex items-start relative">
             @if (msg.isNewGroup) {
             <img [src]="msg.senderId.image" alt="User avatar"
-              class="w-10 h-10 rounded-full mr-3 mt-0.5 transition-transform duration-200 ease-in-out transform hover:scale-110">
+              class="w-10 h-10 object-cover rounded-full mr-3 mt-0.5 ">
             <div class="flex-1 min-w-0">
               <div class="flex items-baseline mb-1">
                 <span class="text-white font-medium mr-2 cursor-pointer">{{ msg.senderId.username }}</span>
@@ -92,7 +92,7 @@
           </div>
         </div>
         } @empty {
-        <div class="flex-grow flex flex-col items-center justify-center text-center">
+        <div class="h-[70vh] flex-grow flex flex-col items-center justify-center text-center">
           <svg class="w-16 h-16 text-[#8e9297] mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
             stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -123,7 +123,7 @@
 
 
           <input type="text" [(ngModel)]="message" (keydown.enter)="sendMessage()"
-            class="w-full bg-[#40444b] text-[#dcddde] rounded-lg pl-4 pr-12 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#5865F2] placeholder-[#72767d] transition-all duration-200"
+            class="w-full bg-[#40444b] text-[#dcddde] rounded-lg pl-4 pr-12 py-2.5 focus:border-0 border-0 placeholder-[#72767d] transition-all duration-200"
             placeholder="Message @{{friendUserData.username}}">
 
           <button (click)="sendMessage()"
