@@ -1,6 +1,6 @@
-import { CommonModule, DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { CommonModule, DatePipe, Location } from '@angular/common';
+import { Component, Input } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService } from '../../../service/user/user.service';
 import { UserI } from '../../../interface/server/channelChat';
 import { User } from '../../../interface/user/user.model';
@@ -11,17 +11,17 @@ import { PostI } from '../../../models/post/post.model';
 import { AutoPlayPostDirective } from '../../../directive/auto-play-post/auto-play-post.directive';
 import { ToastService } from '../../../service/toster/toster-service.service';
 
+
+
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule,AutoPlayPostDirective],
+  imports: [CommonModule, FormsModule, RouterModule,AutoPlayPostDirective,FormsModule,CommonModule,ReactiveFormsModule],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
 export class ProfileComponent {
-onSubmit() {
-throw new Error('Method not implemented.');
-}
+
   user!: User;
   isOwnProfile: boolean = true;
   activeTab: string = 'posts';
@@ -35,23 +35,40 @@ throw new Error('Method not implemented.');
   fileType: 'image' | 'video' | null = null;
   selectedFile: File | null = null;
   private observer: IntersectionObserver | null = null;
+  profileImagePreview: string | null = null;
+  bannerImagePreview: string | null = null;
 
+  @Input() isModalOpen: boolean = false;
+
+
+  profileImageFile: File | null = null;
+  bannerImageFile: File | null = null;
+
+
+  userForm: FormGroup
   constructor(
     private userService: UserService, 
     private serverService: ServerService, 
     private postService: PostService,
-    private toaster:ToastService
-  ) { }
+    private toaster:ToastService,
+    private fb:FormBuilder,
+    private location:Location
+  ) { 
+    this.userForm = this.fb.group({
+      username: ['', [Validators.required, Validators.minLength(3)]],
+      bio: ['', [Validators.maxLength(160)]],
+      status: ['', [Validators.required]],
+    });
+  }
 
+  toggleModel(){
+    this.isModalOpen = !this.isModalOpen;
+  }
 
 
   async ngOnInit(): Promise<void> {
-    this.userService.getUserData().subscribe({
-      next: (data) => {
-        this.user = data
-      }
-    })
-
+    
+    this.loadUserData()
 
     this.userService.getAllFriends().subscribe({
       next: (data) => {
@@ -80,6 +97,17 @@ throw new Error('Method not implemented.');
       { name: 'Movie Buffs', memberCount: 500, iconUrl: 'https://placehold.co/1000x1000/000000/FFF' }
       // Add more sample servers here
     ];
+  }
+
+
+  loadUserData(){
+    this.userService.getUserData().subscribe({
+      next: (data) => {
+        this.user = data
+        console.log(data);
+        
+      }
+    })
   }
 
 
@@ -159,5 +187,107 @@ throw new Error('Method not implemented.');
         this.posts = data
       }
     })
+  }
+
+
+  goBack(){
+    this.location.back()
+  }
+
+
+  onProfileImageSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      this.validateAndSetProfileImage(file);
+    }
+  }
+
+
+  validateAndSetProfileImage(file: File): void {
+    const img = new Image();
+    img.onload = () => {
+      const aspectRatio = img.width / img.height;
+      const isValidAspectRatio = Math.abs(aspectRatio - 1) < 0.5; 
+      
+      if (isValidAspectRatio) {
+        this.profileImageFile = file;
+        this.readFile(file, 'image');
+        console.log(`Image loaded successfully with aspect ratio: ${aspectRatio.toFixed(2)}.`);
+      } else {
+        console.warn(`Invalid aspect ratio: ${aspectRatio.toFixed(2)}. Required approximately 1:1.`);
+        this.toaster.showError('Please select an image with an aspect ratio close to 1:1.');
+      }
+    };
+    img.onerror = () => {
+      this.toaster.showError('Invalid image file. Please try again.');
+    };
+    img.src = URL.createObjectURL(file);
+  }
+
+  onBannerImageSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      this.bannerImageFile = input.files[0];
+      this.readFile(this.bannerImageFile, 'banner');
+    }
+  }
+
+  readFile(file: File, type: 'image' | 'banner'): void {
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      if (type === 'image') {
+        this.profileImagePreview = e.target.result;
+      } else {
+        this.bannerImagePreview = e.target.result;
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+
+
+
+
+  async onEditProfileSubmit() {
+    if (this.userForm.valid) {
+      let profileData: User = this.userForm.value;
+      profileData._id = await this.userService.getUserId() as string
+      console.log(profileData);
+      
+      if (this.profileImageFile) {
+        try {
+          const imageUrl = await this.postService.uploadToAWS(this.profileImageFile);
+          profileData.image = imageUrl;
+        } catch (error) {
+          this.toaster.showError('Failed to upload profile image');
+          return;
+        }
+      }
+
+      if (this.bannerImageFile) {
+        try {
+          const bannerUrl = await this.postService.uploadToAWS(this.bannerImageFile);
+          profileData.banner = bannerUrl;
+        } catch (error) {
+          this.toaster.showError('Failed to upload banner image');
+          return;
+        }
+      }
+
+      this.userService.updateProfile(profileData).subscribe({
+        next: (response) => {
+          this.toaster.showSuccess('Profile updated successfully');
+          this.loadUserData();
+          this.isModalOpen = false
+        },
+        error: (error) => {
+          this.toaster.showError('Failed to update profile');
+          this.isModalOpen = false
+        }
+      });
+
+    }else{
+      console.log(this.userForm);
+    }
   }
 }

@@ -36,11 +36,11 @@
     </a>
   </div>
 
-  <div id="profile-bottom" (click)="toggleUserProfile()"
+  <div id="profile-bottom" 
        class="flex flex-col items-center pt-3 pb-3 bg-[#202225] cursor-pointer  ">
     @if (userImage) {
-      <a  class="relative group">
-        <img class="object-cover w-10 h-10 rounded-full transition-all duration-300 ease-out"
+      <a  class="relative group" [routerLink]="['/profile']">
+        <img class="object-cover  w-10 h-10 rounded-full transition-all duration-300 ease-out"
              [src]="userImage"
              alt="avatar" />
         <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-[#202225]"></div>

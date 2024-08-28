@@ -6,7 +6,7 @@ import { User } from '../../../interface/user/user.model';
 import { CommonModule, DatePipe } from '@angular/common';
 import { ToggleUserProfileService } from '../../../service/toggleUserProfile/toggle-user-profile.service';
 import { ChatServiceService } from '../../../service/direct-chat/chat-service.service';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { response } from 'express';
 
@@ -19,7 +19,7 @@ interface Server {
 @Component({
   selector: 'app-user-profile',
   standalone: true,
-  imports: [SidebarModule, TabViewModule, FormsModule, CommonModule, RouterLink],
+  imports: [SidebarModule, TabViewModule, FormsModule, CommonModule, RouterLink,ReactiveFormsModule],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.scss',
   providers: [DatePipe]
@@ -32,13 +32,16 @@ export class UserProfileComponent implements OnInit {
   userStatus!: string
   customStatus!: string
   joinedServers: Server[] = [];
-
+  
   constructor(
     private userService: UserService,
     private datePipe: DatePipe,
     private toggleUserProfileService: ToggleUserProfileService,
-    private chatService: ChatServiceService
-  ) { }
+    private chatService: ChatServiceService,
+   
+  ) { 
+   
+  }
 
   async ngOnInit(): Promise<void> {
     this.getDataForProfile();
@@ -72,19 +75,19 @@ export class UserProfileComponent implements OnInit {
   }
 
   updateStatus() {
-    this.userService.updateStatus(this.userData.status, this.userData.customStatus).subscribe({
-      next: (response) => {
-        console.log(response);
-      }
-    })
+    // this.userService.updateStatus(this.userData.status, this.userData.customStatus).subscribe({
+    //   next: (response) => {
+    //     console.log(response);
+    //   }
+    // })
   }
 
   updateBio() {
-    this.userService.updateBio(this.userData.bio).subscribe({
-      next: (response) => {
-        console.log(response);
-      }
-    })
+    // this.userService.updateBio(this.userData.bio).subscribe({
+    //   next: (response) => {
+    //     console.log(response);
+    //   }
+    // })
   }
 
 

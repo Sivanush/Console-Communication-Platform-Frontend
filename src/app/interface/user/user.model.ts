@@ -1,4 +1,5 @@
 export interface User{
+    banner: string
     customStatus:string
     status:string
     friendshipStatus: string

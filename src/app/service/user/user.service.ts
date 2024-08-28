@@ -167,14 +167,11 @@ export class UserService {
     return this.http.get<User>(`${this.apiLink}/user/${userId}`)
   }
 
-  updateBio(bio: string) {
-    return this.http.post(`${this.apiLink}/update-bio`, { bio });
+  updateProfile(userData:User){
+    console.log('✅✅✅✅✅');
+    
+    return this.http.post(`${this.apiLink}/update-profile`,userData)
   }
 
-  updateStatus(status: string, customStatus: string) {
-    return this.http.post(`${this.apiLink}/update-status`, { status, customStatus });
-  }
-
-  
 }
 
