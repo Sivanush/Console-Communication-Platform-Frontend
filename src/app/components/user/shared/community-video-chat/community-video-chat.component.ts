@@ -1,8 +1,9 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ServerVideoCallService } from '../../../../service/server-video-call/server-video-call.service';
-import { Subscription,  } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { Subscription } from 'rxjs';
+import { ActivatedRoute, Router, NavigationStart } from '@angular/router';
+import { CommonModule, Location } from '@angular/common';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-community-video-chat',
@@ -14,7 +15,8 @@ import { CommonModule } from '@angular/common';
 export class CommunityVideoChatComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('localVideo') localVideo!: ElementRef<HTMLVideoElement>;
   
-  isCallStarted = false;
+  isCallStarted: boolean = false;
+  isLoading: boolean = true;
   channelId: string | null = null;
   remoteStreams: Map<string, MediaStream> = new Map();
 
@@ -28,10 +30,18 @@ export class CommunityVideoChatComponent implements OnInit, AfterViewInit, OnDes
 
   constructor(
     private serverVideoCallService: ServerVideoCallService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
+    this.subscribeToServices();
+    this.setupNavigationListener();
+    window.addEventListener('beforeunload', this.handleTabClose.bind(this));
+  }
+
+  private subscribeToServices(): void {
     this.subscriptions.push(
       this.route.params.subscribe(params => {
         this.channelId = params['channelId'];
@@ -42,6 +52,7 @@ export class CommunityVideoChatComponent implements OnInit, AfterViewInit, OnDes
 
       this.serverVideoCallService.isCallStartedBs.subscribe(isStarted => {
         this.isCallStarted = isStarted;
+        this.isLoading = false;
       }),
 
       this.serverVideoCallService.localStreamBs.subscribe(stream => {
@@ -55,28 +66,51 @@ export class CommunityVideoChatComponent implements OnInit, AfterViewInit, OnDes
         this.updateRemoteVideos();
       }),
 
-      this.serverVideoCallService.networkQualityBs.subscribe(quality=>{
-        this.networkQuality = quality
+      this.serverVideoCallService.networkQualityBs.subscribe(quality => {
+        this.networkQuality = quality;
       })
     );
-
-
-    window.addEventListener('beforeunload', this.handleTabClose.bind(this));
   }
 
-
-  toggleScreenShare(){
-    if (this.isScreenSharing) {
-      this.serverVideoCallService.stopScreenSharing()
-      this.isScreenSharing = false
-    }else{
-      this.serverVideoCallService.screenShare().then(()=>{
-        this.isScreenSharing = true
+  private setupNavigationListener(): void {
+    this.subscriptions.push(
+      this.router.events.pipe(
+        filter(event => event instanceof NavigationStart)
+      ).subscribe(() => {
+        this.cleanup();
       })
+    );
+  }
+
+  ngAfterViewInit(): void {
+    if (this.localVideo && this.localVideo.nativeElement) {
+      this.localVideo.nativeElement.muted = true;
+    }
+    this.updateRemoteVideos();
+  }
+
+  async initializeVideoCall(channelId: string) {
+    try {
+      await this.serverVideoCallService.initializePeerConnection(channelId);
+      await this.serverVideoCallService.joinRoom();
+      this.isCallStarted = true;
+    } catch (error) {
+      console.error('Error setting up video call:', error);
     }
   }
 
-  handleTabClose() {
+  toggleScreenShare(): void {
+    if (this.isScreenSharing) {
+      this.serverVideoCallService.stopScreenSharing();
+      this.isScreenSharing = false;
+    } else {
+      this.serverVideoCallService.screenShare().then(() => {
+        this.isScreenSharing = true;
+      });
+    }
+  }
+
+  handleTabClose(): void {
     this.leaveCall();
   }
 
@@ -87,27 +121,6 @@ export class CommunityVideoChatComponent implements OnInit, AfterViewInit, OnDes
     if (count === 2) return 'grid-cols-2';
     if (count <= 4) return 'grid-cols-2';
     return 'grid-cols-3';
-  }
-
-
-  async initializeVideoCall(channelId: string) {
-    try {
-      console.log('Initializing peer connection');
-      await this.serverVideoCallService.initializePeerConnection(channelId);
-      console.log('Peer connection initialized, joining room');
-      await this.serverVideoCallService.joinRoom();
-      console.log('Joined room successfully');
-      this.isCallStarted = true;
-    } catch (error) {
-      console.error('Error setting up video call:', error);
-    }
-  }
-
-  ngAfterViewInit(): void {
-    if (this.localVideo && this.localVideo.nativeElement) {
-      this.localVideo.nativeElement.muted = true;
-    }
-    this.updateRemoteVideos();
   }
 
   async joinCall(): Promise<void> {
@@ -125,14 +138,19 @@ export class CommunityVideoChatComponent implements OnInit, AfterViewInit, OnDes
   leaveCall(): void {
     this.serverVideoCallService.leaveRoom();
     this.isCallStarted = false;
+    this.cleanup();
+    this.location.back();
+
+    if (this.localVideo && this.localVideo.nativeElement.srcObject) {
+      const stream = this.localVideo.nativeElement.srcObject as MediaStream;
+      stream.getTracks().forEach(track => track.stop());
+      this.localVideo.nativeElement.srcObject = null;
+    }
   }
-
-
 
   private updateRemoteVideos(): void {
     const container = document.getElementById('video-grid');
     if (!container) return;
-
 
     Array.from(container.children).forEach(child => {
       if (child.id.startsWith('remote-video-') && !this.remoteStreams.has(child.id.replace('remote-video-', ''))) {
@@ -152,7 +170,6 @@ export class CommunityVideoChatComponent implements OnInit, AfterViewInit, OnDes
         videoElement.playsInline = true;
         videoElement.className = 'w-full h-full object-cover scale-x-[-1]';
         
-        
         const usernameElement = document.createElement('div');
         usernameElement.className = 'absolute bottom-2 left-2 bg-black bg-opacity-50 px-2 py-1 rounded text-sm';
         usernameElement.textContent = 'Loading...';
@@ -162,23 +179,21 @@ export class CommunityVideoChatComponent implements OnInit, AfterViewInit, OnDes
         container.appendChild(videoWrapper);
         
         this.serverVideoCallService.getUserName(peerId).subscribe({
-          next:(username)=>{
+          next: (username) => {
             usernameElement.textContent = username;
           },
-          error:(error)=>{
+          error: (error) => {
             console.error('Error fetching username:', error);
             usernameElement.textContent = `User ${peerId.substr(0, 8)}`;
           }
-        })
+        });
       }
-
 
       const videoElement = videoWrapper.querySelector('video');
       if (videoElement && videoElement.srcObject !== stream) {
         videoElement.srcObject = stream;
       }
     });
-
 
     this.updateGridLayout();
   }
@@ -191,7 +206,7 @@ export class CommunityVideoChatComponent implements OnInit, AfterViewInit, OnDes
     let gridClass = '';
   
     if (count === 0) {
-      gridClass = 'hidden';
+      gridClass = 'flex justify-center items-center';
     } else if (count === 1) {
       gridClass = 'grid-cols-1';
     } else if (count === 2) {
@@ -204,7 +219,6 @@ export class CommunityVideoChatComponent implements OnInit, AfterViewInit, OnDes
 
     container.className = `${gridClass} gap-2 h-full w-full`;
   
-    
     const videos = container.querySelectorAll('.relative');
     videos.forEach((video: Element) => {
       const videoElement = video as HTMLElement;
@@ -218,30 +232,44 @@ export class CommunityVideoChatComponent implements OnInit, AfterViewInit, OnDes
     });
   }
 
-
-  toggleAudio() {
+  toggleAudio(): void {
     this.isAudioMuted = !this.isAudioMuted;
     this.serverVideoCallService.toggleAudio(this.isAudioMuted);
   }
   
-  toggleVideo() {
+  toggleVideo(): void {
     this.isVideoOff = !this.isVideoOff;
     this.serverVideoCallService.toggleVideo(this.isVideoOff);
   }
 
-
-  
-
   ngOnDestroy(): void {
-    // this.leaveCall()
-    this.serverVideoCallService.destroyPeerConnection();
-    this.serverVideoCallService.leaveRoom();
+    this.cleanup();
+    // this.serverVideoCallService.releaseAllResources();
+  }
+
+  private cleanup(): void {
+    // Stop local video
+    if (this.localVideo && this.localVideo.nativeElement.srcObject) {
+      const stream = this.localVideo.nativeElement.srcObject as MediaStream;
+      stream.getTracks().forEach(track => track.stop());
+      this.localVideo.nativeElement.srcObject = null;
+    }
+
+    // Stop remote videos
+    this.remoteStreams.forEach(stream => {
+      stream.getTracks().forEach(track => track.stop());
+    });
+    this.remoteStreams.clear();
+
+    // Unsubscribe from all subscriptions
     this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.subscriptions = [];
+
+    // Remove event listener
     window.removeEventListener('beforeunload', this.handleTabClose.bind(this));
+
+    // Call service cleanup
+    this.serverVideoCallService.cleanupOnNavigation();
+    this.serverVideoCallService.releaseAllResources();
   }
 }
-
-
-
-
-
