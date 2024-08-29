@@ -1,4 +1,4 @@
-<aside  [class.-translate-x-full]="!sidebarOpen"  class="sidebar flex h-screen fixed z-40 fixed left-0 top-0 transition-transform -translate-x-full sm:translate-x-0 z-30" 
+<aside  [class.-translate-x-full]="!sidebarOpen"  class="sidebar flex h-screen fixed z-40 left-0 top-0 transition-transform -translate-x-full sm:translate-x-0 " 
   id="main-sidebar">
   <app-main-sidebar />
   <div id="second-sidebar"
@@ -43,7 +43,7 @@
         [routerLink]="['/direct-chat', userId, user._id]" routerLinkActive="bg-[#36393f]">
         <div class="flex items-center">
           <div class="relative mr-3">
-            <img class="w-8 h-8 rounded-full" src="{{user.image}}">
+            <img class="w-8 h-8 rounded-full object-cover" src="{{user.image}}">
             <!-- @if (isFriendOnline) { -->
             <!-- <div class="absolute bottom-0 right-0 w-3 h-3 rounded-full" [ngClass]="getStatusClass(user.status)"></div>        -->
           </div>

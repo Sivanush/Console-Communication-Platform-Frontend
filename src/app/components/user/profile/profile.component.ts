@@ -10,13 +10,14 @@ import { PostService } from '../../../service/post-service/post.service';
 import { PostI } from '../../../models/post/post.model';
 import { AutoPlayPostDirective } from '../../../directive/auto-play-post/auto-play-post.directive';
 import { ToastService } from '../../../service/toster/toster-service.service';
+import { error } from 'console';
 
 
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule,AutoPlayPostDirective,FormsModule,CommonModule,ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, RouterModule, AutoPlayPostDirective, FormsModule, CommonModule, ReactiveFormsModule],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
@@ -30,7 +31,7 @@ export class ProfileComponent {
   friends: any[] = [];
   servers: any[] = [];
   userId!: string | null
-  isLoading:boolean = false
+  isLoading: boolean = false
   previewUrl: string | null = null;
   fileType: 'image' | 'video' | null = null;
   selectedFile: File | null = null;
@@ -47,13 +48,13 @@ export class ProfileComponent {
 
   userForm: FormGroup
   constructor(
-    private userService: UserService, 
-    private serverService: ServerService, 
+    private userService: UserService,
+    private serverService: ServerService,
     private postService: PostService,
-    private toaster:ToastService,
-    private fb:FormBuilder,
-    private location:Location
-  ) { 
+    private toaster: ToastService,
+    private fb: FormBuilder,
+    private location: Location
+  ) {
     this.userForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
       bio: ['', [Validators.maxLength(160)]],
@@ -61,13 +62,13 @@ export class ProfileComponent {
     });
   }
 
-  toggleModel(){
+  toggleModel() {
     this.isModalOpen = !this.isModalOpen;
   }
 
 
   async ngOnInit(): Promise<void> {
-    
+
     this.loadUserData()
 
     this.userService.getAllFriends().subscribe({
@@ -88,7 +89,7 @@ export class ProfileComponent {
     })
 
     this.getUserPost()
-    
+
 
 
     // Initialize sample servers
@@ -100,12 +101,12 @@ export class ProfileComponent {
   }
 
 
-  loadUserData(){
+  loadUserData() {
     this.userService.getUserData().subscribe({
       next: (data) => {
         this.user = data
         console.log(data);
-        
+
       }
     })
   }
@@ -160,7 +161,7 @@ export class ProfileComponent {
 
       const type = this.fileType || 'text';
 
-      this.postService.createPost(this.content,type,mediaUrl!).subscribe({
+      this.postService.createPost(this.content, type, mediaUrl!).subscribe({
         next: (data) => {
           console.log(data);
           this.content = ''
@@ -179,18 +180,20 @@ export class ProfileComponent {
       })
     }
   }
-  
 
-  getUserPost(){
+
+  getUserPost() {
     this.postService.getUserPost().subscribe({
       next: (data) => {
         this.posts = data
+        console.log(data);
+
       }
     })
   }
 
 
-  goBack(){
+  goBack() {
     this.location.back()
   }
 
@@ -208,8 +211,8 @@ export class ProfileComponent {
     const img = new Image();
     img.onload = () => {
       const aspectRatio = img.width / img.height;
-      const isValidAspectRatio = Math.abs(aspectRatio - 1) < 0.5; 
-      
+      const isValidAspectRatio = Math.abs(aspectRatio - 1) < 0.5;
+
       if (isValidAspectRatio) {
         this.profileImageFile = file;
         this.readFile(file, 'image');
@@ -253,7 +256,7 @@ export class ProfileComponent {
       let profileData: User = this.userForm.value;
       profileData._id = await this.userService.getUserId() as string
       console.log(profileData);
-      
+
       if (this.profileImageFile) {
         try {
           const imageUrl = await this.postService.uploadToAWS(this.profileImageFile);
@@ -286,8 +289,30 @@ export class ProfileComponent {
         }
       });
 
-    }else{
+    } else {
       console.log(this.userForm);
     }
+  }
+
+
+  likeAndUnlikePost(postId: string) {
+    this.postService.likeAndUnlikePost(postId).subscribe({
+      next: (response) => {
+        const post = this.posts.find(p => p._id === postId);
+        if (post) {
+          if (post.isLiked) {
+            post.likeCount--;
+            post.isLiked = false;
+          } else {
+            post.likeCount++;
+            post.isLiked = true;
+          }
+        }
+        console.log(response);
+      },
+      error: (err) => {
+        this.toaster.showError('Something went wrong, Try again');
+      }
+    })
   }
 }

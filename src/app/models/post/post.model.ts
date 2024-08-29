@@ -1,6 +1,7 @@
 
 
 export interface PostI {
+    isLiked: boolean,
     _id: string,
     content: string,
     author: UserPostI,
@@ -8,7 +9,8 @@ export interface PostI {
     mediaType:string
     likes: number,
     comments: number,
-    timestamp:Date
+    timestamp:Date,
+    likeCount:number
 }
 
 interface UserPostI {

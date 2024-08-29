@@ -1,0 +1,19 @@
+// @media (min-width: 640px) {
+//     #main-content-wrapper {
+//       margin-left: calc(65px + 0rem);
+//       margin-right: 7px;
+//     }
+//   }
+
+@media (min-width: 640px) {
+  #main-content-wrapper {
+    margin-left: 256px; /* Width of the collapsed sidebar */
+  }
+}
+
+@media (min-width: 1024px) {
+  #main-content-wrapper {
+    margin-left: 64px; /* Width of the expanded sidebar */
+  }
+}
+

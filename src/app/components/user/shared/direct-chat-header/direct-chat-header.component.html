@@ -15,7 +15,7 @@
           </button>
           <div  class="flex items-center ml-2 sm:ml-0">
             <div class="relative mr-3">
-                <img class="w-10 h-10 rounded-full" [src]="userImage" alt="User profile">
+                <img class="w-10 h-10 rounded-full object-cover" [src]="userImage" alt="User profile">
                  @if (isFriendOnline | async) {
                    <div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-[#202225]"></div>
                  }

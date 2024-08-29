@@ -49,4 +49,12 @@ export class PostService {
   getUserPost():Observable<PostI[]>{
     return this.http.get<PostI[]>(`${this.apiLink}/user-post`)
   }
+
+  getExplorePosts():Observable<PostI[]>{
+    return this.http.get<PostI[]>(`${this.apiLink}/explore-post`)
+  }
+
+  likeAndUnlikePost(postId:string){
+    return this.http.get(`${this.apiLink}/like-post/${postId}`)
+  }
 }

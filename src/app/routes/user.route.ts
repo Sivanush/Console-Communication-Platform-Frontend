@@ -21,6 +21,7 @@ import { DirectVideoCallComponent } from '../components/user/direct-video-call/d
 import { ViewMembersComponent } from '../components/user/view-members/view-members.component';
 import { DirectVoiceCallComponent } from '../components/user/direct-voice-call/direct-voice-call.component';
 import { ProfileComponent } from '../components/user/profile/profile.component';
+import { ExploreComponent } from '../components/user/explore/explore.component';
 
 
 export const userRoute: Routes = [
@@ -110,5 +111,9 @@ export const userRoute: Routes = [
   {
     path: 'server/:serverId',
     component:ViewMembersComponent    
+  },
+  {
+    path: 'explore',
+    component:ExploreComponent
   }
 ];

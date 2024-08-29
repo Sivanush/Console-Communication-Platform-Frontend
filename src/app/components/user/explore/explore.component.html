@@ -1,0 +1,122 @@
+<main class="flex flex-col sm:flex-row min-h-screen bg-[#36393f] overflow-hidden">
+    <app-friends-sidebar class="w-full sm:w-16 lg:w-64 flex-shrink-0" />
+    
+    <div class="flex-1 flex flex-col h-full w-full overflow-hidden" id="main-content-wrapper">
+      <div class="flex flex-col lg:flex-row h-full overflow-hidden">
+        <!-- Main Content -->
+        <div class="flex-1 overflow-y-auto px-4 sm:px-6 py-4">
+          <!-- Stories Section -->
+          
+          <!-- Posts -->
+          <div class="space-y-6 max-w-2xl mx-auto">
+            <div class="mb-6">
+                <div class="flex space-x-4 overflow-x-auto py-2 scrollbar-hide">
+                  <!-- Add Story Button -->
+                  <div class="flex flex-col items-center flex-shrink-0">
+                    <button class="w-14 h-14 sm:w-16 sm:h-16 bg-[#40444b] rounded-full flex items-center justify-center text-white hover:bg-[#4f545c] transition-colors duration-200">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 sm:h-8 sm:w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                      </svg>
+                    </button>
+                    <span class="text-[#b9bbbe] text-xs mt-1">Add Story</span>
+                  </div>
+                  <!-- Story Items -->
+                  <div *ngFor="let story of stories" class="flex flex-col items-center flex-shrink-0">
+                    <div class="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full p-0.5">
+                      <img [src]="story.authorImage" alt="User Avatar" class="w-full h-full object-cover rounded-full border-2 border-[#36393f]">
+                    </div>
+                    <span class="text-[#b9bbbe] text-xs mt-1">{{story.authorName | slice:0:6}}{{story.authorName.length > 6 ? '...' : ''}}</span>
+                  </div>
+                </div>
+              </div>
+  
+              
+              
+              <div *ngFor="let post of posts.slice().reverse()"
+              class="bg-[#2f3136] rounded-lg overflow-hidden shadow-2xl ">
+              <!-- Post Header -->
+              <div class="p-4 flex items-start space-x-3">
+                <img [src]="post.author.image" alt="Author Avatar" class="w-10 h-10 object-cover rounded-full">
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center flex-wrap">
+                    <span class="font-semibold text-white mr-0">{{post.author.username}}</span>
+                    <!-- <span class="text-[#b9bbbe] text-sm">at{{post.author.username.toLowerCase()}}</span> -->
+                    <span class="text-[#b9bbbe] mx-2">·</span>
+                    <span class="text-[#b9bbbe] text-sm">{{ post.timestamp | date:'MMM d, yyyy' }}</span>
+                  </div>
+
+                  <!-- Post Content -->
+                  <p *ngIf="post.content" class="mt-2 text-[#dcddde] whitespace-pre-wrap">{{post.content}}</p>
+                </div>
+              </div>
+
+              <!-- Media Content -->
+              <div *ngIf="post.mediaUrl" class="mt-2">
+                <!-- Image -->
+                <img *ngIf="post.mediaType === 'image'" [src]="post.mediaUrl" alt="Post media"
+                  class="w-full h-auto max-h-[500px] object-cover">
+                <!-- Video -->
+                <video *ngIf="post.mediaType === 'video'" [src]="post.mediaUrl" controls
+                  class="w-full max-h-[500px] bg-black" appAutoPlayPost></video>
+              </div>
+
+              <!-- Post Actions -->
+              <div class="px-4 py-3 flex items-center justify-between text-[#b9bbbe] border-t border-[#40444b]">
+                <button class="flex items-center space-x-2 hover:text-blue-400 transition-colors duration-200">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                  </svg>
+                  <span class="text-sm">{{post.comments}}</span>
+                </button>
+                <button class="flex items-center space-x-2 hover:text-green-400 transition-colors duration-200">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  </svg>
+                  <span class="text-sm">Repost</span>
+                </button>
+                <button class="flex items-center space-x-2 hover:text-red-400 transition-colors duration-200">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                  </svg>
+                  <span class="text-sm">{{post.likes}}</span>
+                </button>
+                <button class="flex items-center space-x-2 hover:text-blue-400 transition-colors duration-200">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                  </svg>
+                  <span class="text-sm">Share</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Suggestions Section -->
+        <div class="w-full lg:w-80 lg:block hidden p-4 bg-[#2f3136] overflow-y-auto">
+          <h2 class="text-white text-lg font-semibold mb-4">Suggestions For You</h2>
+          <div class="space-y-4">
+            <div *ngFor="let suggestion of suggestions" class="flex items-center justify-between bg-[#40444b] p-3 rounded-lg">
+              <div class="flex items-center space-x-3">
+                <img [src]="suggestion.image" alt="User Avatar" class="w-10 h-10 rounded-full object-cover">
+                <div>
+                  <p class="text-white font-medium text-sm">{{suggestion.username}}</p>
+                  <p class="text-[#b9bbbe] text-xs">{{suggestion.mutualFriends}} mutual friends</p>
+                </div>
+              </div>
+              <button class="bg-[#5865f2] hover:bg-[#4752c4] text-white px-3 py-1 rounded-md text-xs transition-colors duration-200">
+                Add Friend
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
