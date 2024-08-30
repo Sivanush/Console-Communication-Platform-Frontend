@@ -3,7 +3,7 @@ import { FriendsSidebarComponent } from "../shared/friends-sidebar/friends-sideb
 import { FriendsHeaderComponent } from "../shared/friends-header/friends-header.component";
 import { ServerSidebarComponent } from "../shared/server-sidebar/server-sidebar.component";
 import { CommunityChatComponent } from "../shared/community-chat/community-chat.component";
-import { UserProfileComponent } from "../user-profile/user-profile.component";
+ 
 import { CreateServerComponent } from "../shared/create-server/create-server.component";
 import { ToggleUserProfileService } from '../../../service/toggleUserProfile/toggle-user-profile.service';
 import { ToggleCreateServerService } from '../../../service/toggleCreateServer/toggle-create-server.service';
@@ -19,7 +19,7 @@ import { CommunityAudioChatComponent } from "../shared/community-audio-chat/comm
   standalone: true,
   templateUrl: './server-details.component.html',
   styleUrl: './server-details.component.scss',
-  imports: [FriendsSidebarComponent, FriendsHeaderComponent, ServerSidebarComponent, CommunityChatComponent, UserProfileComponent, CreateServerComponent, CommunityVideoChatComponent, CommunityAudioChatComponent]
+  imports: [FriendsSidebarComponent, FriendsHeaderComponent, ServerSidebarComponent, CommunityChatComponent,  CreateServerComponent, CommunityVideoChatComponent, CommunityAudioChatComponent]
 })
 export class ServerDetailsComponent {
   isChat!: boolean

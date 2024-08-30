@@ -1,7 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CreateServerComponent } from '../shared/create-server/create-server.component';
-import { UserProfileComponent } from '../user-profile/user-profile.component';
 import { DirectChatHeaderComponent } from '../shared/direct-chat-header/direct-chat-header.component';
 import { FriendsSidebarComponent } from '../shared/friends-sidebar/friends-sidebar.component';
 import { FriendsHeaderComponent } from '../shared/friends-header/friends-header.component';
@@ -20,7 +19,7 @@ import { DirectCallService } from '../../../service/direct-call/direct-call.serv
 @Component({
   selector: 'app-direct-video-call',
   standalone: true,
-  imports: [DirectChatHeaderComponent, CreateServerComponent, UserProfileComponent, FriendsSidebarComponent, FriendsHeaderComponent, AsyncPipe, KeyValuePipe, CommonModule],
+  imports: [DirectChatHeaderComponent, CreateServerComponent, FriendsSidebarComponent, FriendsHeaderComponent, AsyncPipe, KeyValuePipe, CommonModule],
   templateUrl: './direct-video-call.component.html',
   styleUrl: './direct-video-call.component.scss'
 })

@@ -13,14 +13,14 @@ import { ToggleCreateServerService } from '../../../service/toggleCreateServer/t
 import { Subscription } from 'rxjs';
 import { ToggleUserProfileService } from '../../../service/toggleUserProfile/toggle-user-profile.service';
 import { CreateServerComponent } from "../shared/create-server/create-server.component";
-import { UserProfileComponent } from "../user-profile/user-profile.component";
+ 
 
 @Component({
     selector: 'app-add-friend',
     standalone: true,
     templateUrl: './add-friend.component.html',
     styleUrl: './add-friend.component.scss',
-    imports: [FriendsHeaderComponent, FriendsSidebarComponent, FormsModule, JsonPipe, AsyncPipe, CreateServerComponent, UserProfileComponent]
+    imports: [FriendsHeaderComponent, FriendsSidebarComponent, FormsModule, JsonPipe, AsyncPipe, CreateServerComponent, ]
 })
 export class AddFriendComponent {
 

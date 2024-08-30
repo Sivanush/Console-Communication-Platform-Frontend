@@ -13,7 +13,7 @@ import { PendingRequestsComponent } from '../components/user/pending-requests/pe
 import { AllFriendsComponent } from '../components/user/all-friends/all-friends.component';
 import { DirectChatComponent } from '../components/user/direct-chat/direct-chat.component';
 import { directChatGuard } from '../guards/user/direct-chat.guard';
-import { UserProfileComponent } from '../components/user/user-profile/user-profile.component';
+
 import { ServerDetailsComponent } from '../components/user/server-details/server-details.component';
 import { CommunityChatComponent } from '../components/user/shared/community-chat/community-chat.component';
 import { AcceptInviteComponent } from '../components/user/accept-invite/accept-invite.component';

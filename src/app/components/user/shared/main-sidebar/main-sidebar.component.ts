@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { UserProfileComponent } from '../../user-profile/user-profile.component';
+
 import { ToggleUserProfileService } from '../../../../service/toggleUserProfile/toggle-user-profile.service';
 import { UserService } from '../../../../service/user/user.service';
 import { DialogModule } from 'primeng/dialog';
@@ -13,7 +13,7 @@ import { LoadingService } from '../../../../service/loading/loading.service';
 @Component({
   selector: 'app-main-sidebar',
   standalone: true,
-  imports: [RouterLink,RouterLinkActive,UserProfileComponent,DialogModule],
+  imports: [RouterLink,RouterLinkActive,DialogModule],
   templateUrl: './main-sidebar.component.html',
   styleUrl: './main-sidebar.component.scss'
 })

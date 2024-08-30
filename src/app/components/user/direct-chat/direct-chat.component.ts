@@ -12,7 +12,7 @@ import { Observable, Subscription, filter } from 'rxjs';
 import { DirectChatHeaderComponent } from '../shared/direct-chat-header/direct-chat-header.component';
 import { User } from '../../../interface/user/user.model';
 import { UserService } from '../../../service/user/user.service';
-import { UserProfileComponent } from "../user-profile/user-profile.component";
+ 
 import { CreateServerComponent } from "../shared/create-server/create-server.component";
 import { ToggleUserProfileService } from '../../../service/toggleUserProfile/toggle-user-profile.service';
 import { ToggleCreateServerService } from '../../../service/toggleCreateServer/toggle-create-server.service';
@@ -27,7 +27,7 @@ import { MediaDialogComponent } from '../shared/media-dialog/media-dialog.compon
   templateUrl: './direct-chat.component.html',
   styleUrl: './direct-chat.component.scss',
   providers: [DatePipe],
-  imports: [FriendsSidebarComponent, FriendsHeaderComponent, FormsModule, CommonModule, DirectChatHeaderComponent, AsyncPipe, UserProfileComponent, CreateServerComponent,ProgressSpinnerModule]
+  imports: [FriendsSidebarComponent, FriendsHeaderComponent, FormsModule, CommonModule, DirectChatHeaderComponent, AsyncPipe, CreateServerComponent,ProgressSpinnerModule]
 })
 export class DirectChatComponent implements OnInit, OnDestroy {
   @ViewChild('scrollContainer') private scrollContainer!: ElementRef;

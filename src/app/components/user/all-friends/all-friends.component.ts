@@ -7,7 +7,7 @@ import { FriendsSidebarComponent } from '../shared/friends-sidebar/friends-sideb
 import { FriendsHeaderComponent } from '../shared/friends-header/friends-header.component';
 import { DialogModule } from 'primeng/dialog';
 import { Observable, Subscription } from 'rxjs';
-import { UserProfileComponent } from "../user-profile/user-profile.component";
+ 
 import { CreateServerComponent } from "../shared/create-server/create-server.component";
 import { ToggleUserProfileService } from '../../../service/toggleUserProfile/toggle-user-profile.service';
 import { ToggleCreateServerService } from '../../../service/toggleCreateServer/toggle-create-server.service';
@@ -22,7 +22,7 @@ import { LoadingService } from '../../../service/loading/loading.service';
     standalone: true,
     templateUrl: './all-friends.component.html',
     styleUrl: './all-friends.component.scss',
-    imports: [FriendsHeaderComponent, FriendsSidebarComponent, FormsModule, RouterLink, RouterLinkActive, DialogModule, UserProfileComponent, CreateServerComponent,SidebarModule, TabViewModule, CommonModule],
+    imports: [FriendsHeaderComponent, FriendsSidebarComponent, FormsModule, RouterLink, RouterLinkActive, DialogModule, CreateServerComponent,SidebarModule, TabViewModule, CommonModule],
     providers:[DatePipe]
 })
 export class AllFriendsComponent {

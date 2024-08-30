@@ -9,7 +9,7 @@ import { FriendsSidebarComponent } from '../shared/friends-sidebar/friends-sideb
 import { MainSidebarComponent } from '../shared/main-sidebar/main-sidebar.component';
 import { FriendsHeaderComponent } from '../shared/friends-header/friends-header.component';
 import { CreateServerComponent } from "../shared/create-server/create-server.component";
-import { UserProfileComponent } from "../user-profile/user-profile.component";
+ 
 import { Subscription } from 'rxjs';
 import { ToggleCreateServerService } from '../../../service/toggleCreateServer/toggle-create-server.service';
 import { ToggleUserProfileService } from '../../../service/toggleUserProfile/toggle-user-profile.service';
@@ -20,7 +20,7 @@ import { LoadingService } from '../../../service/loading/loading.service';
     standalone: true,
     templateUrl: './pending-requests.component.html',
     styleUrl: './pending-requests.component.scss',
-    imports: [FriendsHeaderComponent, FriendsSidebarComponent, MainSidebarComponent, FormsModule, CreateServerComponent, UserProfileComponent]
+    imports: [FriendsHeaderComponent, FriendsSidebarComponent, MainSidebarComponent, FormsModule, CreateServerComponent, ]
 })
 export class PendingRequestsComponent {
 

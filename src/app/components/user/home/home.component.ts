@@ -4,7 +4,6 @@ import { MessageService } from 'primeng/api';
 import { UserService } from '../../../service/user/user.service';
 import { FriendsHeaderComponent } from '../shared/friends-header/friends-header.component';
 import { FriendsSidebarComponent } from '../shared/friends-sidebar/friends-sidebar.component';
-import { UserProfileComponent } from '../user-profile/user-profile.component';
 import { ToggleUserProfileService } from '../../../service/toggleUserProfile/toggle-user-profile.service';
 import { Subscription } from 'rxjs';
 import { CreateServerComponent } from '../shared/create-server/create-server.component';
@@ -15,7 +14,7 @@ import { ChatServiceService } from '../../../service/direct-chat/chat-service.se
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [FriendsSidebarComponent,FriendsHeaderComponent,UserProfileComponent,CreateServerComponent],
+  imports: [FriendsSidebarComponent,FriendsHeaderComponent,CreateServerComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   providers:[MessageService]
