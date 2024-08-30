@@ -22,6 +22,7 @@ import { ViewMembersComponent } from '../components/user/view-members/view-membe
 import { DirectVoiceCallComponent } from '../components/user/direct-voice-call/direct-voice-call.component';
 import { ProfileComponent } from '../components/user/profile/profile.component';
 import { ExploreComponent } from '../components/user/explore/explore.component';
+import { UsersProfileComponent } from '../components/user/users-profile/users-profile.component';
 
 
 export const userRoute: Routes = [
@@ -56,6 +57,11 @@ export const userRoute: Routes = [
   {
     path: 'profile',
     component: ProfileComponent,
+    canActivate:[userAuthGuard]
+  },
+  {
+    path:'profile/:userId',
+    component: UsersProfileComponent,
     canActivate:[userAuthGuard]
   },
   {

@@ -46,8 +46,8 @@ export class PostService {
     }
   }
 
-  getUserPost():Observable<PostI[]>{
-    return this.http.get<PostI[]>(`${this.apiLink}/user-post`)
+  getUserPost(userId:string):Observable<PostI[]>{
+    return this.http.get<PostI[]>(`${this.apiLink}/user-post/${userId}`)
   }
 
   getExplorePosts():Observable<PostI[]>{

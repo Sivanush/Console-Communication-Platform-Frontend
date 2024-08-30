@@ -42,6 +42,7 @@
     "ngx-socket-io": "^4.6.1",
     "ngx-toastr": "^18.0.0",
     "peerjs": "^1.5.4",
+    "plyr": "^3.7.8",
     "prettier-plugin-tailwindcss": "^0.6.5",
     "primeicons": "^7.0.0",
     "primeng": "^17.12.0",

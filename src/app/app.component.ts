@@ -40,7 +40,7 @@ export class AppComponent {
     private router: Router,
     private loadingService: LoadingService,
     private cdr: ChangeDetectorRef,
-    private tabGuardService: TabGuardService
+    // private tabGuardService: TabGuardService
   ) {
     
    }

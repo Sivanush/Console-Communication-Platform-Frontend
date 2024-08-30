@@ -17,7 +17,7 @@ import { error } from 'console';
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, AutoPlayPostDirective, FormsModule, CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, RouterModule, AutoPlayPostDirective, FormsModule, ReactiveFormsModule],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
@@ -88,7 +88,9 @@ export class ProfileComponent {
       }
     })
 
-    this.getUserPost()
+    if (this.userId) {
+      this.getUserPost(this.userId)
+    }
 
 
 
@@ -168,7 +170,7 @@ export class ProfileComponent {
           this.previewUrl = null;
           this.fileType = null;
           this.selectedFile = null;
-          this.getUserPost()
+          this.getUserPost(this.userId as string)
           this.isLoading = false
           this.toaster.showSuccess('Successfully Posted')
         },
@@ -182,8 +184,8 @@ export class ProfileComponent {
   }
 
 
-  getUserPost() {
-    this.postService.getUserPost().subscribe({
+  getUserPost(userId:string) {
+    this.postService.getUserPost(userId).subscribe({
       next: (data) => {
         this.posts = data
         console.log(data);

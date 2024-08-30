@@ -167,9 +167,7 @@ export class UserService {
     return this.http.get<User>(`${this.apiLink}/user/${userId}`)
   }
 
-  updateProfile(userData:User){
-    console.log('✅✅✅✅✅');
-    
+  updateProfile(userData:User){  
     return this.http.post(`${this.apiLink}/update-profile`,userData)
   }
 
