@@ -7,9 +7,11 @@ import { CommonModule, Location } from '@angular/common';
 import { User } from '../../../interface/user/user.model';
 import { PostI } from '../../../models/post/post.model';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router'; 
 import { Subscription } from 'rxjs';
 import { AutoPlayPostDirective } from '../../../directive/auto-play-post/auto-play-post.directive';
+
+
 
 @Component({
   selector: 'app-users-profile',

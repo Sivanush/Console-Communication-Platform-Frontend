@@ -55,9 +55,9 @@
         <!-- Tabs -->
         <div class="border-b border-[#4f545c] mb-6">
           <nav class="flex">
-            <!-- <a [class.text-[#5865F2]]="activeTab === 'posts'" (click)="setActiveTab('posts')"
+            <a 
               class="px-4 py-2 font-medium hover:text-[#5865F2] cursor-pointer transition duration-200">Posts</a>
-            <a [class.text-[#5865F2]]="activeTab === 'friends'" (click)="setActiveTab('friends')"
+            <!-- <a [class.text-[#5865F2]]="activeTab === 'friends'" (click)="setActiveTab('friends')"
               class="px-4 py-2 font-medium hover:text-[#5865F2] cursor-pointer transition duration-200">Friends</a>
             <a [class.text-[#5865F2]]="activeTab === 'servers'" (click)="setActiveTab('servers')"
               class="px-4 py-2 font-medium hover:text-[#5865F2] cursor-pointer transition duration-200">Servers</a> -->
@@ -95,6 +95,7 @@
                   <!-- Video -->
                   <video *ngIf="post.mediaType === 'video'" [src]="post.mediaUrl" controls
                     class="w-full max-h-[500px] bg-black" appAutoPlayPost></video>
+                  
                 </div>
 
                 <!-- Post Actions -->

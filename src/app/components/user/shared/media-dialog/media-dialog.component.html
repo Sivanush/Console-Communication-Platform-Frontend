@@ -10,7 +10,7 @@
       } @else if (data.type === 'video') {
         <div>
           <video 
-          controls 
+          controls autoplay
           class="w-full h-auto max-h-[80vh]"
         >
           <source [src]="data.src" type="video/mp4">

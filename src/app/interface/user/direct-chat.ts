@@ -1,4 +1,5 @@
 export interface directChatI extends Document{
+    thumbnailUrl: string;
     _id: string;
     senderId: {
       _id: string;

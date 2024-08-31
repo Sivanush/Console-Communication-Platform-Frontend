@@ -43,14 +43,13 @@ export class DirectChatComponent implements OnInit, OnDestroy {
   messages: directChatI[] = [];
   isFriendOnline$: Observable<boolean> | undefined;
   groupedMessages: directChatI[] = [];
-  private videoThumbnails: { [url: string]: string } = {};
+  private readonly THUMBNAIL_SIZE = 300
 
   isLoading:boolean = false
   private paramSubscription!: Subscription;
   private messagesSubscription!: Subscription;
   private lastMessageSubscription!: Subscription;
   private routerSubscription!: Subscription;
-
 
   constructor(
     private router: Router,
@@ -109,9 +108,9 @@ export class DirectChatComponent implements OnInit, OnDestroy {
 
     this.chatService.setCurrentChatPartner(this.friendId)
 
-
-
   }
+
+
 
   initializeChat() {
     this.messages = [];
@@ -227,19 +226,31 @@ export class DirectChatComponent implements OnInit, OnDestroy {
       try {
         const fileType = file.type.split('/')[0];
         let fileUrl = ''
-
+        let thumbnailUrl = '';
 
         if (file.type.startsWith('image/')) {
           const response = await this.chatService.uploadImage(file);
           console.log('Image uploaded:', response);
           fileUrl = response
         } else if (file.type.startsWith('video/')) {
-          const response = await this.chatService.uploadVideo(file);
-          console.log('Video uploaded:', response);
-          fileUrl = response
+          // const response = await this.chatService.uploadVideo(file);
+          // console.log('Video uploaded:', response);
+          // fileUrl = response
+          const thumbnailBlob = await this.generateVideoThumbnail(file);
+          const thumbnailFile = new File([thumbnailBlob as BlobPart],Date.now()+ 'thumbnail.jpg', { type: 'image/jpeg' });
+          
+          // Upload video and thumbnail
+          const [videoUploadResult, thumbnailUploadResult] = await Promise.all([
+            this.chatService.uploadImage(file),
+            this.chatService.uploadImage(thumbnailFile)
+          ]);
+
+          fileUrl = videoUploadResult;
+          thumbnailUrl = thumbnailUploadResult;
+
         }
         if (fileUrl) {
-          this.chatService.sendDirectImage(this.userId!, this.friendId!, fileUrl, fileType);
+          this.chatService.sendDirectImage(this.userId!, this.friendId!, fileUrl, fileType,thumbnailUrl);
           this.isLoading = false
           this.toaster.showSuccess('File uploaded and sent successfully.');
         } else {
@@ -270,35 +281,84 @@ export class DirectChatComponent implements OnInit, OnDestroy {
   }
 
 
+// generateVideoThumbnail(file: File) {
+//   return new Promise((resolve, reject) => {
+//     const video = document.createElement('video');
+//     video.preload = 'metadata';
+//     video.onloadedmetadata = () => {
+//       video.currentTime = 1; 
+//     };
+//     video.onerror = reject;
+//     video.oncanplay = () => {
+//       const canvas = document.createElement('canvas');
+//       canvas.width = video.videoWidth;
+//       canvas.height = video.videoHeight;
+//       const ctx = canvas.getContext('2d');
+//       ctx?.drawImage(video, 0, 0, canvas.width, canvas.height);
+//       canvas.toBlob(resolve, 'image/jpeg', 0.7);
+//     };
+//     video.src = URL.createObjectURL(file);
+//   });
+// }
 
-  getVideoThumbnail(videoUrl: string): string {
-    if (this.videoThumbnails[videoUrl]) {
-      return this.videoThumbnails[videoUrl];
-    }
-
+generateVideoThumbnail(file: File): Promise<Blob> {
+  return new Promise((resolve, reject) => {
     const video = document.createElement('video');
-    video.src = videoUrl;
-    video.crossOrigin = 'anonymous'; // If your video is hosted on a different domain
-    video.muted = true;
     video.preload = 'metadata';
-
+    
     video.onloadedmetadata = () => {
-      video.currentTime = 1; // Seek to 1 second
+      video.currentTime = Math.min(video.duration / 3, 1);
     };
 
     video.onseeked = () => {
       const canvas = document.createElement('canvas');
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      canvas.getContext('2d')?.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        reject(new Error('Failed to get canvas context'));
+        return;
+      }
+
+      // Calculate the scaling factor to fit the video within the thumbnail size
+      const scale = Math.min(this.THUMBNAIL_SIZE / video.videoWidth, this.THUMBNAIL_SIZE / video.videoHeight);
       
-      this.videoThumbnails[videoUrl] = canvas.toDataURL();
-      this.cdr.detectChanges(); // Trigger change detection
+      // Calculate the new dimensions
+      const newWidth = video.videoWidth * scale;
+      const newHeight = video.videoHeight * scale;
+
+      // Set canvas size to our desired thumbnail size
+      canvas.width = this.THUMBNAIL_SIZE;
+      canvas.height = this.THUMBNAIL_SIZE;
+
+      // Fill the background with a color (e.g., black)
+      ctx.fillStyle = '#000000';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Calculate position to center the scaled video frame
+      const x = (canvas.width - newWidth) / 2;
+      const y = (canvas.height - newHeight) / 2;
+
+      // Draw the scaled video frame
+      ctx.drawImage(video, x, y, newWidth, newHeight);
+
+      canvas.toBlob(
+        (blob) => {
+          if (blob) {
+            resolve(blob);
+          } else {
+            reject(new Error('Failed to create thumbnail blob'));
+          }
+        },
+        'image/jpeg',
+        0.7
+      );
     };
 
-    return ''; // Return empty string initially
-  }
+    video.onerror = () => {
+      reject(new Error('Error loading video'));
+    };
 
-
+    video.src = URL.createObjectURL(file);
+  });
+}
 
 }

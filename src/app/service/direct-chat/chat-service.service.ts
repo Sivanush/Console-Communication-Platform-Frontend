@@ -162,8 +162,8 @@ export class ChatServiceService {
     this.socket.emit('sendMessage', { senderId, receiverId, message });
   }
 
-  sendDirectImage(senderId: string, receiverId: string, fileUrl: string, fileType: string){
-    this.socket.emit('sendMessage', { senderId, receiverId, fileUrl, fileType});
+  sendDirectImage(senderId: string, receiverId: string, fileUrl: string, fileType: string,thumbnailUrl:string){
+    this.socket.emit('sendMessage', { senderId, receiverId, fileUrl, fileType, thumbnailUrl});
   }
 
   updateUnreadCount(senderId: string, count: number) {
