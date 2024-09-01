@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { UserService } from '../../../service/user/user.service';
 import { FriendsHeaderComponent } from '../shared/friends-header/friends-header.component';
@@ -14,7 +14,7 @@ import { ChatServiceService } from '../../../service/direct-chat/chat-service.se
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [FriendsSidebarComponent,FriendsHeaderComponent,CreateServerComponent],
+  imports: [FriendsSidebarComponent,FriendsHeaderComponent,CreateServerComponent,RouterLink],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   providers:[MessageService]

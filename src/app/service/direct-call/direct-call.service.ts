@@ -19,9 +19,15 @@ export class DirectCallService {
   isInCallBS = new BehaviorSubject<boolean>(false);
   private userId: string | null = null;
 
-  constructor(private toaster: ToastService, private userService: UserService) {}
+  constructor(private toaster: ToastService, private userService: UserService) {
+    window.addEventListener('beforeunload', () => this.cleanup());
+  }
 
   async initializePeer(userId: string): Promise<void> {
+    if (this.peer) {
+      console.log('Peer already initialized');
+      return;
+    }
     this.userId = userId;
     await this.createNewPeer();
   }
@@ -48,7 +54,7 @@ export class DirectCallService {
 
       this.peer.on('error', (error) => {
         console.error('Peer error:', error);
-        if (error.type === 'disconnected') {
+        if (error.type === 'disconnected'|| error.type === 'network') {
           this.handleDisconnection();
         }
         reject(error);
@@ -71,7 +77,7 @@ export class DirectCallService {
   }
 
   async startCall(friendId: string, isVideo: boolean): Promise<void> {
-    if (!this.peer || this.peer.disconnected) {
+    if (!this.peer|| this.peer.disconnected) {
       try {
         await this.createNewPeer();
       } catch (error) {
@@ -141,6 +147,10 @@ export class DirectCallService {
     this.remoteStreamBS.next(null);
     this.isInCallBS.next(false);
     this.callEndedBS.next();
+
+    this.createNewPeer().catch(error => {
+      console.error('Failed to reinitialize peer after call:', error);
+    });
   }
 
   toggleAudio(mute: boolean): void {
@@ -151,10 +161,16 @@ export class DirectCallService {
     this.localStreamBS.value?.getVideoTracks().forEach(track => track.enabled = !turnOff);
   }
 
-  destroyPeer(): void {
+  cleanup(): void {
+    this.endCall();
     if (this.peer) {
       this.peer.destroy();
+      // this.peer = null;
     }
     this.userId = null;
+  }
+
+  destroyPeer(): void {
+   this.cleanup()
   }
 }

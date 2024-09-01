@@ -105,7 +105,7 @@ export class DirectVideoCallComponent {
 
   endCall(): void {
     this.friendVideoCallService.endCall();
-    this.location.back();
+    // this.location.back();
   }
 
   ngOnDestroy(): void {

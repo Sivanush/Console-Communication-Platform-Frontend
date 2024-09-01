@@ -19,6 +19,8 @@ import { ToggleCreateServerService } from '../../../service/toggleCreateServer/t
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { MatDialog } from '@angular/material/dialog';
 import { MediaDialogComponent } from '../shared/media-dialog/media-dialog.component';
+import { LoadingService } from '../../../service/loading/loading.service';
+import { NgxLoadingModule } from 'ngx-loading';
 
 
 @Component({
@@ -27,7 +29,7 @@ import { MediaDialogComponent } from '../shared/media-dialog/media-dialog.compon
   templateUrl: './direct-chat.component.html',
   styleUrl: './direct-chat.component.scss',
   providers: [DatePipe],
-  imports: [FriendsSidebarComponent, FriendsHeaderComponent, FormsModule, CommonModule, DirectChatHeaderComponent, AsyncPipe, CreateServerComponent,ProgressSpinnerModule]
+  imports: [FriendsSidebarComponent, FriendsHeaderComponent, FormsModule, CommonModule, DirectChatHeaderComponent, AsyncPipe, CreateServerComponent,NgxLoadingModule]
 })
 export class DirectChatComponent implements OnInit, OnDestroy {
   @ViewChild('scrollContainer') private scrollContainer!: ElementRef;
@@ -61,7 +63,8 @@ export class DirectChatComponent implements OnInit, OnDestroy {
     private userProfileService: ToggleUserProfileService,
     private toggleCreateServerService: ToggleCreateServerService,
     private cdr: ChangeDetectorRef,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private loading:LoadingService
   ) { }
 
   ngOnInit(): void {
@@ -233,9 +236,6 @@ export class DirectChatComponent implements OnInit, OnDestroy {
           console.log('Image uploaded:', response);
           fileUrl = response
         } else if (file.type.startsWith('video/')) {
-          // const response = await this.chatService.uploadVideo(file);
-          // console.log('Video uploaded:', response);
-          // fileUrl = response
           const thumbnailBlob = await this.generateVideoThumbnail(file);
           const thumbnailFile = new File([thumbnailBlob as BlobPart],Date.now()+ 'thumbnail.jpg', { type: 'image/jpeg' });
           
@@ -281,25 +281,7 @@ export class DirectChatComponent implements OnInit, OnDestroy {
   }
 
 
-// generateVideoThumbnail(file: File) {
-//   return new Promise((resolve, reject) => {
-//     const video = document.createElement('video');
-//     video.preload = 'metadata';
-//     video.onloadedmetadata = () => {
-//       video.currentTime = 1; 
-//     };
-//     video.onerror = reject;
-//     video.oncanplay = () => {
-//       const canvas = document.createElement('canvas');
-//       canvas.width = video.videoWidth;
-//       canvas.height = video.videoHeight;
-//       const ctx = canvas.getContext('2d');
-//       ctx?.drawImage(video, 0, 0, canvas.width, canvas.height);
-//       canvas.toBlob(resolve, 'image/jpeg', 0.7);
-//     };
-//     video.src = URL.createObjectURL(file);
-//   });
-// }
+
 
 generateVideoThumbnail(file: File): Promise<Blob> {
   return new Promise((resolve, reject) => {

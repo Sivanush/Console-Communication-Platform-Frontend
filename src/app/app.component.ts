@@ -46,6 +46,8 @@ export class AppComponent {
    }
   async ngOnInit(): Promise<void> {
 
+    this.userId = await this.userService.getUserId();
+
     initFlowbite();
 
     this.loadingService.loading$.subscribe((loading) => {
@@ -54,7 +56,7 @@ export class AppComponent {
     });
 
 
-    this.userId = await this.userService.getUserId();
+   
     if (this.userId) {
       this.chatService.connectUser(this.userId);
 

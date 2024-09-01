@@ -83,7 +83,7 @@ export class DirectVoiceCallComponent implements OnInit, OnDestroy {
 
   endCall(): void {
     this.friendVoiceCallService.endCall();
-    this.location.back();
+    // this.location.back();
   }
 
   ngOnDestroy(): void {
