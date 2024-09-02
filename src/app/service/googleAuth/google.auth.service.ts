@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { getAuth, Auth, GoogleAuthProvider } from 'firebase/auth';
 import { signInWithPopup } from '@angular/fire/auth';
 import { ToastService } from '../toster/toster-service.service';
@@ -16,7 +16,7 @@ export class GoogleAuthService {
 
   private auth: Auth;
 
-  constructor(private toster: ToastService, private router: Router, private firebaseApp: FirebaseApp, private userService: UserService) {
+  constructor(private toster: ToastService, private router: Router, private firebaseApp: FirebaseApp, private userService: UserService, private ngZone: NgZone) {
     this.auth = getAuth(firebaseApp)
   }
 
@@ -28,11 +28,10 @@ export class GoogleAuthService {
         this.userService.googleAuthentication(googleResponse.user).subscribe({
           next: (response) => {
             localStorage.setItem('token', response?.token)
-            console.log('Login successful:', response);
+            console.log('Login successful:', response.message);
             this.toster.showSuccess('Success', 'Logged in successfully with Google!')
-            setTimeout(() => {
-              this.router.navigate(['/friend/all-friends'])
-            }, 100);
+            this.ngZone.run(() => this.router.navigate(['']));
+
           },
           error:(err)=>{
             console.log('Error', err?.error.message);            

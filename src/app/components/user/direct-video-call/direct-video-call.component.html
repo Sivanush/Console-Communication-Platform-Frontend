@@ -16,30 +16,33 @@
   <app-friends-sidebar class="w-60 bg-[#2f3136] flex-shrink-0 border-r border-[#202225]"></app-friends-sidebar>
 
   <div class="flex-1 flex flex-col h-full">
-    <app-direct-chat-header  *ngIf="friendUserData"  [userImage]="friendUserData.image"
+    <!-- <app-direct-chat-header  *ngIf="friendUserData"  [userImage]="friendUserData.image"
       [name]="friendUserData.username" class="bg-[#36393f] shadow-sm min-h-[48px] px-4 flex items-center">
-    </app-direct-chat-header>
+    </app-direct-chat-header> -->
 
     <div class="flex-1 flex flex-col overflow-hidden" >
       <div class="flex-1 overflow-y-auto px-4 pt-4 scroll-smooth" id="scrollContainer" #scrollContainer>
         <div class="flex flex-col h-[87vh] bg-[#36393f] text-white relative mt-2">
           <!-- Main video area -->
           <div class="flex-1 overflow-hidden">
-            <div id="video-grid" class="grid gap-4 p-4 h-full"
-              [ngClass]="{'grid-cols-1': !isRemoteUserJoined, 'grid-cols-2': isRemoteUserJoined}">
+            <div id="video-grid" class="grid gap-4 p-4 h-full grid-cols-2">
+              <!-- [ngClass]="{'grid-cols-1': !isRemoteUserJoined, 'grid-cols-2': isRemoteUserJoined}"  -->
               <!-- Local video -->
               <div class="relative bg-[#2f3136] rounded-lg overflow-hidden">
-                <video #localVideo autoplay playsinline muted class="w-full h-full object-cover scale-x-[-1]"></video>
+                <video #localVideo  autoplay playsinline [muted]="true" class="w-full h-full object-cover scale-x-[-1]"></video>
                 <div class="absolute bottom-2 left-2 bg-black bg-opacity-50 px-2 py-1 rounded text-sm">You</div>
               </div>
 
               <!-- Remote video (only shown when remote user has joined) -->
-              <div *ngIf="isRemoteUserJoined" class="relative bg-[#2f3136] rounded-lg overflow-hidden">
-                <video #remoteVideo autoplay playsinline class="w-full h-full object-cover scale-x-[-1]"></video>
+              <div  class="relative bg-[#2f3136] rounded-lg overflow-hidden">
+                <video #remoteVideo  autoplay playsinline class="w-full h-full object-cover scale-x-[-1]"></video>
                 <div class="absolute bottom-2 left-2 bg-black bg-opacity-50 px-2 py-1 rounded text-sm">
-                   <span *ngIf="friendUserData">
+                   <!-- <span *ngIf="friendUserData">
                       {{friendUserData.username || 'Friend'}}
-                   </span>
+                   </span> -->
+                  
+                      Friend
+                 
                 </div>
               </div>
             </div>
@@ -47,7 +50,7 @@
 
           <!-- Floating control bar -->
           <div
-            class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex justify-center items-center gap-2 p-2 bg-[#2f3136] bg-opacity-90 rounded-full shadow-lg">
+            class="absolute bottom-0 left-1/2 transform -translate-x-1/2 flex justify-center items-center gap-2 p-2 bg-[#2f3136] bg-opacity-90 rounded-full shadow-lg">
             <button (click)="toggleAudio()" [class.bg-red-500]="isAudioMuted"
               class="p-3 rounded-full transition-colors duration-300">
               <!-- Mute/Unmute icon -->

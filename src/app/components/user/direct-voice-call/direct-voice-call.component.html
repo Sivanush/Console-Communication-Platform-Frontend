@@ -2,9 +2,9 @@
     <!-- Server list column and sidebar remain unchanged -->
   
     <div class="flex-1 flex flex-col h-full">
-      <app-direct-chat-header *ngIf="friendUserData" [userImage]="friendUserData.image"
+      <!-- <app-direct-chat-header *ngIf="friendUserData" [userImage]="friendUserData.image"
         [name]="friendUserData.username" class="bg-[#36393f] shadow-sm min-h-[48px] px-4 flex items-center">
-      </app-direct-chat-header>
+      </app-direct-chat-header> -->
   
       <div class="flex-1 flex flex-col overflow-hidden">
         <div class="flex-1 overflow-y-auto px-4 pt-4 scroll-smooth" id="scrollContainer" #scrollContainer>
@@ -12,9 +12,10 @@
             <!-- Main audio call area -->
             <div class="flex-1 flex items-center justify-center">
               <div class="text-center">
-                <div class="text-2xl mb-4">Voice Call with {{friendUserData.username || 'Friend'}}</div>
+                <div class="text-2xl mb-4">Voice Call Friend</div>
+                <!-- <div class="text-2xl mb-4">Voice Call with {{friendUserData.username || 'Friend'}}</div>
                 <div class="text-lg" *ngIf="isRemoteUserJoined">Call Connected</div>
-                <div class="text-lg" *ngIf="!isRemoteUserJoined">Waiting for Friend to Join...</div>
+                <div class="text-lg" *ngIf="!isRemoteUserJoined">Waiting for Friend to Join...</div> -->
               </div>
             </div>
   

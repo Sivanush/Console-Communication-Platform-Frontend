@@ -30,6 +30,8 @@ export class AppComponent {
   userId!: string | null
   private _subscriptions: Subscription[] = [];
   isLoading$: boolean = true
+  incomingCall: { callerId: string, isVideo: boolean } | null = null;
+  private incomingCallSubscription: Subscription | null = null;
 
   constructor(
     private userService: UserService,
@@ -50,41 +52,47 @@ export class AppComponent {
 
     initFlowbite();
 
-    this.loadingService.loading$.subscribe((loading) => {
+    this.loadingService.loading$.subscribe((loading) => {     
       this.isLoading$ = loading;
       this.cdr.detectChanges();
     });
 
-
+    this.incomingCallSubscription = this.directCallService.incomingCallBS.subscribe(
+      call => {
+        if (call) {
+          this.handleIncomingCall(call.callerId, call.isVideo);
+        }
+      }
+    );
    
     if (this.userId) {
       this.chatService.connectUser(this.userId);
 
-      try {
-        await this.initializePeer();
-        console.log('Peer initialized successfully');
-      } catch (error) {
-        console.error('Failed to initialize peer:', error);
-        this.toaster.showError('Initialization Error', 'Failed to initialize video call service');
-      } 
+      // try {
+      //   await this.initializePeer();
+      //   console.log('Peer initialized successfully');
+      // } catch (error) {
+      //   console.error('Failed to initialize peer:', error);
+      //   this.toaster.showError('Initialization Error', 'Failed to initialize video call service');
+      // } 
     } 
 
   }
 
 
   private async   initializePeer() {
-    await this.directCallService.initializePeer(this.userId!);
-    this._subscriptions.push(
-      this.directCallService.incomingCallBS.subscribe(({ callerId, isVideo }) => {
-        this.handleIncomingCall(callerId, isVideo);
-      }),
-      this.directCallService.callEndedBS.subscribe(() => {
-        this.router.navigate(['/']);
-        this.initializePeer().catch(error => {
-          console.error('Failed to reinitialize peer after call ended:', error);
-        });
-      })
-    );
+    // await this.directCallService.initializePeer(this.userId!);
+    // this._subscriptions.push(
+    //   this.directCallService.incomingCallBS.subscribe(({ callerId, isVideo }) => {
+    //     this.handleIncomingCall(callerId, isVideo);
+    //   }),
+      // this.directCallService.callEndedBS.subscribe(() => {
+      //   this.router.navigate(['/']);
+      //   this.initializePeer().catch(error => {
+      //     console.error('Failed to reinitialize peer after call ended:', error);
+      //   });
+      // })
+    // );
   }
 
 
@@ -92,8 +100,35 @@ export class AppComponent {
   
   ngOnDestroy() {
     this._subscriptions.forEach(sub => sub.unsubscribe());
-    this.directCallService.destroyPeer();
+    // this.directCallService.destroyPeer();
+    if (this.incomingCallSubscription) {
+      this.incomingCallSubscription.unsubscribe();
+    }
   }
+
+  // private handleIncomingCall(callerId: string, isVideo: boolean) {
+  //   if (!this.directCallService.isInCallBS.getValue()) {
+  //     const dialogRef = this.dialog.open(AcceptVideoCallComponent, {
+  //       width: '400px',
+  //       data: { callerId: callerId, isVideo: isVideo },
+  //       disableClose: true
+  //     });
+
+  //     dialogRef.afterClosed().subscribe(async (result) => {
+  //       if (result === true) {
+  //         this.directCallService.isInCallBS.next(true);
+  //         await this.directCallService.answerCall(isVideo);
+          
+  //         const route = isVideo ? 'direct-video-chat' : 'direct-voice-chat';
+  //         this.router.navigate([`/${route}/${this.userId}/${callerId}`]);
+  //       } else {
+  //         this.directCallService.endCall();
+  //       }
+  //     });
+  //   } else {
+  //     console.log('Already in a call');
+  //   }
+  // }
 
   private handleIncomingCall(callerId: string, isVideo: boolean) {
     if (!this.directCallService.isInCallBS.getValue()) {
@@ -109,7 +144,7 @@ export class AppComponent {
           await this.directCallService.answerCall(isVideo);
           
           const route = isVideo ? 'direct-video-chat' : 'direct-voice-chat';
-          this.router.navigate([`/${route}/${this.userId}/${callerId}`]);
+          this.router.navigate([`/${route}/${this.directCallService.peer.id}/${callerId}`]);
         } else {
           this.directCallService.endCall();
         }
