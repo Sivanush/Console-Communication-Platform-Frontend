@@ -23,3 +23,12 @@ interface UserPostI {
     email: string
     image: string
 }
+
+
+export interface commentI{
+    _id: string,
+    content: string,
+    author: UserPostI,
+    post: PostI,
+    timestamp:Date
+}

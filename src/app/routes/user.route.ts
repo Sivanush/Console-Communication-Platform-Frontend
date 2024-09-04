@@ -23,6 +23,7 @@ import { DirectVoiceCallComponent } from '../components/user/direct-voice-call/d
 import { ProfileComponent } from '../components/user/profile/profile.component';
 import { ExploreComponent } from '../components/user/explore/explore.component';
 import { UsersProfileComponent } from '../components/user/users-profile/users-profile.component';
+import { profileCheckGuard } from '../guards/user/profile-check.guard';
 
 
 export const userRoute: Routes = [
@@ -62,7 +63,7 @@ export const userRoute: Routes = [
   {
     path:'profile/:userId',
     component: UsersProfileComponent,
-    canActivate:[userAuthGuard]
+    canActivate:[userAuthGuard,profileCheckGuard]
   },
   {
     path: 'friend',

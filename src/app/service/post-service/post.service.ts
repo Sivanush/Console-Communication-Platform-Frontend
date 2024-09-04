@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
-import { PostI } from '../../models/post/post.model';
+import { commentI, PostI } from '../../models/post/post.model';
 import { S3 } from 'aws-sdk';
 import { awsCredentials } from '../../../environments/environment';
 
@@ -56,5 +56,13 @@ export class PostService {
 
   likeAndUnlikePost(postId:string){
     return this.http.get(`${this.apiLink}/like-post/${postId}`)
+  }
+
+  commentOnPost(postId:string,comment:string){
+    return this.http.post(`${this.apiLink}/comment-post/${postId}`,{comment})
+  }
+
+  getCommentsForThePost(postId:string){
+    return this.http.get<{comments:commentI[]}>(`${this.apiLink}/comments/${postId}`)
   }
 }
