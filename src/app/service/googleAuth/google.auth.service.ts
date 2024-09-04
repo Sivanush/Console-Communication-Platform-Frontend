@@ -31,7 +31,6 @@ export class GoogleAuthService {
             console.log('Login successful:', response.message);
             this.toster.showSuccess('Success', 'Logged in successfully with Google!')
             this.ngZone.run(() => this.router.navigate(['']));
-
           },
           error:(err)=>{
             console.log('Error', err?.error.message);            

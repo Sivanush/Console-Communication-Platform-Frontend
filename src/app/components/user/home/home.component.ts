@@ -9,12 +9,13 @@ import { Subscription } from 'rxjs';
 import { CreateServerComponent } from '../shared/create-server/create-server.component';
 import { ToggleCreateServerService } from '../../../service/toggleCreateServer/toggle-create-server.service';
 import { ChatServiceService } from '../../../service/direct-chat/chat-service.service';
+import { VideoPlayerComponent } from '../shared/video-player/video-player.component';
 
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [FriendsSidebarComponent,FriendsHeaderComponent,CreateServerComponent,RouterLink],
+  imports: [FriendsSidebarComponent,FriendsHeaderComponent,CreateServerComponent,RouterLink,VideoPlayerComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   providers:[MessageService]

@@ -1,24 +1,38 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FriendsSidebarComponent } from "../shared/friends-sidebar/friends-sidebar.component";
 import { FriendsHeaderComponent } from "../shared/friends-header/friends-header.component";
 import { PostService } from '../../../service/post-service/post.service';
 import { PostI } from '../../../models/post/post.model';
 import { CommonModule } from '@angular/common';
 import { AutoPlayPostDirective } from '../../../directive/auto-play-post/auto-play-post.directive';
+import { VideoPlayerComponent } from "../shared/video-player/video-player.component";
+import { FormsModule } from '@angular/forms';
+import { ToastService } from '../../../service/toster/toster-service.service';
+import { CommentDialogComponent } from "../shared/comment-dialog/comment-dialog.component";
 
 @Component({
   selector: 'app-explore',
   standalone: true,
-  imports: [FriendsSidebarComponent, FriendsHeaderComponent,CommonModule,AutoPlayPostDirective],
+  imports: [FriendsSidebarComponent, FriendsHeaderComponent, CommonModule, AutoPlayPostDirective, VideoPlayerComponent, FormsModule, CommentDialogComponent],
   templateUrl: './explore.component.html',
   styleUrl: './explore.component.scss'
 })
 export class ExploreComponent {
-  posts: any[] = [];
+  openPostId: string | null = null;
+addComment(_t24: any) {
+throw new Error('Method not implemented.');
+}
+newComment: any;
+showAllComments(_t24: any) {
+throw new Error('Method not implemented.');
+}
+  posts: PostI[] = [];
   isLoading: boolean = false;
   stories:any
+  showCommentDialog = false;
   suggestions:any
-  constructor(private postService: PostService) {}
+  constructor(private postService: PostService,private toaster:ToastService) {}
+
 
   ngOnInit(): void {
     this.loadPosts();
@@ -149,6 +163,47 @@ export class ExploreComponent {
         this.isLoading = false;
       }
     });
+  }
+
+
+
+  toggleComments(postId: string) {
+    if (this.openPostId === postId) {
+      this.openPostId = null; // Close if already open
+    } else {
+      this.openPostId = postId; // Open the selected post
+    }
+  }
+
+  
+  likeAndUnlikePost(postId: string) {
+    this.postService.likeAndUnlikePost(postId).subscribe({
+      next: (response) => {
+        const post = this.posts.find(p => p._id === postId);
+        if (post) {
+          if (post.isLiked) {
+            post.likeCount--;
+            post.isLiked = false;
+          } else {
+            post.likeCount++;
+            post.isLiked = true;
+          }
+        }
+        console.log(response);
+      },
+      error: (err) => {
+        this.toaster.showError('Something went wrong, Try again');
+      }
+    })
+  }
+
+
+  openCommentDialog() {
+    this.showCommentDialog = true;
+  }
+
+  closeCommentDialog() {
+    this.showCommentDialog = false;
   }
 
 }

@@ -1,6 +1,7 @@
 
 
 export interface PostI {
+    commentCount: number
     isLiked: boolean,
     _id: string,
     content: string,

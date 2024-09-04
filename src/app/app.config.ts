@@ -26,6 +26,10 @@ import { SocketIoConfig, SocketIoModule } from 'ngx-socket-io';
 import { provideHotToastConfig } from '@ngneat/hot-toast';
 import { firebaseConfig, socketUrl } from '../environments/environment';
 import { NgxLoadingService } from "ngx-loading";
+import { VgCoreModule } from '@videogular/ngx-videogular/core';
+import { VgControlsModule } from '@videogular/ngx-videogular/controls';
+import { VgOverlayPlayModule } from '@videogular/ngx-videogular/overlay-play';
+import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
 
 const config: SocketIoConfig = { url: socketUrl as string, options: {} };
 
@@ -52,5 +56,11 @@ export const appConfig: ApplicationConfig = {
     provideEffects([userEffects]),
     importProvidersFrom(SocketIoModule.forRoot(config)), provideAnimationsAsync(),
     provideHotToastConfig(),
+    importProvidersFrom(
+      VgCoreModule,
+      VgControlsModule,
+      VgOverlayPlayModule,
+      VgBufferingModule
+    ),
   ]
 };
