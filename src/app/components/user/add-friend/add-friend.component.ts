@@ -50,7 +50,7 @@ export class AddFriendComponent {
   }
   searchUser() {
     if (this.query) { 
-      this.userService.addFriends(this.query).subscribe({
+      this.userService.getUserForFriends(this.query).subscribe({
         next: (response) => {
           console.log(response);
           this.users = response.users

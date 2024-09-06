@@ -38,10 +38,7 @@ export class CommentDialogComponent {
     this.postService.getCommentsForThePost(postId).subscribe({
       next: (response) => {
         this.comments = response.comments
-        console.log('❌❌❌❌❌❌❌❌');
-        
         console.log(response.comments);
-        
       },
       error:(err)=>{
         console.error(err);
@@ -54,6 +51,7 @@ export class CommentDialogComponent {
     if (this.newComment.trim()) {
       this.postService.commentOnPost(this.postId,this.newComment).subscribe({
         next:(response)=>{
+          this.getCommentsForThePost(this.postId)
           console.log(response);
           this.newComment = ''
         },

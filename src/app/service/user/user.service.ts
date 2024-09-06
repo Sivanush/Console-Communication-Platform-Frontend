@@ -120,7 +120,7 @@ export class UserService {
   }
 
 
-  addFriends(query: string) {
+  getUserForFriends(query: string) {
     return this.http.get<{ users: User[] }>(`${this.apiLink}/search-users?query=${query}`)
   }
 
@@ -169,6 +169,10 @@ export class UserService {
 
   updateProfile(userData:User){  
     return this.http.post(`${this.apiLink}/update-profile`,userData)
+  }
+
+  getRandomUsers(){
+    return this.http.get<User[]>(`${this.apiLink}/get-random-users`)
   }
 
 }

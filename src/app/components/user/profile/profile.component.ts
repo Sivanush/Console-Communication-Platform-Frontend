@@ -11,13 +11,16 @@ import { PostI } from '../../../models/post/post.model';
 import { AutoPlayPostDirective } from '../../../directive/auto-play-post/auto-play-post.directive';
 import { ToastService } from '../../../service/toster/toster-service.service';
 import { error } from 'console';
+import { VideoPlayerComponent } from "../shared/video-player/video-player.component";
+import { CommentDialogComponent } from "../shared/comment-dialog/comment-dialog.component";
+import { LoadingService } from '../../../service/loading/loading.service';
 
 
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, AutoPlayPostDirective, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, RouterModule, AutoPlayPostDirective, FormsModule, ReactiveFormsModule, VideoPlayerComponent, CommentDialogComponent],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
@@ -40,11 +43,11 @@ export class ProfileComponent {
   bannerImagePreview: string | null = null;
 
   @Input() isModalOpen: boolean = false;
-
+  openPostId: string | null = null;
 
   profileImageFile: File | null = null;
   bannerImageFile: File | null = null;
-
+  showCommentDialog = false;
 
   userForm: FormGroup
   constructor(
@@ -53,7 +56,8 @@ export class ProfileComponent {
     private postService: PostService,
     private toaster: ToastService,
     private fb: FormBuilder,
-    private location: Location
+    private location: Location,
+    private loading:LoadingService
   ) {
     this.userForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(3)]],
@@ -68,7 +72,7 @@ export class ProfileComponent {
 
 
   async ngOnInit(): Promise<void> {
-
+    this.loading.show()
     this.loadUserData()
 
     this.userService.getAllFriends().subscribe({
@@ -91,6 +95,8 @@ export class ProfileComponent {
     if (this.userId) {
       this.getUserPost(this.userId)
     }
+
+
 
 
 
@@ -189,6 +195,7 @@ export class ProfileComponent {
       next: (data) => {
         this.posts = data
         console.log(data);
+        this.loading.hide()
 
       }
     })
@@ -297,6 +304,18 @@ export class ProfileComponent {
   }
 
 
+
+
+
+  toggleComments(postId: string) {
+    if (this.openPostId === postId) {
+      this.openPostId = null; // Close if already open
+    } else {
+      this.openPostId = postId; // Open the selected post
+    }
+  }
+
+  
   likeAndUnlikePost(postId: string) {
     this.postService.likeAndUnlikePost(postId).subscribe({
       next: (response) => {
@@ -317,4 +336,7 @@ export class ProfileComponent {
       }
     })
   }
+
+
+
 }

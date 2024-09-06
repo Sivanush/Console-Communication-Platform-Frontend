@@ -17,9 +17,7 @@ export class LoadingService {
   }
 
   hide() {
-    setTimeout(() => {
-      this.loadingSubject.next(false);
-    }, 0);
+      this.loadingSubject.next(false);;
   }
 
 

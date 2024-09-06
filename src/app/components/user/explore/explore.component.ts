@@ -9,11 +9,14 @@ import { VideoPlayerComponent } from "../shared/video-player/video-player.compon
 import { FormsModule } from '@angular/forms';
 import { ToastService } from '../../../service/toster/toster-service.service';
 import { CommentDialogComponent } from "../shared/comment-dialog/comment-dialog.component";
+import { UserService } from '../../../service/user/user.service';
+import { User } from '../../../interface/user/user.model';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-explore',
   standalone: true,
-  imports: [FriendsSidebarComponent, FriendsHeaderComponent, CommonModule, AutoPlayPostDirective, VideoPlayerComponent, FormsModule, CommentDialogComponent],
+  imports: [FriendsSidebarComponent, FriendsHeaderComponent, CommonModule, AutoPlayPostDirective, VideoPlayerComponent, FormsModule, CommentDialogComponent,RouterLink],
   templateUrl: './explore.component.html',
   styleUrl: './explore.component.scss'
 })
@@ -30,89 +33,14 @@ throw new Error('Method not implemented.');
   isLoading: boolean = false;
   stories:any
   showCommentDialog = false;
-  suggestions:any
-  constructor(private postService: PostService,private toaster:ToastService) {}
+  suggestions:User[] = []
+  constructor(private postService: PostService,private toaster:ToastService,private userService:UserService) {}
 
 
   ngOnInit(): void {
     this.loadPosts();
 
-    // setTimeout(() => {
-    //   this.posts = [
-    //     {
-    //       id: '1',
-    //       content: 'Just finished a great gaming session! #GamerLife',
-    //       author: {
-    //         _id: 'user1',
-    //         username: 'GameMaster42',
-    //         image: 'https://i.pravatar.cc/150?img=1'
-    //       },
-    //       timestamp: new Date().toISOString(),
-    //       likes: 15,
-    //       comments: 3,
-    //       mediaUrl: 'https://picsum.photos/seed/picsum/800/600',
-    //       mediaType: 'image'
-    //     },
-    //     {
-    //       id: '2',
-    //       content: 'Check out this amazing cosplay! #Cosplay #AnimeConvention',
-    //       author: {
-    //         _id: 'user2',
-    //         username: 'CosplayQueen',
-    //         image: 'https://i.pravatar.cc/150?img=5'
-    //       },
-    //       timestamp: new Date(Date.now() - 86400000).toISOString(), // 1 day ago
-    //       likes: 42,
-    //       comments: 7,
-    //       mediaUrl: 'https://picsum.photos/seed/cosplay/800/600',
-    //       mediaType: 'image'
-    //     },
-    //     {
-    //       id: '3',
-    //       content: 'Just released a new song! Give it a listen and let me know what you think. #NewMusic',
-    //       author: {
-    //         _id: 'user3',
-    //         username: 'MusicProducer99',
-    //         image: 'https://i.pravatar.cc/150?img=8'
-    //       },
-    //       timestamp: new Date(Date.now() - 172800000).toISOString(), // 2 days ago
-    //       likes: 31,
-    //       comments: 12,
-    //       mediaUrl: 'https://picsum.photos/seed/music/800/600',
-    //       mediaType: 'image'
-    //     },
-    //     {
-    //       id: '4',
-    //       content: 'Streaming my speedrun attempt in 30 minutes! Come watch live! #Speedrun #LiveStream',
-    //       author: {
-    //         _id: 'user4',
-    //         username: 'SpeedyGonzales',
-    //         image: 'https://i.pravatar.cc/150?img=12'
-    //       },
-    //       timestamp: new Date(Date.now() - 259200000).toISOString(), // 3 days ago
-    //       likes: 28,
-    //       comments: 5
-    //     },
-    //     {
-    //       id: '5',
-    //       content: 'Just hit Diamond rank! The grind was real but totally worth it. #CompetitiveGaming',
-    //       author: {
-    //         _id: 'user5',
-    //         username: 'DiamondWarrior',
-    //         image: 'https://i.pravatar.cc/150?img=15'
-    //       },
-    //       timestamp: new Date(Date.now() - 345600000).toISOString(), // 4 days ago
-    //       likes: 56,
-    //       comments: 9,
-    //       mediaUrl: 'https://picsum.photos/seed/diamond/800/600',
-    //       mediaType: 'image'
-    //     }
-    //   ];
-    //   this.isLoading = false;
-    // }, 1000);
-
-
-
+    
 
     this.stories  = [
       
@@ -139,12 +67,7 @@ throw new Error('Method not implemented.');
       ]
 
 
-
-      this.suggestions = [
-        { username: 'JohnDoe', image: 'path/to/image.jpg', mutualFriends: 5 },
-        { username: 'JaneSmith', image: 'path/to/image.jpg', mutualFriends: 3 },
-        // ... more suggestions
-      ];
+      this.getSuggestionUsers()
 
 
   }
@@ -197,6 +120,19 @@ throw new Error('Method not implemented.');
     })
   }
 
+  getSuggestionUsers(){
+    this.userService.getRandomUsers().subscribe({
+      next: (data) => {
+        console.log(data);
+        
+        this.suggestions = data
+      },
+      error:(err)=>{
+        console.log(err);
+      }
+    })
+  }
+
 
   openCommentDialog() {
     this.showCommentDialog = true;
@@ -204,6 +140,28 @@ throw new Error('Method not implemented.');
 
   closeCommentDialog() {
     this.showCommentDialog = false;
+  }
+
+
+  updateUserStatus(userId:string,status:string){
+    const userIndex = this.suggestions.findIndex(user => user._id == userId)
+    if (userIndex !== -1) {
+      this.suggestions[userIndex].friendshipStatus = status
+    }
+  }
+
+  sendFriendRequest(userId:string){
+    this.userService.sendFriendRequest(userId).subscribe({
+      next: (response) => {
+        console.log(response);
+        this.updateUserStatus(userId,'Sended')
+        this.toaster.showSuccess('Success',response.message)
+      },
+      error:(err)=>{
+        console.log(err);
+        this.toaster.showError('Error',err.error.error)
+      }
+    })
   }
 
 }
