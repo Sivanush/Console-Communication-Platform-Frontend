@@ -89,8 +89,6 @@ export class ViewMembersComponent {
       next: (data) => {
         this.members = data
         console.log(this.members);
-
-
       },
       error: (err) => {
         console.log(err)

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IAllServer } from '../../interface/server/getAllServer';
-import { Observable, Subject } from 'rxjs';
+import { map, Observable, Subject } from 'rxjs';
 import { IChannel, IServer } from '../../interface/server/serverDetails';
 import { ICategory } from '../../interface/server/categories';
 import { User } from '../../interface/user/user.model';
@@ -35,8 +35,10 @@ export class ServerService {
   }
 
   getAllUserForServer(serverId: string) {
-    return this.http.get<User[]>(`${this.apiLink}/servers/${serverId}`)
+    return this.http.get<{ user: User }[]>(`${this.apiLink}/servers/${serverId}`)
+    .pipe(map((data: { user: User }[]) => data.map(item => item.user)));
   }
+  
 
   findAdminForServer(userId: string, serverId: string) {
     return this.http.get(`${this.apiLink}/servers/admin/${serverId}/${userId}`)

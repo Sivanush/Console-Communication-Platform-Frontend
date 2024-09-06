@@ -39,20 +39,20 @@
               <div class="flex items-center space-x-4">
                 <div class="relative">
                   <img
-                    [src]="member.user.image"
-                    [alt]="member.user.username"
+                    [src]="member.image"
+                    alt="member name"
                     class="w-12 h-12 rounded-full object-cover"
                   />
                   <span class="absolute bottom-0 right-0 w-3 h-3 rounded-full" [ngClass]="{
-                    'bg-green-500': member.user.status === 'online',
-                    'bg-yellow-500': member.user.status === 'idle',
-                    'bg-red-500': member.user.status === 'dnd',
-                    'bg-gray-500': member.user.status === 'offline'
+                    'bg-green-500': member.status === 'online',
+                    'bg-yellow-500': member.status === 'idle',
+                    'bg-red-500': member.status === 'dnd',
+                    'bg-gray-500': member.status === 'offline'
                   }"></span>
                 </div>
                 <div>
-                  <h3 class="text-lg font-semibold">{{ member.user.username }}</h3>
-                  <p class="text-sm text-[#b9bbbe]">{{ member.user.role }}</p>
+                  <h3 class="text-lg font-semibold">{{ member.username }}</h3>
+                  <!-- <p class="text-sm text-[#b9bbbe]">{{ member.role }}</p> -->
                 </div>
               </div>
               <div class="flex items-center space-x-2">
@@ -80,7 +80,7 @@
                   >
                     <div class="py-1">
                       @if (isAdmin) {
-                        <a (click)="kickUser(member.user._id)" class="block px-4 py-2 text-[#dcddde] hover:bg-[#4f545c] hover:text-white transition-colors duration-200">
+                        <a (click)="kickUser(member._id)" class="block px-4 py-2 text-[#dcddde] hover:bg-[#4f545c] hover:text-white transition-colors duration-200">
                           Kick Member
                         </a>
                       }
