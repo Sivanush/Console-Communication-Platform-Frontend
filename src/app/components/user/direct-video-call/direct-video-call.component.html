@@ -85,5 +85,6 @@
   </div>
 </main>
 
-<!-- <app-user-profile *ngIf="profileVisible"></app-user-profile>
-<app-create-server *ngIf="createServerVisible"></app-create-server> -->
+@if (createServerVisible) {
+  <app-create-server />
+}

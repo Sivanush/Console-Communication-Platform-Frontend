@@ -10,7 +10,7 @@ export interface UserI {
   }
   
   export interface MessageI {
-fileType: any;
+    fileType: File;
     _id: string;
     sender: UserI;
     message: string;

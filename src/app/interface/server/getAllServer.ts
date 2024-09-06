@@ -9,9 +9,9 @@
 
 
 export interface IServer {
-channelId: string;
-  _id: string;
-  name: string;
+channelId?: string;
+  _id?: string;
+  name?: string;
   image?: string;
 }
 

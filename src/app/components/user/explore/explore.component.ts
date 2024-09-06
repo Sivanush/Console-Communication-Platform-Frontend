@@ -22,16 +22,8 @@ import { RouterLink } from '@angular/router';
 })
 export class ExploreComponent {
   openPostId: string | null = null;
-addComment(_t24: any) {
-throw new Error('Method not implemented.');
-}
-newComment: any;
-showAllComments(_t24: any) {
-throw new Error('Method not implemented.');
-}
   posts: PostI[] = [];
   isLoading: boolean = false;
-  stories:any
   showCommentDialog = false;
   suggestions:User[] = []
   constructor(private postService: PostService,private toaster:ToastService,private userService:UserService) {}
@@ -42,29 +34,29 @@ throw new Error('Method not implemented.');
 
     
 
-    this.stories  = [
+    // this.stories  = [
       
-        {
-          "authorName": "GameMaster42",
-          "authorImage": "https://i.pravatar.cc/150?img=1"
-        },
-        {
-          "authorName": "CosplayQueen",
-          "authorImage": "https://i.pravatar.cc/150?img=5"
-        },
-        {
-          "authorName": "MusicProducer99",
-          "authorImage": "https://i.pravatar.cc/150?img=8"
-        },
-        {
-          "authorName": "SpeedyGonzales",
-          "authorImage": "https://i.pravatar.cc/150?img=12"
-        },
-        {
-          "authorName": "DiamondWarrior",
-          "authorImage": "https://i.pravatar.cc/150?img=15"
-        }
-      ]
+    //     {
+    //       "authorName": "GameMaster42",
+    //       "authorImage": "https://i.pravatar.cc/150?img=1"
+    //     },
+    //     {
+    //       "authorName": "CosplayQueen",
+    //       "authorImage": "https://i.pravatar.cc/150?img=5"
+    //     },
+    //     {
+    //       "authorName": "MusicProducer99",
+    //       "authorImage": "https://i.pravatar.cc/150?img=8"
+    //     },
+    //     {
+    //       "authorName": "SpeedyGonzales",
+    //       "authorImage": "https://i.pravatar.cc/150?img=12"
+    //     },
+    //     {
+    //       "authorName": "DiamondWarrior",
+    //       "authorImage": "https://i.pravatar.cc/150?img=15"
+    //     }
+    //   ]
 
 
       this.getSuggestionUsers()

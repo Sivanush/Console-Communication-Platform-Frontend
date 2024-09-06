@@ -14,6 +14,7 @@ import { error } from 'console';
 import { VideoPlayerComponent } from "../shared/video-player/video-player.component";
 import { CommentDialogComponent } from "../shared/comment-dialog/comment-dialog.component";
 import { LoadingService } from '../../../service/loading/loading.service';
+import { IServer } from '../../../interface/server/getAllServer';
 
 
 
@@ -31,8 +32,8 @@ export class ProfileComponent {
   activeTab: string = 'posts';
   content: string = '';
   posts: PostI[] = [];
-  friends: any[] = [];
-  servers: any[] = [];
+  friends: User[] = [];
+  servers: IServer[] = [];
   userId!: string | null
   isLoading: boolean = false
   previewUrl: string | null = null;
@@ -102,8 +103,8 @@ export class ProfileComponent {
 
     // Initialize sample servers
     this.servers = [
-      { name: 'Gaming Hub', memberCount: 1000, iconUrl: 'https://placehold.co/1000x1000/000000/FFF' },
-      { name: 'Movie Buffs', memberCount: 500, iconUrl: 'https://placehold.co/1000x1000/000000/FFF' }
+      { name: 'Gaming Hub', image: 'https://placehold.co/1000x1000/000000/FFF' },
+      { name: 'Movie Buffs', image: 'https://placehold.co/1000x1000/000000/FFF' }
       // Add more sample servers here
     ];
   }
@@ -247,11 +248,11 @@ export class ProfileComponent {
 
   readFile(file: File, type: 'image' | 'banner'): void {
     const reader = new FileReader();
-    reader.onload = (e: any) => {
+    reader.onload = (e: ProgressEvent<FileReader>) => {
       if (type === 'image') {
-        this.profileImagePreview = e.target.result;
+        this.profileImagePreview = e.target?.result as string
       } else {
-        this.bannerImagePreview = e.target.result;
+        this.bannerImagePreview = e.target?.result as string
       }
     };
     reader.readAsDataURL(file);

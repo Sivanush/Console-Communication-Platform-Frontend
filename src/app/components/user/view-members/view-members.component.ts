@@ -21,7 +21,7 @@ export class ViewMembersComponent {
   isChat!: boolean;
   isVideo!: boolean;
 
-  members!: any[]
+  members!: User[]
 
   private subscriptions: Subscription[] = [];
   showMemberOptions: boolean = false;
@@ -121,7 +121,7 @@ export class ViewMembersComponent {
   kickUser(userId:string){
     this.serverService.kickUserById(userId,this.serverId).subscribe({
       next:(response)=>{
-        this.members = this.members.filter(member => member.user._id !== userId);
+        this.members = this.members.filter(member => member._id !== userId);
         console.log(response);
         this.toastService.showSuccess('User Kicked');
       },

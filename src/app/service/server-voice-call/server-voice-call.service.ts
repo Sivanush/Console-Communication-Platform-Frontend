@@ -421,7 +421,6 @@ export class ServerVoiceCallService {
         console.log('PeerJS: My peer ID is:', id);
         this.localPeerIdBs.next(id);
         
-        // Disconnect any existing connections for this user
         this.socket.emit('disconnect-existing-user', userId, this.roomId);
         
         // Join the room with the new peer ID

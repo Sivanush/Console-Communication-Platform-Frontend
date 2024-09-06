@@ -120,11 +120,13 @@ import { DirectChatHeaderComponent } from '../shared/direct-chat-header/direct-c
 import { FriendsSidebarComponent } from '../shared/friends-sidebar/friends-sidebar.component';
 import { AsyncPipe, CommonModule, Location } from '@angular/common';
 import { DirectCallService } from '../../../service/direct-call/direct-call.service';
+import { CreateServerComponent } from "../shared/create-server/create-server.component";
+import { ToggleCreateServerService } from '../../../service/toggleCreateServer/toggle-create-server.service';
 
 @Component({
   selector: 'app-direct-voice-call',
   standalone: true,
-  imports: [DirectChatHeaderComponent, FriendsSidebarComponent, AsyncPipe, CommonModule],
+  imports: [DirectChatHeaderComponent, FriendsSidebarComponent, AsyncPipe, CommonModule, CreateServerComponent],
   templateUrl: './direct-voice-call.component.html',
   styleUrls: ['./direct-voice-call.component.scss']
 })
@@ -132,13 +134,14 @@ export class DirectVoiceCallComponent implements OnInit, OnDestroy {
   calleeId: string | null = null;
   callStatus: string = 'Connecting...';
   isAudioMuted = false;
-
+  createServerVisible: boolean = false
   private remoteStreamSubscription: Subscription | null = null;
-
+  subscription!:Subscription
   constructor(
     private route: ActivatedRoute,
     private directCallService: DirectCallService,
-    private location:Location
+    private location:Location,
+    private toggleCreateServerService:ToggleCreateServerService
   ) {}
 
   ngOnInit() {
@@ -156,6 +159,14 @@ export class DirectVoiceCallComponent implements OnInit, OnDestroy {
         audioElement.play();
       }
     });
+
+    this.subscription = this.toggleCreateServerService.booleanValue$.subscribe({
+      next: (value) => {
+        this.createServerVisible = value
+
+      },
+      error: (err) => console.log(err)
+    })
   }
 
   ngOnDestroy() {
