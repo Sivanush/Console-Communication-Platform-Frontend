@@ -14,6 +14,7 @@ export class FriendSidebarToggleService {
 
   toggleSidebar() {
     this.sidebarState.next(!this.sidebarState.value);
+    console.log('❌❌❌❌❌❌❌❌')
   }
 
   closeSidebar() {

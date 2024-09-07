@@ -24,7 +24,7 @@ export class HomeComponent {
 
   profileVisible:boolean = false
   createServerVisible:boolean = false
-  private subscription!: Subscription;
+  private subscription!: Subscription
 
   constructor(
     private userService:UserService,

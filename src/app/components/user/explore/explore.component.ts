@@ -12,11 +12,14 @@ import { CommentDialogComponent } from "../shared/comment-dialog/comment-dialog.
 import { UserService } from '../../../service/user/user.service';
 import { User } from '../../../interface/user/user.model';
 import { RouterLink } from '@angular/router';
+import { CreateServerComponent } from "../shared/create-server/create-server.component";
+import { Subscription } from 'rxjs';
+import { ToggleCreateServerService } from '../../../service/toggleCreateServer/toggle-create-server.service';
 
 @Component({
   selector: 'app-explore',
   standalone: true,
-  imports: [FriendsSidebarComponent, FriendsHeaderComponent, CommonModule, AutoPlayPostDirective, VideoPlayerComponent, FormsModule, CommentDialogComponent,RouterLink],
+  imports: [FriendsSidebarComponent, FriendsHeaderComponent, CommonModule, AutoPlayPostDirective, VideoPlayerComponent, FormsModule, CommentDialogComponent, RouterLink, CreateServerComponent],
   templateUrl: './explore.component.html',
   styleUrl: './explore.component.scss'
 })
@@ -25,14 +28,22 @@ export class ExploreComponent {
   posts: PostI[] = [];
   isLoading: boolean = false;
   showCommentDialog = false;
+  createServerVisible:boolean = false
   suggestions:User[] = []
-  constructor(private postService: PostService,private toaster:ToastService,private userService:UserService) {}
+  private subscription!: Subscription
+  constructor(private postService: PostService,private toaster:ToastService,private userService:UserService,private toggleCreateServerService:ToggleCreateServerService) {}
 
 
   ngOnInit(): void {
     this.loadPosts();
 
-    
+    this.subscription = this.toggleCreateServerService.booleanValue$.subscribe({
+      next: (value) => {
+        this.createServerVisible = value 
+        
+      },
+      error:(err)=> console.log(err)
+    })
 
     // this.stories  = [
       
@@ -64,6 +75,12 @@ export class ExploreComponent {
 
   }
 
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe() 
+    }
+  }
   loadPosts(): void {
     this.isLoading = true;
     this.postService.getExplorePosts().subscribe({

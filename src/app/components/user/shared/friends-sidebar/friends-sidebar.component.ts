@@ -71,6 +71,8 @@ export class FriendsSidebarComponent {
 
     this.subscriptions = this.sidebarToggleService.sidebarState$.subscribe((state) => {
       this.sidebarOpen = state;
+
+      console.log(state,'the value emitted')
     });
 
     this.userId = await this.userService.getUserId()
