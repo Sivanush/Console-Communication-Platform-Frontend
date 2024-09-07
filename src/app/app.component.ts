@@ -12,7 +12,6 @@ import { ToastService } from './service/toster/toster-service.service';
 import { AsyncPipe, Location } from '@angular/common';
 import { LoadingService } from './service/loading/loading.service';
 import { DirectCallService } from './service/direct-call/direct-call.service';
-import { initFlowbite } from 'flowbite';
 
 
 
@@ -49,7 +48,6 @@ export class AppComponent {
 
     this.userId = await this.userService.getUserId();
 
-    initFlowbite();
 
     this.loadingService.loading$.subscribe((loading) => {     
       this.isLoading$ = loading;

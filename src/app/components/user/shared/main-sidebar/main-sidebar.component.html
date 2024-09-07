@@ -15,13 +15,32 @@
 
   <div id="sidebar" class="flex-1 overflow-y-auto py-2 space-y-2">
     @for (server of servers; track server) {
-    <a [routerLink]="['/server', server._id,server.channelId]"
+    <!-- <a [routerLink]="['/server', server._id,server.channelId]"  routerLinkActive="rounded-xl" [routerLinkActiveOptions]="{ exact: true }"
       class="relative w-12 h-12 rounded-3xl hover:rounded-xl bg-[#36393f] hover:bg-[#5865f2] cursor-pointer transition-all duration-300 ease-linear group overflow-hidden mx-auto block">
       <div class="absolute inset-0 transition-all duration-300 ease-in-out">
         <img [src]="server.image" alt=""
           class="w-[100%] h-[100%] object-cover absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group-hover:w-[100%] group-hover:h-[100%]">
       </div>
-    </a>
+    </a> -->
+    <div class="relative group mb-2">
+      <!-- Hover indicator (shorter) -->
+      <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1 bg-white rounded-r-full transition-all duration-300 ease-in-out origin-left
+                  h-0 scale-y-0 opacity-0
+                  group-hover:h-5 group-hover:scale-y-100 group-hover:opacity-100"></div>
+      
+      <!-- Active indicator (full length) -->
+      <div class="absolute left-0 top-0 w-1 bg-white rounded-r-full transition-all duration-300 ease-in-out origin-center
+                  h-0 scale-y-0 opacity-0"
+           [ngClass]="{'h-full scale-y-100 opacity-100': isActive(server._id!)}"></div>
+      
+      <a [routerLink]="['/server', server._id, server.channelId]"
+         [routerLinkActive]="'bg-[#5865f2]'"
+         [routerLinkActiveOptions]="{ exact: true }"
+         class="block relative w-12 h-12 mx-auto rounded-3xl transition-all duration-300 ease-in-out group-hover:rounded-[16px] bg-[#36393f] group-hover:bg-[#5865f2] overflow-hidden">
+        <img [src]="server.image" [alt]="server.name"
+             class="w-full h-full object-cover">
+      </a>
+    </div>
     }@empty {
     @for (item of [1,2]; track item) {
     <div class="w-12 h-12 bg-[#36393f] rounded-3xl  mx-auto animate-pulse"></div>

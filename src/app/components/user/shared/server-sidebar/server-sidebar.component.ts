@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, HostListener, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { MainSidebarComponent } from "../main-sidebar/main-sidebar.component";
 import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { ServerService } from '../../../../service/server/server.service';
@@ -19,6 +19,7 @@ import { CreateChannelComponent } from '../create-channel/create-channel.compone
 import { Subscription } from 'rxjs';
 import { ICategory } from '../../../../interface/server/categories';
 import { environment } from '../../../../../environments/environment';
+import { FriendSidebarToggleService } from '../../../../service/friend-sidebar-toggle/friend-sidebar-toggle.service';
 
 interface TreeNode {
   _id: string
@@ -69,10 +70,32 @@ export class ServerSidebarComponent {
   expiresAt: Date | null = null;
   subscription!: Subscription;
   serverOptions:boolean = false
+  sidebarOpen: boolean  = false;
 
-  constructor(private route: ActivatedRoute, private serverService: ServerService, private dialog: MatDialog, private router: Router) {
+  constructor(private route: ActivatedRoute, private serverService: ServerService, private dialog: MatDialog, private router: Router,private sidebarToggleService:FriendSidebarToggleService) {}
 
+
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent) {
+    const clickedInside = (event.target as HTMLElement).closest('.sidebar, #toggle-icon');
+    if (!clickedInside && this.sidebarOpen) {
+      this.sidebarOpen = false; 
+      this.sidebarToggleService.closeSidebar()
+    }
   }
+
+ @HostListener('window:popstate', ['$event'])
+ onBackButtonEvent() {
+   if (this.sidebarOpen) {
+     this.closeSidebar();
+   }
+ }
+
+
+ closeSidebar() {
+  this.sidebarToggleService.closeSidebar();
+}
+
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['serverId'] && changes['serverId'].currentValue) {
@@ -94,6 +117,13 @@ export class ServerSidebarComponent {
         this.loadChannelDetails(channelId);
       }
     })
+
+    this.subscription = this.sidebarToggleService.sidebarState$.subscribe((state) => {
+      this.sidebarOpen = state;
+
+      console.log(state,'the value emitted')
+    });
+
 
   }
 

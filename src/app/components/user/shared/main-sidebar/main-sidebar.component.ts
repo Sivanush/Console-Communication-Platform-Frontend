@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 
 import { ToggleUserProfileService } from '../../../../service/toggleUserProfile/toggle-user-profile.service';
 import { UserService } from '../../../../service/user/user.service';
@@ -9,11 +9,12 @@ import { ServerService } from '../../../../service/server/server.service';
 import { Subscription } from 'rxjs';
 import { IAllServer, IServer } from '../../../../interface/server/getAllServer';
 import { LoadingService } from '../../../../service/loading/loading.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-main-sidebar',
   standalone: true,
-  imports: [RouterLink,RouterLinkActive,DialogModule],
+  imports: [RouterLink,RouterLinkActive,DialogModule,CommonModule],
   templateUrl: './main-sidebar.component.html',
   styleUrl: './main-sidebar.component.scss'
 })
@@ -29,7 +30,8 @@ export class MainSidebarComponent {
     private userService:UserService,
     private serverService:ServerService,
     private cdr: ChangeDetectorRef,
-    private loadingService:LoadingService
+    private loadingService:LoadingService,
+    private router: Router
   ) {}
   private serverUpdateSubscription!: Subscription;
 
@@ -84,4 +86,9 @@ export class MainSidebarComponent {
   //     this.serverUpdateSubscription.unsubscribe();
   //   }
   // }
+
+
+  isActive(serverId: string): boolean {
+    return this.router.url.includes(`/server/${serverId}`);
+  }
 }

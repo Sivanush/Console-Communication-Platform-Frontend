@@ -1,12 +1,20 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { NavigationEnd, Router } from '@angular/router';
+import { BehaviorSubject, filter } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FriendSidebarToggleService {
 
-  constructor() { }
+  constructor(private router: Router) {
+      this.router.events.pipe(
+        filter(event => event instanceof NavigationEnd)
+      ).subscribe(() => {
+        // Close sidebar on page change
+        this.closeSidebar();
+      });
+   }
 
 
   private sidebarState = new BehaviorSubject<boolean>(false);

@@ -3,7 +3,7 @@
 
   <app-friends-sidebar  />
 
-  <div class=" flex-1 flex flex-col h-full ">
+  <div class=" flex-1 flex flex-col h-full sm:ml-80">
     <app-direct-chat-header [isFriendOnline]="isFriendOnline$" [userImage]="friendUserData.image"
       [name]="friendUserData.username" [friendId]="friendUserData._id"
       class="bg-[#36393f] shadow-sm   min-h-[48px] px-2 sm:px-4 flex items-center" />
@@ -79,7 +79,7 @@
               {{ msg.message }}</p>
             }
             }
-            <div
+            <!-- <div
               class="absolute right-0 top-0 hidden group-hover:flex items-center space-x-1 bg-[#36393f] p-1 rounded-md shadow-md transition-opacity duration-200 opacity-0 group-hover:opacity-100">
               <button class="text-[#b9bbbe] hover:text-[#dcddde] p-1 rounded hover:bg-[#40444b] transition-colors">
                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -102,7 +102,7 @@
                   </path>
                 </svg>
               </button>
-            </div>
+            </div> -->
           </div>
         </div>
         } @empty {
