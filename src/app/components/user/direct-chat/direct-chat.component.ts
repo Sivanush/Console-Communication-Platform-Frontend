@@ -221,7 +221,7 @@ export class DirectChatComponent implements OnInit, OnDestroy {
 
 
 
-  async onImageUpload(event: Event) {
+  async onFileUpload(event: Event) {
     this.isLoading = true
     const files = (event.target as HTMLInputElement).files;
     if (files && files.length > 0) {

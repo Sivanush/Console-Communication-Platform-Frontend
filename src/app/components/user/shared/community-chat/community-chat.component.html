@@ -1,10 +1,15 @@
 <div class="flex-grow overflow-y-auto px-4 py-1" id="scrollContainer" #scrollContainer>
-  @if(groupedMessages.length !== 0){
-    @if (allMessagesLoaded) {
-      <div class="text-center text-sm text-[#72767d] py-2">All messages loaded</div>
-    }
-  }
   <div #scrollSentinel></div>
+  @if (groupedMessages.length > 0) {
+    <div class="h-[40vh] flex-grow flex flex-col items-center justify-center text-center">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-[#8e9297] mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+      </svg>
+      <h2 class="text-[#ffffff] text-2xl font-semibold mb-2">Welcome to the chat!</h2>
+      <p class="text-[#8e9297] text-lg mb-4">This is the start of your conversation in #{{channelName}}.</p>
+      <p class="text-[#8e9297] mt-1 text-sm">Share your thoughts, ask questions, or just say hi!</p>
+    </div>
+  }
   @for (group of groupedMessages; track group.date) {
   @if (isLoading) {
   <div role="status" class="flex justify-center items-center mb-2">
@@ -58,7 +63,7 @@
             } @else if (msg.message.startsWith('[video]')) {
 
             <div class="max-w-sm relative cursor-pointer" (click)="openMediaDialog(msg.message.slice(7), 'video')">
-              <img src="https://discord-bucket-7.s3.ap-south-1.amazonaws.com/360_F_480129384_xkBXyTdVt1R5F7KBwTD2kDURi7hV97Ad.jpg" alt="Video thumbnail" class="rounded-md max-w-full h-auto">
+              <img [src]="msg.thumbnailUrl" alt="Video thumbnail" class="rounded-md max-w-full h-auto">
               <!-- <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-4xl text-white">▶️</div> -->
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"class="size-10 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-4xl text-white">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
@@ -75,54 +80,57 @@
   </div>
   }
   @empty {
-    <!-- <div class="p-4">
-      @for (item of [1,2,3,4,5,6,7,8]; track item) {
-        <div class="flex mb-6">
-          <div class="w-10 h-10 rounded-full bg-[#2f3136] mr-4 animate-pulse"></div>
-          <div class="flex-1">
-            <div class="h-5 w-32 bg-[#2f3136] mb-2 rounded animate-pulse"></div>
-            <div class="h-4 bg-[#2f3136] mb-1.5 rounded animate-pulse"></div>
-            <div class="h-4 w-3/4 bg-[#2f3136] rounded animate-pulse"></div>
-          </div>
-        </div>
-      }
-    </div> -->
+    <div class="h-[70vh] flex-grow flex flex-col items-center justify-center text-center">
+      <svg class="w-16 h-16 text-[#8e9297] mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+        stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
+        </path>
+      </svg>
+      <p class="text-[#ffffff] text-lg font-medium">No messages yet</p>
+      <p class="text-[#8e9297] mt-1 text-sm">Start the conversation!</p>
+    </div>
   }
 </div>
 
 <!-- Input area -->
-<div class="px-2 py-2 bg-[#40444b] mb-3 mr-2 rounded-md ms-2">
-  <div class="relative flex items-center">
-    <!-- File input for image and video upload -->
-    <input type="file" (change)="onFileUpload($event)" accept="image/*,video/*" style="display: none;" #fileInput>
+<div class="px-4 py-4 bg-[#36393f]">
+  <div class="relative flex gap-2 items-center">
+
+
+
+    <input type="file" (change)="onFileUpload($event)" accept="image/*,video/*" style="display: none;"
+      #fileInput>
     <button (click)="fileInput.click()"
-      class="text-[#b9bbbe] hover:text-[#dcddde] p-1 rounded hover:bg-[#4f545c] transition-colors mr-2">
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+      class="text-[#b9bbbe] hover:text-[#dcddde] p-1 rounded hover:bg-[#40444b] transition-colors">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
+        </path>
       </svg>
     </button>
 
-    <!-- Text input for messages -->
-    <input type="text" [(ngModel)]="message" (keydown.enter)="sendMessage()"
-      class="w-full bg-[#40444b] text-[#dcddde] border-0 rounded-md pl-4 pr-12 py-2 transition-all focus:outline-none"
-      placeholder="Type a message...">
 
-    <!-- Send button -->
+    <input type="text" [(ngModel)]="message" (keydown.enter)="sendMessage()"
+      class="w-full bg-[#40444b] text-[#dcddde] rounded-lg pl-4 pr-12 py-2.5 focus:border-0 border-0 placeholder-[#72767d] transition-all duration-200"
+      placeholder="Message @{{channelName}}">
+
     <button (click)="sendMessage()"
-      class="absolute right-2 top-1/2 transform -translate-y-1/2 text-[#b9bbbe] hover:text-[#dcddde] transition-all">
-      <!-- <img width="24" height="24" src="https://img.icons8.com/fluency-systems-regular/48/sent--v1.png" alt="sent--v1"/> -->
-      <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-        <path fill-rule="evenodd" d="M3 4a1 1 0 0 0-.822 1.57L6.632 12l-4.454 6.43A1 1 0 0 0 3 20h13.153a1 1 0 0 0 .822-.43l4.847-7a1 1 0 0 0 0-1.14l-4.847-7a1 1 0 0 0-.822-.43H3Z" clip-rule="evenodd"/>
-      </svg>      
+      class="absolute right-2 top-1/2 transform -translate-y-1/2 text-[#b9bbbe] hover:text-[#dcddde] transition-all p-2 rounded-full hover:bg-[#4f545c]">
+      <svg class="w-6 h-6 rotate-90" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z">
+        </path>
+      </svg>
     </button>
   </div>
 </div>
 
 
 
-<ng-template #successTemplate>
+<!-- <ng-template #successTemplate>
   <b>Settings saved!</b>
 </ng-template>
 <ng-template #errorTemplate>
   <b>Could not save.</b>
-</ng-template>
+</ng-template> -->

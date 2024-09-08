@@ -10,6 +10,7 @@ export interface UserI {
   }
   
   export interface MessageI {
+  thumbnailUrl: string;
     fileType: File;
     _id: string;
     sender: UserI;

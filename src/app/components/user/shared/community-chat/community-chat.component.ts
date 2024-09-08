@@ -1,9 +1,5 @@
-
-
-
-
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked, OnDestroy, AfterViewInit, ChangeDetectorRef, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewChecked, OnDestroy, AfterViewInit, ChangeDetectorRef, TemplateRef, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ChannelChatService } from '../../../../service/channel-chat/channel-chat.service';
 import { Subscription } from 'rxjs';
@@ -35,10 +31,11 @@ export class CommunityChatComponent implements OnInit, AfterViewInit, OnDestroy 
   @ViewChild('successTemplate') successTemplate!: TemplateRef<HTMLDivElement>;
   @ViewChild('errorTemplate') errorTemplate!: TemplateRef<HTMLDivElement>;
 
+  @Input() channelName!:string
 
   private loadTriggerOffset = 400;
   allMessagesLoaded = false;
-
+  private readonly THUMBNAIL_SIZE = 300
   messages: MessageI[] = [];
   groupedMessages: MessageGroupI[] = [];
   userId!: string | null;
@@ -78,7 +75,11 @@ export class CommunityChatComponent implements OnInit, AfterViewInit, OnDestroy 
       this.loadChannelMessages();
       setTimeout(() => {
         this.scrollToBottom()
+      console.log(this.groupedMessages);
+
       }, 400);
+
+      
      
     //    setTimeout(() => {
     //   this.loadingService.hide();
@@ -247,25 +248,31 @@ export class CommunityChatComponent implements OnInit, AfterViewInit, OnDestroy 
     if (files && files.length > 0) {
       const file = files[0];
       try {
-        // this.hotToastService.observe({
-        //   loading: 'Uploading...',
-        //   success: this.successTemplate,
-        //   error: this.errorTemplate,
-        // })
-
         const fileType = file.type.split('/')[0];
         let fileUrl = '';
+        let thumbnailUrl = '';
 
         this.loadingService.show();
 
         if (fileType === 'image') {
           fileUrl = await this.chatService.uploadImage(file);
         } else if (fileType === 'video') {
-          fileUrl = await this.chatService.uploadVideo(file);
+          // fileUrl = await this.chatService.uploadVideo(file);
+          const thumbnailBlob = await this.generateVideoThumbnail(file);
+          const thumbnailFile = new File([thumbnailBlob as BlobPart],Date.now()+ 'thumbnail.jpg', { type: 'image/jpeg' });
+          
+          // Upload video and thumbnail
+          const [videoUploadResult, thumbnailUploadResult] = await Promise.all([
+            this.chatService.uploadImage(file),
+            this.chatService.uploadImage(thumbnailFile)
+          ]);
+
+          fileUrl = videoUploadResult;
+          thumbnailUrl = thumbnailUploadResult;
         }
 
         if (fileUrl && this.userId && this.channelId) {
-          this.chatService.sendFileMessage(this.userId, this.channelId, fileUrl, fileType);
+          this.chatService.sendFileMessage(this.userId, this.channelId, fileUrl, fileType, thumbnailUrl);
           setTimeout(() => {
             this.scrollToBottom()
           }, 700);
@@ -285,7 +292,65 @@ export class CommunityChatComponent implements OnInit, AfterViewInit, OnDestroy 
     }
   }
 
-
+  generateVideoThumbnail(file: File): Promise<Blob> {
+    return new Promise((resolve, reject) => {
+      const video = document.createElement('video');
+      video.preload = 'metadata';
+      
+      video.onloadedmetadata = () => {
+        video.currentTime = Math.min(video.duration / 3, 1);
+      };
+  
+      video.onseeked = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        if (!ctx) {
+          reject(new Error('Failed to get canvas context'));
+          return;
+        }
+  
+        // Calculate the scaling factor to fit the video within the thumbnail size
+        const scale = Math.min(this.THUMBNAIL_SIZE / video.videoWidth, this.THUMBNAIL_SIZE / video.videoHeight);
+        
+        // Calculate the new dimensions
+        const newWidth = video.videoWidth * scale;
+        const newHeight = video.videoHeight * scale;
+  
+        // Set canvas size to our desired thumbnail size
+        canvas.width = this.THUMBNAIL_SIZE;
+        canvas.height = this.THUMBNAIL_SIZE;
+  
+        // Fill the background with a color (e.g., black)
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
+        // Calculate position to center the scaled video frame
+        const x = (canvas.width - newWidth) / 2;
+        const y = (canvas.height - newHeight) / 2;
+  
+        // Draw the scaled video frame
+        ctx.drawImage(video, x, y, newWidth, newHeight);
+  
+        canvas.toBlob(
+          (blob) => {
+            if (blob) {
+              resolve(blob);
+            } else {
+              reject(new Error('Failed to create thumbnail blob'));
+            }
+          },
+          'image/jpeg',
+          0.7
+        );
+      };
+  
+      video.onerror = () => {
+        reject(new Error('Error loading video'));
+      };
+  
+      video.src = URL.createObjectURL(file);
+    });
+  }
 
   openMediaDialog(src: string, type: string) {
     this.dialog.open(MediaDialogComponent, {

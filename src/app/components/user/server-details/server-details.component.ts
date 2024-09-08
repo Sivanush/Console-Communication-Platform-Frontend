@@ -12,6 +12,7 @@ import { CommunityVideoChatComponent } from "../shared/community-video-chat/comm
 import { ActivatedRoute } from '@angular/router';
 import { ServerService } from '../../../service/server/server.service';
 import { CommunityAudioChatComponent } from "../shared/community-audio-chat/community-audio-chat.component";
+import { ServerHeaderComponent } from "../shared/server-header/server-header.component";
 
 
 @Component({
@@ -19,12 +20,14 @@ import { CommunityAudioChatComponent } from "../shared/community-audio-chat/comm
   standalone: true,
   templateUrl: './server-details.component.html',
   styleUrl: './server-details.component.scss',
-  imports: [FriendsSidebarComponent, FriendsHeaderComponent, ServerSidebarComponent, CommunityChatComponent,  CreateServerComponent, CommunityVideoChatComponent, CommunityAudioChatComponent]
+  imports: [FriendsSidebarComponent, FriendsHeaderComponent, ServerSidebarComponent, CommunityChatComponent, CreateServerComponent, CommunityVideoChatComponent, CommunityAudioChatComponent, ServerHeaderComponent]
 })
 export class ServerDetailsComponent {
   isChat!: boolean
   isVideo!: boolean
   isAudio!: boolean
+  channelName!:string
+  channelType!:string
   profileVisible: boolean = false
   createServerVisible: boolean = false
   private subscription!: Subscription;
@@ -42,19 +45,32 @@ export class ServerDetailsComponent {
 
   }
 
+  getChannelName(value:string){
+    this.channelName = value
+  }
+
   isChatToggle(value: boolean) {
     this.isChat = value
+    if (value == true) {
+      this.channelType = 'text'
+    } 
     this.cdr.detectChanges(); 
 
   }
 
   isVideoToggle(value: boolean) {
     this.isVideo = value
+    if (value == true) {
+     this.channelType = 'video'
+   } 
     this.cdr.detectChanges(); 
   }
 
   isAudioToggle(value:boolean){
     this.isAudio = value
+    if (value == true) {
+     this.channelType = 'audio'
+   } 
     this.cdr.detectChanges();
   }
 

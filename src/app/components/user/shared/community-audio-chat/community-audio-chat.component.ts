@@ -193,7 +193,7 @@ export class CommunityAudioChatComponent implements OnInit, OnDestroy {
 
       const avatarElement = document.createElement('img');
       avatarElement.src = userImage;
-      avatarElement.className = 'w-20 h-20 rounded-full bg-[#5865F2] mx-auto mb-2';
+      avatarElement.className = 'w-20 h-20 rounded-full bg-[#5865F2] mx-auto mb-2 object-cover';
 
       const usernameElement = document.createElement('div');
       usernameElement.className = 'text-center text-sm username';

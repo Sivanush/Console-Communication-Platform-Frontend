@@ -10,13 +10,15 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router'; 
 import { Subscription } from 'rxjs';
 import { AutoPlayPostDirective } from '../../../directive/auto-play-post/auto-play-post.directive';
+import { VideoPlayerComponent } from "../shared/video-player/video-player.component";
+import { CommentDialogComponent } from "../shared/comment-dialog/comment-dialog.component";
 
 
 
 @Component({
   selector: 'app-users-profile',
   standalone: true,
-  imports: [CommonModule,FormsModule,AutoPlayPostDirective],
+  imports: [CommonModule, FormsModule, AutoPlayPostDirective, VideoPlayerComponent, CommentDialogComponent],
   templateUrl: './users-profile.component.html',
   styleUrl: './users-profile.component.scss'
 })
@@ -27,7 +29,9 @@ export class UsersProfileComponent {
   userId!:string
   posts!:PostI[]
   subscription!:Subscription
-
+  showCommentDialog = false;
+  openPostId: string | null = null;
+  
   constructor(
     private userService: UserService,
     private serverService: ServerService,
@@ -104,6 +108,15 @@ export class UsersProfileComponent {
         this.toaster.showError('Something went wrong, Try again');
       }
     })
+  }
+
+
+  toggleComments(postId: string) {
+    if (this.openPostId === postId) {
+      this.openPostId = null; // Close if already open
+    } else {
+      this.openPostId = postId; // Open the selected post
+    }
   }
 
 }

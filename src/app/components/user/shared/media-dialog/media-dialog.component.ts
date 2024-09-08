@@ -1,10 +1,16 @@
 import { Component, HostListener, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-
+import { VideoPlayerComponent } from "../video-player/video-player.component";
+import { CUSTOM_ELEMENTS_SCHEMA, ElementRef, Input, ViewChild } from '@angular/core';
+import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
+import { VgControlsModule } from '@videogular/ngx-videogular/controls';
+import { VgCoreModule } from '@videogular/ngx-videogular/core';
+import { VgOverlayPlayModule } from '@videogular/ngx-videogular/overlay-play';
+import { AutoPlayPostDirective } from '../../../../directive/auto-play-post/auto-play-post.directive';
 @Component({
   selector: 'app-media-dialog',
   standalone: true,
-  imports: [],
+  imports: [VgCoreModule,VgControlsModule,VgOverlayPlayModule,VgBufferingModule,AutoPlayPostDirective],
   templateUrl: './media-dialog.component.html',
   styleUrl: './media-dialog.component.scss'
 })

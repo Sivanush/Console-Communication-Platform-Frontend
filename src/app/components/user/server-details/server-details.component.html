@@ -1,14 +1,15 @@
 <main class="flex h-screen bg-[#36393f] overflow-hidden">
-  <app-server-sidebar (toggleChat)="isChatToggle($event)" (toggleVideo)="isVideoToggle($event)" (toggleAudio)="isAudioToggle($event)"/>
+  <app-server-sidebar (toggleChat)="isChatToggle($event)" (toggleVideo)="isVideoToggle($event)" (toggleAudio)="isAudioToggle($event)"  (currentChannelName)="getChannelName($event)"/>
   
   <div class="flex-1 flex flex-col h-full w-full" id="main-content-wrapper">
 
     <!-- @if(!isVideo){ -->
-    <app-friends-header [name]="'Home'" />
+    <!-- <app-friends-header [name]="'Home'" class="min-h-14"/> -->
+    <app-server-header [channelType]="channelType"  [channelName]="channelName"/>
     <!-- } -->
     <div class="flex-1 overflow-hidden">
       @if(isChat){
-        <app-community-chat class="h-full flex flex-col" />
+        <app-community-chat  class="h-full flex flex-col" />
       }
       @if(isVideo){
         <app-community-video-chat class="h-full flex flex-col" />

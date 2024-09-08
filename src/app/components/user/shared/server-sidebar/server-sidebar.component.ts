@@ -44,6 +44,7 @@ interface ChannelNode {
   providers: [{ provide: MatDialogRef, useValue: {} }, { provide: MAT_DIALOG_DATA, useValue: {} },]
 })
 export class ServerSidebarComponent {
+  @Output() currentChannelName = new EventEmitter<string>()
   @Output() toggleChat = new EventEmitter<boolean>(false)
   @Output() toggleVideo = new EventEmitter<boolean>(false)
   @Output() toggleAudio = new EventEmitter<boolean>(false)
@@ -242,6 +243,7 @@ export class ServerSidebarComponent {
 
 
   onChannelClick(channel: ChannelNode) {
+    this.currentChannelName.emit(channel.label)
     if (channel.type === 'text') {
       this.toggleChat.emit(true);
       this.toggleVideo.emit(false);

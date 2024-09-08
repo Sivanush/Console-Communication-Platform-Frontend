@@ -78,8 +78,8 @@ export class ChannelChatService {
   }
 
 
-  sendFileMessage(userId: string, channelId: string, fileUrl: string, fileType: string) {
-    this.socket.emit('sendChannelMessage', { userId, channelId, fileUrl, fileType })
+  sendFileMessage(userId: string, channelId: string, fileUrl: string, fileType: string, thumbnailUrl:string) {
+    this.socket.emit('sendChannelMessage', { userId, channelId, fileUrl, fileType, thumbnailUrl})
   }
 
 
