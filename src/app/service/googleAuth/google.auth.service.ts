@@ -31,6 +31,8 @@ export class GoogleAuthService {
             console.log('Login successful:', response.message);
             this.toster.showSuccess('Success', 'Logged in successfully with Google!')
             this.router.navigate([''])
+            console.log('log for test branch');
+            
           },
           error:(err)=>{
             console.log('Error', err?.error.message);            
