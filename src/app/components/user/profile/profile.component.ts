@@ -120,6 +120,10 @@ export class ProfileComponent {
     })
   }
 
+  logout(){
+    this.userService.logout()
+  }
+
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
