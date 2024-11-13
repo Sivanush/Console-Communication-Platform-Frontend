@@ -3,37 +3,33 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { Observable } from 'rxjs';
 import { commentI, PostI } from '../../models/post/post.model';
-import { S3 } from 'aws-sdk';
-import { awsCredentials } from '../../../environments/environment';
-
 @Injectable({
   providedIn: 'root'
 })
 export class PostService {
   private apiLink = environment.apiUrl
-  private s3: S3;
+  
+  private cloudName = environment.CLOUDINARY_CLOUD_NAME
+  private uploadPreset = environment.CLOUDINARY_UPLOADPRESET
+
   constructor(private http:HttpClient) {
-    this.s3 =  new S3({
-      accessKeyId: awsCredentials.accessKey,
-      secretAccessKey: awsCredentials.secretKey,
-      region: 'ap-south-1',
-    });
    }
 
-  async uploadToAWS(file: File){
-    const fileName = file.name;
-    const params = {
-      Bucket: 'discord-bucket-7',
-      Key: fileName,
-      Body: file,
-      ContentType: file.type,
-    };
-
-    return this.s3.upload(params).promise().then((data) => {
-      return data.Location;
-    });
-  }
-
+  async uploadToAWS(file: File): Promise<string> {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', this.uploadPreset);
+  
+      const uploadUrl = `https://api.cloudinary.com/v1_1/${this.cloudName}/${file.type.startsWith('image/') ? 'image' : 'video'}/upload`;
+  
+      return this.http.post<{ url: string }>(uploadUrl, formData)
+        .toPromise()
+        .then(response => response!.url)
+        .catch(error => {
+          console.error('Upload error:', error);
+          throw new Error("Failed to upload file");
+        });
+    }
 
 
 

@@ -142,9 +142,10 @@ export class DirectChatComponent implements OnInit, OnDestroy {
 
 
     this.lastMessageSubscription = this.chatService.getLastMessage().subscribe((msg) => {
-      if (this.userId && this.friendId) {
+      if (this.userId && this.friendId) {        
         this.chatService.markMessagesAsRead(this.userId, this.friendId);
       }
+      console.log(msg);
       this.messages.push(msg);
       this.groupMessages()
       this.scrollToBottom();

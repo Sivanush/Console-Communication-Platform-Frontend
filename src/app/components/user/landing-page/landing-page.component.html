@@ -1,0 +1,193 @@
+<div class="min-h-screen bg-gradient-to-b from-[#2C2F33] to-[#23272A] text-[#dcddde] font-sans overflow-hidden">
+    <!-- Navigation -->
+    <nav class="bg-transparent px-4 py-3 sticky top-0 z-50 transition-all duration-300" >
+      <div class="max-w-7xl mx-auto flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+          <img src="/assets/klio-logo.svg" alt="Klio Logo" class="h-8 w-auto">
+          <h1 class="text-2xl font-bold text-white">Klio</h1>
+        </div>
+        <div class="flex items-center space-x-6">
+         
+          <a href="#" class="px-4 py-2 rounded-md bg-[#7289da] hover:bg-[#677bc4] transition-all duration-300 text-sm text-white transform hover:scale-105">
+            Sign Up
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section with Animated Chat -->
+    <section class="py-28 px-4 relative overflow-hidden">
+      <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center">
+        <div class="md:w-1/2 z-10">
+          <h2 class="text-4xl md:text-5xl font-bold mb-6 text-white leading-tight">
+            Experience the Future of Team Communication
+          </h2>
+          <p class="text-xl text-[#b9bbbe] mb-8">
+            Klio brings your conversations to life with seamless voice, video, and text chat. Built for the modern team.
+          </p>
+          <a href="#" 
+             class="inline-block px-8 py-4 rounded-full bg-[#7289da] hover:bg-[#677bc4] transition-all duration-300 text-lg font-semibold text-white shadow-lg hover:shadow-xl transform  hover:scale-101">
+            Get Started for Free
+          </a>
+        </div>
+        <div class="md:w-1/2 mt-10 md:mt-0" >
+          <div class="bg-[#36393f]  rounded-lg p-4 shadow-xl max-w-md mx-auto transform hover:scale-105 transition-all duration-300">
+            <div class="flex items-center mb-4">
+              <div class="w-10 h-10 rounded-full bg-[#7289da] flex items-center justify-center text-white font-bold">K</div>
+              <div class="ml-3 text-white font-semibold">Klio Chat Demo</div>
+            </div>
+            <div class="space-y-4 h-[345px] overflow-y-auto" #chatContainer [@fadeInUp]="{ value: null, params: { delay: '300ms' } }">
+                <div *ngFor="let message of chatMessages" 
+                     [@messageAnimation]="message.state" 
+                     class="flex items-start" 
+                     [ngClass]="{'justify-end': message.sender === 'user'}">
+                  <div class="bg-[#40444b] rounded-lg p-3 max-w-[80%]" [ngClass]="{'bg-[#7289da]': message.sender === 'user'}">
+                    {{ message.text }}
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+      <!-- Animated background elements -->
+      <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <div *ngFor="let bubble of bubbles" 
+             class="absolute rounded-full opacity-10"
+             [ngStyle]="{
+               'width.px': bubble.size, 
+               'height.px': bubble.size, 
+               'left.%': bubble.x, 
+               'top.%': bubble.y, 
+               'background-color': bubble.color,
+               'animation': 'float ' + bubble.duration + 's linear infinite'
+             }">
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 px-4 bg-[#2C2F33]">
+        <div class="max-w-7xl mx-auto">
+          <h3 class="text-3xl font-bold text-center mb-12 text-white" [@fadeInUp]>Powerful Features</h3>
+          <div class="grid md:grid-cols-3 gap-8" [@staggered]="features.length">
+            
+            <!-- Real-time Chat Feature -->
+            <div class="bg-[#36393f] p-6 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300 group">
+              <div class="h-16 w-16 rounded-full bg-[#40444b] flex items-center justify-center mb-6 group-hover:bg-[#7289da] transition-colors duration-300">
+                <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
+              </div>
+              <h4 class="text-xl font-bold text-white mb-4">Real-time Chat</h4>
+              <p class="text-[#b9bbbe]">Experience seamless, instant messaging with your team. Share ideas, files, and emojis in a flash.</p>
+            </div>
+      
+            <!-- Voice & Video Calls Feature -->
+            <div class="bg-[#36393f] p-6 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300 group">
+              <div class="h-16 w-16 rounded-full bg-[#40444b] flex items-center justify-center mb-6 group-hover:bg-[#7289da] transition-colors duration-300">
+                <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <h4 class="text-xl font-bold text-white mb-4">Voice & Video Calls</h4>
+              <p class="text-[#b9bbbe]">Crystal-clear audio and high-quality video conferencing. Connect face-to-face from anywhere.</p>
+            </div>
+      
+            <!-- File Sharing Feature -->
+            <div class="bg-[#36393f] p-6 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300 group">
+              <div class="h-16 w-16 rounded-full bg-[#40444b] flex items-center justify-center mb-6 group-hover:bg-[#7289da] transition-colors duration-300">
+                <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                </svg>
+              </div>
+              <h4 class="text-xl font-bold text-white mb-4">File Sharing</h4>
+              <p class="text-[#b9bbbe]">Easily share and organize files within your team. Access your documents from any device, anytime.</p>
+            </div>
+      
+          </div>
+        </div>
+      </section>
+      
+
+    <!-- Interactive Demo Section -->
+    <section id="demo" class="py-20 px-4">
+      <div class="max-w-7xl mx-auto">
+        <h3 class="text-3xl font-bold text-center mb-12 text-white" [@fadeInUp]>Experience Klio</h3>
+        <div class="bg-[#36393f] rounded-lg p-6 shadow-xl max-w-2xl mx-auto transform hover:scale-105 transition-all duration-300" [@fadeInUp]="{ value: null, params: { delay: '300ms' } }">
+          <div class="flex items-center mb-6">
+            <div class="w-10 h-10 rounded-full bg-[#7289da] flex items-center justify-center text-white font-bold">K</div>
+            <div class="ml-3 text-white font-semibold">Klio Bot</div>
+          </div>
+          <div class="space-y-4 mb-6 h-64 overflow-y-auto" #chatContainer>
+            <div *ngFor="let message of demoMessages" 
+                 class="flex items-start" 
+                 [ngClass]="{'justify-end': message.sender === 'user'}">
+              <div class="bg-[#40444b] rounded-lg p-3 max-w-[80%]" [ngClass]="{'bg-[#7289da]': message.sender === 'user'}">
+                {{ message.text }}
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center">
+            <input type="text" [(ngModel)]="userInput" (keyup.enter)="sendMessage()"
+                   class="flex-grow bg-[#40444b] text-[#dcddde] rounded-l-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#7289da]"
+                   placeholder="Type a message...">
+            <button (click)="sendMessage()"
+                    class="bg-[#7289da] text-white px-6 py-2 rounded-r-lg hover:bg-[#677bc4] transition-colors focus:outline-none focus:ring-2 focus:ring-[#7289da] focus:ring-offset-2 focus:ring-offset-[#36393f]">
+              Send
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-20 px-4 bg-[#2C2F33]">
+      <div class="max-w-7xl mx-auto">
+        <h3 class="text-3xl font-bold text-center mb-12 text-white" [@fadeInUp]>What Our Users Say</h3>
+        <div class="grid md:grid-cols-3 gap-8" [@staggered]="testimonials.length">
+          <div *ngFor="let testimonial of testimonials" 
+               class="bg-[#36393f] p-6 rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300">
+            <p class="text-[#b9bbbe] mb-4">"{{ testimonial.quote }}"</p>
+            <div class="flex items-center">
+              <img [src]="testimonial.avatar" alt="{{ testimonial.name }}" class="w-10 h-10 rounded-full mr-4">
+              <div>
+                <p class="font-semibold text-white">{{ testimonial.name }}</p>
+                <p class="text-sm text-[#b9bbbe]">{{ testimonial.role }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action -->
+    <!-- <section class="py-20 px-4">
+      <div class="max-w-4xl mx-auto text-center" [@fadeInUp]>
+        <h2 class="text-3xl md:text-4xl font-bold mb-6 text-white">Ready to Transform Your Team Communication?</h2>
+        <p class="text-xl text-[#b9bbbe] mb-8">Join thousands of teams already using Klio to collaborate seamlessly.</p>
+        <a href="#" 
+           class="inline-block px-8 py-4 rounded-full bg-[#7289da] hover:bg-[#677bc4] transition-all duration-300 text-lg font-semibold text-white shadow-lg hover:shadow-xl transform hover:-translate-y-1 hover:scale-105">
+          Start Your Free Trial
+        </a>
+      </div>
+    </section> -->
+
+    <!-- Footer -->
+    <footer class="bg-[#23272A] py-12 px-4">
+      <div class="max-w-7xl mx-auto text-center">
+        <img src="/assets/klio-logo.svg" alt="Klio Logo" class="h-10 w-auto mx-auto mb-6">
+        <div class="flex-col justify-between items-center space-x-6 mb-8">
+        <p class="text-[#b9bbbe] mb-6 max-w-2xl mx-auto text-center">Your all-in-one communication platform for modern teams. Connect, collaborate, and create with Klio.</p>
+          <a *ngFor="let link of footerLinks" [href]="link.href" class="text-[#b9bbbe] hover:text-white transition-colors">
+            {{ link.label }}
+          </a>
+        </div>
+        <div class="flex justify-center space-x-6 mb-8">
+          <a *ngFor="let icon of socialIcons" [href]="icon.href" class="text-[#b9bbbe] hover:text-white transition-colors">
+            <svg [innerHTML]="icon.svg" class="h-6 w-6"></svg>
+          </a>
+        </div>
+        <p class="text-[#b9bbbe]">© {{ currentYear }} Klio. All rights reserved.</p>
+      </div>
+    </footer>
+  </div>

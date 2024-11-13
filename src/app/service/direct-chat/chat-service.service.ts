@@ -3,9 +3,9 @@ import { Socket } from 'ngx-socket-io';
 import { BehaviorSubject, from, Observable } from 'rxjs';
 import { directChatI } from '../../interface/user/direct-chat';
 import { User } from '../../interface/user/user.model';
-import { S3 } from 'aws-sdk';
 import { UserI } from '../../interface/server/channelChat';
-import { awsCredentials } from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 export interface FriendsStatus extends User{
   _id: string;
@@ -23,15 +23,13 @@ export class ChatServiceService {
   private currentChatPartner: string | null = null;
   private friendsStatus = new BehaviorSubject<FriendsStatus[]>([]);
 
-  private s3: S3;
+  private cloudName = environment.CLOUDINARY_CLOUD_NAME
+  private uploadPreset = environment.CLOUDINARY_UPLOADPRESET
+
   
-  constructor(private socket: Socket) {
+  constructor(private socket: Socket,private http:HttpClient) {
     this.setupSocketListeners();
-    this.s3 = new S3({
-      accessKeyId: awsCredentials.accessKey,
-      secretAccessKey: awsCredentials.secretKey,
-      region: 'ap-south-1',
-    });
+
   }
 
   private setupSocketListeners() {
@@ -87,20 +85,21 @@ export class ChatServiceService {
 
 
 
-  async uploadFile(file: File): Promise<string>  {
-    const fileName = file.name;
-    const params = {
-      Bucket: 'discord-bucket-7',
-      Key: fileName,
-      Body: file,
-      ContentType: file.type,
-    };
+  async uploadFile(file: File): Promise<string> {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', this.uploadPreset);
 
-    return this.s3.upload(params).promise().then((data) => {
-      return data.Location;
-    });
+    const uploadUrl = `https://api.cloudinary.com/v1_1/${this.cloudName}/${file.type.startsWith('image/') ? 'image' : 'video'}/upload`;
+
+    return this.http.post<{ url: string }>(uploadUrl, formData)
+      .toPromise()
+      .then(response => response!.url)
+      .catch(error => {
+        console.error('Upload error:', error);
+        throw new Error("Failed to upload file");
+      });
   }
-
 
   
 

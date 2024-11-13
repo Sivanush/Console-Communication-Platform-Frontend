@@ -63,6 +63,8 @@ export class CommunityVideoChatComponent implements OnInit, AfterViewInit, OnDes
 
       this.serverVideoCallService.remoteStreamsBs.subscribe(streams => {
         this.remoteStreams = streams;
+        console.log(streams);
+        
         this.updateRemoteVideos();
       }),
 

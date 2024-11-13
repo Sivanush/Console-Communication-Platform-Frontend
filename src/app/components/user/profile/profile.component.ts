@@ -167,7 +167,7 @@ export class ProfileComponent {
         try {
           mediaUrl = await this.postService.uploadToAWS(this.selectedFile);
         } catch (error) {
-          console.error('Error uploading to S3:', error);
+          console.error('Error uploading to Server:', error);
           return;
         }
       }

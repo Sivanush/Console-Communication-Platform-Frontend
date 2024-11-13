@@ -41,10 +41,6 @@
              class="w-full h-full object-cover">
       </a>
     </div>
-    }@empty {
-    @for (item of [1,2]; track item) {
-    <div class="w-12 h-12 bg-[#36393f] rounded-3xl  mx-auto animate-pulse"></div>
-    }
     }
 
     <a (click)="createServerVisibleToggle()" title="Add a Server"

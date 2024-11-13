@@ -14,7 +14,9 @@ export const environment = {
   production: ${process.env.NODE_ENV === 'production'},
   apiUrl: '${process.env.NG_APP_API_URL}',
   domain: '${process.env.NG_APP_DOMAIN}',
-  googleClientId: '${process.env.NG_APP_GOOGLE_CLIENT_ID}'
+  googleClientId: '${process.env.NG_APP_GOOGLE_CLIENT_ID}',
+  CLOUDINARY_CLOUD_NAME: '${process.env.CLOUDINARY_CLOUD_NAME}',
+  CLOUDINARY_UPLOADPRESET: '${process.env.CLOUDINARY_UPLOADPRESET}',
 };
 
 export const firebaseConfig = {
@@ -30,10 +32,6 @@ export const firebaseConfig = {
 
 export const socketUrl = '${process.env.NG_APP_SOCKET_URL}';
 
-export const awsCredentials = {
-  accessKey: '${process.env.NG_APP_AWS_ACCESS_KEY}',
-  secretKey: '${process.env.NG_APP_AWS_SECRET_KEY}'
-};
 `;
 
 // Write the environment.ts and environment.prod.ts files

@@ -22,6 +22,7 @@ import { ProfileComponent } from '../components/user/profile/profile.component';
 import { ExploreComponent } from '../components/user/explore/explore.component';
 import { UsersProfileComponent } from '../components/user/users-profile/users-profile.component';
 import { profileCheckGuard } from '../guards/user/profile-check.guard';
+import { LandingPageComponent } from '../components/user/landing-page/landing-page.component';
 
 
 export const userRoute: Routes = [
@@ -120,5 +121,9 @@ export const userRoute: Routes = [
   {
     path: 'explore',
     component:ExploreComponent
+  },
+  {
+    path: 'land',
+    component:LandingPageComponent
   }
 ];

@@ -11,6 +11,13 @@ export const UserAuthInterceptor: HttpInterceptorFn = (req, next) => {
   const userService = inject(UserService);
   const router = inject(Router)
 
+
+  const isCloudinaryRequest = req.url.includes('cloudinary.com');
+  if (isCloudinaryRequest) {
+    return next(req);
+  }
+
+  
   if (token) {
     const cloned = req.clone({
       headers: req.headers.set('Authorization', `Bearer ${token}`)
